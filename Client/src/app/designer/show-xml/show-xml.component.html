@@ -1,0 +1,15 @@
+<div class="div__top">
+  <h5>
+    نمایش کد
+    <button style="margin:5px;" pButton icon="pi pi-times" class="ui-button-danger" (click)="closeDialog()"></button>
+  </h5>
+</div>
+
+<div class="div__content">
+  <div [innerHTML]="data.Value">
+
+  </div>
+  <div>
+    <pre lang="xml">{{xmlMessage}}</pre>
+  </div>
+</div>

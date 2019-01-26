@@ -1,0 +1,12 @@
+.no__result__div {
+    border: 1px solid lightgray;
+    text-align: center;
+    margin-top: 10px;
+    color: #a94442;
+    width: 80%;
+    margin-right: 10%;
+}
+
+.span__description__text {
+    margin:10px;
+}

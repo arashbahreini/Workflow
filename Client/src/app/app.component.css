@@ -1,0 +1,33 @@
+.span__menu {
+    padding: 13px 20px 0px 10px;
+    color: #fff;
+    display: inline-block;
+    height: 6vh;
+}
+
+.span__menu:hover {
+    background-color: #41474a;
+    color:#b9c1b9;
+    cursor: pointer;
+}
+
+.span__menu:focus {
+    outline:0;
+}
+
+.div__menu {
+    background-color: #292b2c;
+    position: fixed;
+    width: 105%;
+    margin-top: -16px;
+    margin-right: -10px;
+    padding-top: 6px;
+    z-index: 1;
+}
+
+.router__outlet {
+    position: absolute;
+    margin-top: 24px;
+    width: 100%;
+    z-index: -1;
+}

@@ -1,0 +1,18 @@
+<p-growl [(value)]="errorMessages" [life]="'3000'"></p-growl>
+<div class="div__top">
+  <h5>
+    درخت پیگیری
+    <button style="margin:5px;" pButton icon="pi pi-times" class="ui-button-danger" (click)="closeDialog()"></button>
+  </h5>
+</div>
+
+<div style="text-align: center;">
+  <span class="done__task__div">
+    تسک انجام شده
+  </span>
+  <span *ngIf="!data.isFinishedWorkflow" class="doing__task__div">
+    تسک در حال انجام
+  </span>
+</div>
+<hr style="margin: 10px 0px 10px 0px">
+<div align="center" #myDiagramDiv style="width: 100%;height: 87vh;margin-top: 10px;"></div>

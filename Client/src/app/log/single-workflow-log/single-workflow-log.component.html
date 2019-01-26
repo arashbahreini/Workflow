@@ -1,0 +1,21 @@
+<div *ngIf="!errorMessage">
+    <p style="margin : 10px 5% 10px 0px; text-align: center">
+        <span class="span__description__text">تسک در حال انجام</span>
+        <span style="color:lightblue" class="pi pi-circle-on"></span>
+        <span class="span__description__text">تسک طی نشده</span>
+        <span style="color:lightgray" class="pi pi-circle-on"></span>
+        <span class="span__description__text">تسک طی شده</span>
+        <span style="color:lightgreen" class="pi pi-circle-on"></span>
+        <span class="span__description__text">تسک دارای خطا</span>
+        <span style="color:red" class="pi pi-circle-on"></span>
+        <span> | </span>
+        <span style="margin-right: 10px">شناسه ی درخواست : </span>
+        <span>{{workflowLogRequest.RequestNumber | persianNumber}}</span>
+      </p>
+    <div align="center" #myDiagramDiv style="width: 100%;height: 100vh;margin-top: 10px;border:2px solid lightgray"></div>
+</div>
+<div *ngIf="errorMessage" class="no__result__div">
+    <h2>
+        {{errorMessage}}
+    </h2>
+</div>

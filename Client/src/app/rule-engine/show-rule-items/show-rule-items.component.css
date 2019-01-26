@@ -1,0 +1,86 @@
+mat-form-field.txtarea {
+  min-height: 100px;
+  height: initial;
+  width: 100%;
+}
+
+mat-form-field textarea {
+  height: 100px;
+}
+
+.mat__form__field {
+  width: 50%;
+}
+
+.div__container {
+  border: solid 1px lightgray;
+  padding: 5px;
+  margin-top: 22px;
+}
+
+.div__action {
+  text-align: center;
+  border: 1px solid lightgray;
+  margin-top: 10px;
+  padding: 5px;
+}
+
+.ui-button-danger {
+  margin-right: 5px;
+  margin-left: 5px;
+}
+
+.table__rule__list {
+  width: 94%;
+}
+
+.div__rule__list {
+  border: solid 1px lightgray;
+  margin: 0px 0px 5px 0px;
+  padding: 5px;
+  /* height: 80px; */
+}
+
+table.table__rule__list td {
+  padding: 5px;
+}
+
+.left__operand__td {
+  width: 15%;
+}
+
+.operation__td {
+  width: 15%;
+}
+
+.right__main__operand__td {
+  width: 20%;
+}
+
+.key__color {
+  color: #F63421
+}
+
+.div__time {
+  border: 1px solid lightgray;
+  margin: 0px 0px 2px 0px;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+.mat-select-disabled .mat-select-value {
+  color: rgba(black, 0.38);
+}
+
+.mat-input-element:disabled {
+  color: gray;
+}
+
+.exception__div table {
+  width: 100%;
+  border: solid 1px lightgray;
+}
+
+.exception__div th {
+  text-align: center;
+}

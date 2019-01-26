@@ -1,0 +1,30 @@
+.main__div {
+    display: flex;
+    margin-top: 10px;
+    border-top: 1px solid lightgray
+}
+
+.left__div {
+    width: 85%;
+    padding: 5px;   
+    overflow-y: auto;
+    max-height: 84vh;
+}
+
+.right__div {
+    height: 84vh;
+    width: 15%;
+    border-left: solid 1px lightgray;
+}
+
+.menu__item {
+    border-bottom: solid 1px lightgray;
+    height: 50px;
+    border-right: solid 1px lightgray;
+    padding: 12px;
+}
+
+.menu__item:hover {
+    background-color: #FFCAB3;
+    cursor: pointer;
+}

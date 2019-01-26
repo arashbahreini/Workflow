@@ -1,0 +1,26 @@
+.div__top {
+    text-align: right;
+    background-color: #b9c1b9;
+}
+
+.done__task__div {
+    border:1px solid lightgreen;
+    border-radius: 5px;
+    background-color: lightgreen;
+    width: 20%;
+    height: 35px;
+    text-align: center;
+    margin: 10px;
+    display: inline-block;
+}
+
+.doing__task__div {
+    border:1px solid lightblue;
+    border-radius: 5px;
+    background-color: lightblue;
+    width: 20%;
+    height: 35px;
+    text-align: center;
+    margin: 10px;
+    display: inline-block;
+}

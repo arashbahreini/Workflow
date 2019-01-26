@@ -1,0 +1,41 @@
+<mat-card>
+    <h3>
+        لیست فرایند ها
+    </h3>
+</mat-card>
+<table *ngIf="workflows.length" class="responstable">
+    <tr>
+        <th>ردیف</th>
+        <th>شناسه</th>
+        <th>نگارش</th>
+        <th>نام</th>
+        <th>بازه ی زمانی</th>
+        <th>شناسه ی درخواست</th>
+        <th>
+            <button pButton icon="pi pi-refresh" (click)="getWorkFlows()"></button>
+        </th>
+    </tr>
+    <tr *ngFor="let workflow of workflows;let i = index">
+        <td>{{i + 1 | persianNumber}}</td>
+        <td>{{workflow.Id | persianNumber}}</td>
+        <td>{{workflow.Version | persianNumber}}</td>
+        <td>{{workflow.Name}}</td>
+        <td>{{workflow.Period | persianNumber}}</td>
+        <td>
+            <mat-form-field>
+                <input matInput type="number" placeholder="شناسه ی درخواست" [(ngModel)]="workflow.requestId" />
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput type="number" placeholder="شماره ی درخواست" [(ngModel)]="workflow.requestNumber" />
+            </mat-form-field>
+        </td>
+        <td>
+            <button [disabled]="true" (click)="pauseWorkFlow(workflow.Id)" *ngIf="workflow.IsRunning && !workflow.IsPaused"
+                pButton icon="pi pi-pause"></button>
+            <button [disabled]="true" (click)="resumeWorkFlow(workflow.Id)" *ngIf="workflow.IsRunning &&  workflow.IsPaused"
+                pButton icon="pi pi-caret-left"></button>
+            <button (click)="startWorkFlow(workflow)" *ngIf="!workflow.IsRunning" pButton icon="pi pi-caret-left"></button>
+            <button [disabled]="true" (click)="stopWorkFlow(workflow)" *ngIf="workflow.IsRunning" pButton icon="pi pi-stop"></button>
+        </td>
+    </tr>
+</table>

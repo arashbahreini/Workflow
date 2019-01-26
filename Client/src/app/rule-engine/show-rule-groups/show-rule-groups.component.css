@@ -1,0 +1,16 @@
+.no__result__div {
+    border: 1px solid lightgray;
+    text-align: center;
+    margin-top: 10px;
+    color: #a94442;
+}
+
+.table {
+    margin-top: 10px;
+    text-align: center;
+}
+
+/* .div__container {
+    overflow-y: scroll;
+    max-height: 630px;
+} */

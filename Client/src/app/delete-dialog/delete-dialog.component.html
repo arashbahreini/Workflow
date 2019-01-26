@@ -1,0 +1,14 @@
+<div class="div__top">
+    <h5>
+      اخطار
+      <button style="margin:5px;" pButton icon="pi pi-times" class="ui-button-danger" (click)="closeDialog()"></button>
+    </h5>
+</div>
+
+<div class="div__content">
+  <h3>{{message}}</h3>
+  <div style="text-align:center">
+    <button style="width:100px" pButton icon="pi pi-check" class="ui-button-success" (click)="confirmDelete()"></button>
+    <button style="width:100px" pButton icon="pi pi-times" class="ui-button-danger" (click)="closeDialog()"></button>
+  </div>
+</div>

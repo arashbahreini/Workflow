@@ -1,0 +1,14 @@
+i {
+    margin-left: 10px;
+}
+
+.mat-card {
+    margin-top: 2vh;
+}
+
+.no__result__div {
+    border: 1px solid lightgray;
+    text-align: center;
+    margin-top: 10px;
+    color: #a94442;
+}

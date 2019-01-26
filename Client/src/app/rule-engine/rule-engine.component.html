@@ -1,0 +1,16 @@
+<mat-card>
+  <h3>
+    مدیریت موتور قوانین
+  </h3>
+</mat-card>
+
+<div class="main__div">
+  <div class="right__div">
+    <div *ngFor="let menu of menus" class="menu__item" [routerLink]="'management/' + menu.id">
+      {{menu.name}}
+    </div>
+  </div>
+  <div class="left__div">
+    <router-outlet></router-outlet>
+  </div>
+</div>

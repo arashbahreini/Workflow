@@ -1,0 +1,329 @@
+<p-growl [(value)]="errorMessages" [life]="'3000'"></p-growl>
+<div>
+  <h3 style="text-align: center">
+    افزودن / ویرایش قوانین
+  </h3>
+  <hr style="width: 13%">
+</div>
+<div class="div__container" *ngIf="hasResult">
+  <div>
+    <mat-form-field class="mat__form__field mat__form__field__textarea">
+      <input matInput type="text" placeholder="نام گروه" [(ngModel)]="ruleGroup.Name" />
+    </mat-form-field>
+  </div>
+  <div class="div__time">
+    <h4>
+      <span>
+        تاریخ شروع و پایان قانون
+      </span>
+      <span style="margin-right: 10px;">
+        ( خالی گذاشتن فیلد های تاریخ به معنی اعمال نشدن هیچ گونه محدودیت زمانی برای این گروه قانون می باشد )
+      </span>
+    </h4>
+    <table>
+      <tr>
+        <td>
+          <span>تاریخ شروع : </span>
+        </td>
+        <td>
+          <dp-date-picker placeholder="افزودن تاریخ جدید" dir="rtl" [config]="datePickerConfig" [(ngModel)]="ruleGroup.StartDate"
+            mode="day" theme="dp-material"></dp-date-picker>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <span>تاریخ پایان : </span>
+        </td>
+        <td>
+          <dp-date-picker dir="rtl" placeholder="افزودن تاریخ جدید" [config]="datePickerConfig" [(ngModel)]="ruleGroup.EndDate"
+            mode="day" theme="dp-material"></dp-date-picker>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div style="border:1px solid lightgray; margin-bottom: 10px">
+    <mat-accordion style="margin:5px 0px 10px 0px">
+      <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            خلاصه ی قوانین
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <h4 #element *ngIf="ruleGroup.RuleItems.length > 0">
+          <span>
+            در صورتی که درخواستی از نوع
+          </span>
+          <span class="key__color">
+            {{cartable.persianName}}
+          </span>
+          <span> و در </span>
+          <span *ngFor="let RuleItem of ruleGroup.RuleItems;let index = index">
+            <span *ngIf="RuleItem.Operator && RuleItem.BodyObj">
+              <span class="key__color">{{RuleItem?.RuleType?.PersianName }}</span>
+              <span *ngIf="RuleItem.Operator.Operator === 'include'" class="key__color"> های </span>
+              <span *ngIf="RuleItem.Operator.Operator === 'include'">
+                <span *ngFor="let rightOperand of RuleItem.BodyObj.RightOperand">
+                  {{getRightOperandPersianName(RuleItem,rightOperand)}}
+                </span>
+              </span>
+              <span *ngIf="RuleItem.Operator.Operator !== 'include'">
+                <span *ngFor="let rightOperand of RuleItem.BodyObj.RightOperand">
+                  <!-- {{RuleItem.BodyObj.RightOperand | persianNumber}} -->
+                  {{getNotIncludedRightOperandPersianName(RuleItem,rightOperand)}}
+                </span>
+              </span>
+              <span *ngIf="index !== ruleGroup.RuleItems.length - 1"> و </span>
+            </span>
+          </span>
+          <span>
+            باشد ، این درخواست توسط سیستم موتور قوانین رد می شود .
+          </span>
+        </h4>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+
+  <div style="border:1px solid lightgray; margin-bottom: 10px">
+    <mat-accordion style="margin:5px 0px 10px 0px">
+      <mat-expansion-panel [expanded]="false">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            استثنائات
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th style="text-align: center;" scope="col">کد پایانه</th>
+              <th style="text-align: center;" scope="col">کد ملی</th>
+              <th style="text-align: center;" scope="col">شماره پذیرنده</th>
+              <th style="text-align: center;" scope="col">شماره شبا</th>
+              <th style="text-align: center;width: 10%" scope="col">
+                <button type="button" pButton icon="pi pi-plus" (click)="openAddEditException(null, 'add')" style="width: 30px;height: 25px;"></button>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let ruleException of ruleGroup.RuleExceptions">
+              <td>{{ruleException.TerminalNumber | persianNumber}}</td>
+              <td>{{ruleException.NationalCode | persianNumber}}</td>
+              <td>{{ruleException.AcceptorNumber | persianNumber}}</td>
+              <td>{{ruleException.Iban | persianNumber}}</td>
+              <td style="text-align: center;">
+                <button type="button" pButton icon="pi pi-pencil" style="width: 30px;height: 25px;" (click)="openAddEditException(ruleException, 'edit')"></button>
+                <button type="button" pButton class="ui-button-danger" icon="pi pi-trash" style="width: 30px;height: 25px;"
+                  (click)="openDeleteDialog(ruleException)"></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+
+
+  <div *ngFor="let RuleItem of ruleGroup.RuleItems" style="display: flex;" class="div__rule__list">
+    <div style="width: 6%;margin-top: 20px">
+      <button type="button" pButton icon="pi pi-save" class="ui-button-success" (click)="saveRuleItem(RuleItem)" *ngIf="RuleItem.addMode"
+        [disabled]="disableSaveRuleItem(RuleItem)"></button>
+      <button type="button" pButton icon="pi pi-pencil" [disabled]="disableSaveButton()" (click)="editRuleItem(RuleItem)"
+        *ngIf="!RuleItem.addMode"></button>
+      <button type="button" pButton icon="pi pi-minus" class="ui-button-danger" (click)="removeRuleItem(RuleItem)"></button>
+    </div>
+    <table class="table__rule__list">
+      <tr>
+        <td class="left__operand__td">
+          <mat-form-field *ngIf="!RuleItem.addMode">
+            <input matInput type="text" placeholder="نوع قانون" disabled="true" value="{{RuleItem?.RuleType?.PersianName}}" />
+          </mat-form-field>
+          <mat-form-field *ngIf="RuleItem.addMode">
+            <mat-select placeholder="نوع قانون را انتخاب کنید" [(ngModel)]="RuleItem.RuleType.PersianName"
+              (selectionChange)="setRuleBody($event,RuleItem)">
+              <mat-option *ngFor="let ruleType of ruleTypes" [value]="ruleType.PersianName">
+                {{ruleType.PersianName}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </td>
+        <td class="operation__td">
+          <mat-form-field *ngIf="!RuleItem.addMode">
+            <input matInput type="text" placeholder="عملیات" disabled="true" value="{{RuleItem?.Operator?.Name}}" />
+          </mat-form-field>
+          <mat-form-field *ngIf="RuleItem?.RuleType?.Type === 'string' && RuleItem.addMode">
+            <input matInput type="text" placeholder="شامل" disabled="true" />
+          </mat-form-field>
+          <mat-form-field style="margin-right: 10px;" *ngIf="RuleItem?.RuleType?.Type === 'number' && RuleItem.addMode">
+            <mat-select placeholder="عملیات را انتخاب کنید" [(ngModel)]="RuleItem.BodyObj.Operator">
+              <mat-option *ngFor="let operator of operators" [value]="operator.Operator">
+                {{operator.Name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field style="margin-right: 10px;" *ngIf="showMisc && RuleItem.addMode">
+            <mat-select placeholder="شرط را انتخاب کنید" [(ngModel)]="RuleItem.BodyObj.RightOperand[0]">
+              <mat-option *ngFor="let miscRuleType of miscRuleTypes" [value]="miscRuleType.Name">
+                {{miscRuleType.PersianName}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </td>
+        <td class="right__main__operand__td">
+          <mat-form-field *ngIf="RuleItem?.Operator?.Operator !== 'include' && !RuleItem.addMode" style="width: 100%">
+            <input matInput type="text" placeholder="مقدار" disabled="true" [value]="showSelectedValue(RuleItem)" />
+          </mat-form-field>
+          <mat-form-field *ngIf="getRightOperandVisibility(RuleItem) && !RuleItem.addMode">
+            <input matInput type="text" [placeholder]="getLeftOperandName(RuleItem)" disabled="true" value="{{getMainOperatorName(RuleItem)}}" />
+          </mat-form-field>
+
+          <mat-form-field style="margin-right: 10px;" *ngIf="showProvinceList && RuleItem.addMode && RuleItem?.BodyObj?.LeftOperand !== 'province'">
+            <mat-select placeholder="استان را انتخاب کنید" [(ngModel)]="RuleItem.Province.Id" (selectionChange)="getCities($event,RuleItem)">
+              <mat-option *ngFor="let Province of Provinces" [value]="Province.Id">
+                {{Province.Title}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field style="margin-right: 10px;" *ngIf="showProvinceList && RuleItem.addMode && RuleItem?.BodyObj?.LeftOperand === 'province'">
+            <mat-select placeholder="استان را انتخاب کنید" [(ngModel)]="RuleItem.BodyObj.RightOperand" multiple>
+              <mat-option *ngFor="let Province of Provinces" [value]="Province.Id">
+                {{Province.Title}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field style="margin-right: 10px;width: 400px" *ngIf="showPosStatus && RuleItem.addMode">
+            <mat-select placeholder="وضعیت دستگاه را انتخاب کنید" [(ngModel)]="RuleItem.BodyObj.RightOperand" multiple>
+              <mat-option *ngFor="let posStatus of posStatuses" [value]="posStatus.Id">
+                {{posStatus.Title}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field style="margin-right: 10px;" *ngIf="showMarketingTypes && RuleItem.addMode">
+            <mat-select placeholder="نوع بازاریابی را انتخاب کنید" [(ngModel)]="RuleItem.BodyObj.RightOperand" multiple>
+              <mat-option *ngFor="let marketingType of marketingTypes" [value]="marketingType.Id">
+                {{marketingType.Title}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field style="margin-right: 10px;" *ngIf="showAcceptorTypes && RuleItem.addMode">
+            <mat-select placeholder="نوع پذیرنده را انتخاب کنید" [(ngModel)]="RuleItem.BodyObj.RightOperand" multiple>
+              <mat-option *ngFor="let acceptorType of acceptorTypes" [value]="acceptorType.Id">
+                {{acceptorType.Title}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field style="margin-right: 10px;" *ngIf="showServiceList && RuleItem.addMode">
+            <mat-select placeholder="نوع سرویس را انتخاب کنید" [(ngModel)]="RuleItem.BodyObj.RightOperand" multiple>
+              <mat-option *ngFor="let service of services" [value]="service.Id">
+                {{service.Title}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field style="margin-right: 10px;" *ngIf="showBankList && RuleItem.addMode">
+            <mat-select placeholder="بانک را انتخاب کنید" [(ngModel)]="RuleItem.BodyObj.RightOperand" multiple>
+              <mat-option *ngFor="let Bank of banks" [value]="Bank.Id">
+                {{Bank.Title}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field style="margin-right: 10px;" *ngIf="showConnectionTypes && RuleItem.addMode">
+            <mat-select placeholder="نوع ارتباط را انتخاب کنید" [(ngModel)]="RuleItem.BodyObj.RightOperand" multiple>
+              <mat-option *ngFor="let connectionType of connectionTypes" [value]="connectionType.Id">
+                {{connectionType.Title}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field *ngIf="showPosCount && RuleItem.addMode">
+            <input matInput type="number" placeholder="مقدار را وارد کنید" [(ngModel)]="RuleItem.BodyObj.RightOperand[0]" />
+          </mat-form-field>
+
+          <mat-form-field *ngIf="showMarketingTimePassed && RuleItem.addMode">
+            <input matInput type="number" placeholder="تعداد روز را وارد کنید" [(ngModel)]="RuleItem.BodyObj.RightOperand[0]" />
+          </mat-form-field>
+
+          <mat-form-field style="margin-right: 10px;" *ngIf="showBrands && RuleItem.addMode && RuleItem?.BodyObj?.LeftOperand === 'deviceModel'">
+            <mat-select placeholder="برند را انتخاب کنید" [(ngModel)]="RuleItem.Brand.Id" (selectionChange)="getDeviceModels(RuleItem)">
+              <mat-option *ngFor="let Brand of brands" [value]="Brand.Id">
+                {{Brand.Title}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field style="margin-right: 10px;" *ngIf="showBrands && RuleItem.addMode && RuleItem?.BodyObj?.LeftOperand === 'deviceBrand'">
+            <mat-select placeholder="برند را انتخاب کنید" [(ngModel)]="RuleItem.BodyObj.RightOperand" multiple>
+              <mat-option *ngFor="let Brand of brands" [value]="Brand.Id">
+                {{Brand.Title}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field style="margin-right: 10px;" *ngIf="showBussinessCategory && RuleItem.addMode">
+            <mat-select placeholder="برای انتخاب صنف کلیک کنید" [(ngModel)]="RuleItem.BussinessCategory.Id" (click)="openSelectDialog(BussinessCategories, RuleItem, 'BussinessCategory')"
+              disabled="true">
+              <mat-option *ngFor="let BussinessCategory of BussinessCategories" [value]="BussinessCategory.Id">
+                {{BussinessCategory.Title}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </td>
+        <td>
+          <span *ngIf="!RuleItem.addMode && RuleItem.StartDate">
+            <span>تاریخ شروع : </span>
+            <span>{{RuleItem.StartDate | date:'yyyy-MM-dd' | jalali | persianNumber}}</span>
+          </span>
+          <div *ngIf="RuleItem?.Operator?.Operator === 'include' && !RuleItem.addMode">
+            <span *ngFor="let rightOperand of RuleItem.BodyObj.RightOperand">{{getOperatorPersianName(RuleItem,rightOperand)}}
+              , </span>
+          </div>
+          <span *ngIf="showStartDate && RuleItem.addMode">
+            <span>
+              تاریخ شروع :
+            </span>
+            <dp-date-picker dir="rtl" [(ngModel)]="RuleItem.StartDate" [config]="datePickerConfig" mode="day" theme="dp-material"></dp-date-picker>
+          </span>
+
+          <mat-form-field style="margin-right: 10px;" *ngIf="showCitiList && RuleItem.addMode">
+            <mat-select placeholder="شهر را انتخاب کنید" [(ngModel)]="RuleItem.BodyObj.RightOperand" multiple>
+              <mat-option *ngFor="let city of RuleItem.Province.Cities" [value]="city.Id">
+                {{city.Title}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field style="margin-right: 10px;" *ngIf="showDeviceModel && RuleItem.addMode && RuleItem?.BodyObj?.LeftOperand !== 'deviceBrand'">
+            <mat-select placeholder="مدل دستگاه را انتخاب کنید" [(ngModel)]="RuleItem.BodyObj.RightOperand" multiple>
+              <mat-option *ngFor="let deviceModel of RuleItem.Brand.deviceModel" [value]="deviceModel.Id">
+                {{deviceModel.Title}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+
+          <mat-form-field style="margin-right: 10px;" *ngIf="showBussinessCategorySuplyList && RuleItem.addMode">
+            <mat-select placeholder="زیر مجموعه ی صنف را انتخاب کنید" [(ngModel)]="RuleItem.BodyObj.RightOperand"
+              multiple>
+              <mat-option *ngFor="let GetBussinessCategorySuply of RuleItem.BussinessCategory.GetBussinessCategorySuplies"
+                [value]="GetBussinessCategorySuply.Id">
+                {{GetBussinessCategorySuply.Title}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <button *ngIf="(showCitiList || showBranchList) && RuleItem.addMode" iconPos="right" pButton icon="pi pi-ellipsis-v"
+            (click)="selectAll(RuleItem)" label="انتخاب همه"></button>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div *ngIf="hasResult">
+    <button iconPos="right" pButton icon="pi pi-plus" (click)="addRuleItem()" label="افزودن قانون جدید" class="ui-button-success"
+      [disabled]="disableAddButton()"></button>
+  </div>
+  <div class="div__action">
+    <button iconPos="right" pButton icon="pi pi-save" (click)="saveRuleGroup()" label="ذخیره" class="ui-button-success"
+      [disabled]="disableAddButton()"></button>
+    <button *ngIf="false" iconPos="right" pButton icon="pi pi-trash" label="پاک کردن فرم" class="ui-button-danger"></button>
+  </div>
+</div>

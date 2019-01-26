@@ -1,0 +1,200 @@
+<p-growl [(value)]="errorMessages" [life]="'3000'"></p-growl>
+<mat-tab-group (selectedTabChange)="clear()">
+    <mat-tab label="فرایند های در حال اجرا">
+        <mat-card style="margin-top: 5px;">
+            <form>
+                <mat-form-field style="width: 20%">
+                    <mat-select [(ngModel)]="logRequest.typeId" placeholder="انتخاب نوع فرایند" (selectionChange)="getStartedWorkflowLogs()"
+                        name="workflowTypeId">
+                        <mat-option *ngFor="let workflowType of workflowTypes" [value]="workflowType.id">
+                            {{ workflowType.persianName }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field style="margin-right: 10px;">
+                    <input matInput type="number" placeholder="شناسه ی درخواست" [(ngModel)]="searchStartedLogRequest.RequestNumber"
+                        name="RequestNumber">
+                </mat-form-field>
+                <button pButton type="submit" (click)="searchStartedWorkflowLogs()" icon="fa fa-search" iconPos="right"
+                    label="جست و جو"></button>
+            </form>
+
+        </mat-card>
+        <mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>
+
+        <div [hidden]="workflowLogs.length === 0">
+            <table mat-table [dataSource]="workflowLogsSource" style="width: 99%;text-align: center" class="iranSanseFont"
+                dir="rtl">
+                <ng-container matColumnDef="index">
+                    <th mat-header-cell *matHeaderCellDef>ردیف</th>
+                    <td mat-cell *matCellDef="let element;let index = index"> {{(WorkflowMatPaginator._pageIndex *
+                        WorkflowMatPaginator._pageSize) + index + 1 | persianNumber}} </td>
+                </ng-container>
+                <ng-container matColumnDef="WorkflowName">
+                    <th mat-header-cell *matHeaderCellDef>فرایند</th>
+                    <td mat-cell *matCellDef="let element"> {{element.WorkflowName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="RequestNumber">
+                    <th mat-header-cell *matHeaderCellDef>شناسه ی درخواست</th>
+                    <td mat-cell *matCellDef="let element"> {{element.RequestNumber | persianNumber}} </td>
+                </ng-container>
+                <ng-container matColumnDef="WorkflowVersion">
+                    <th mat-header-cell *matHeaderCellDef>نگارش</th>
+                    <td mat-cell *matCellDef="let element"> {{element.WorkflowVersion | persianNumber}} </td>
+                </ng-container>
+                <ng-container matColumnDef="CurrentTaskName">
+                    <th mat-header-cell *matHeaderCellDef>تسک در حال اجرا</th>
+                    <td mat-cell *matCellDef="let element"> {{element.CurrentTaskName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="TaskRemainTime">
+                    <th mat-header-cell *matHeaderCellDef>وضعیت تسک</th>
+                    <td mat-cell *matCellDef="let element">
+                        <button [pTooltip]="' زمان باقی مانده ' + (element.TaskRemainTime | getHourMinute) " *ngIf="element.TaskTimeStatus === 'Success'"
+                            pButton type="button" label="موفق" class="ui-button-success status__button"
+                            tooltipStyleClass="iranSanseFont"></button>
+                        <button [pTooltip]="' زمان باقی مانده ' + (element.TaskRemainTime | getHourMinute) " *ngIf="element.TaskTimeStatus === 'Warning'"
+                            pButton type="button" label="اخطار" class="ui-button-info" tooltipStyleClass="iranSanseFont"></button>
+                        <button [pTooltip]="' زمان باقی مانده ' + (element.TaskRemainTime | getHourMinute) " *ngIf="element.TaskTimeStatus === 'Danger'"
+                            pButton type="button" label="زمان در حال خاتمه" class="ui-button-warning" tooltipStyleClass="iranSanseFont"></button>
+                        <button [pTooltip]="' زمان باقی مانده ' + (element.TaskRemainTime | getHourMinute) " *ngIf="element.TaskTimeStatus === 'OverDue'"
+                            pButton type="button" label="زمان خاتمه یافته" class="ui-button-danger" tooltipStyleClass="iranSanseFont"></button>
+                        <button *ngIf="element.TaskTimeStatus === 'None'" pButton type="button" label="زمان مشخص نشده است"
+                            tooltipStyleClass="iranSanseFont"></button>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="WorkflowRemainTime">
+                    <th mat-header-cell *matHeaderCellDef>وضعیت فرایند</th>
+                    <td mat-cell *matCellDef="let element">
+                        <button [pTooltip]="' زمان باقی مانده ' + (element.WorkflowRemainTime | getHourMinute) " *ngIf="element.WorkflowTimeStatus === 'Success'"
+                            pButton type="button" label="موفق" class="ui-button-success status__button"
+                            tooltipStyleClass="iranSanseFont"></button>
+                        <button [pTooltip]="' زمان باقی مانده ' + (element.WorkflowRemainTime | getHourMinute) " *ngIf="element.WorkflowTimeStatus === 'Warning'"
+                            pButton type="button" label="اخطار" class="ui-button-info" tooltipStyleClass="iranSanseFont"></button>
+                        <button [pTooltip]="' زمان باقی مانده ' + (element.WorkflowRemainTime | getHourMinute) " *ngIf="element.WorkflowTimeStatus === 'Danger'"
+                            pButton type="button" label="زمان در حال خاتمه" class="ui-button-warning" tooltipStyleClass="iranSanseFont"></button>
+                        <button [pTooltip]="' زمان باقی مانده ' + (element.WorkflowRemainTime | getHourMinute) " *ngIf="element.WorkflowTimeStatus === 'OverDue'"
+                            pButton type="button" label="زمان خاتمه یافته" class="ui-button-danger" tooltipStyleClass="iranSanseFont"></button>
+                        <button *ngIf="element.WorkflowTimeStatus === 'None'" pButton type="button" label="زمان مشخص نشده است"
+                            tooltipStyleClass="iranSanseFont"></button>
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedWorkflowColumns" style="text-align: center"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedWorkflowColumns;"></tr>
+            </table>
+            <mat-paginator #WorkflowMatPaginator [pageSizeOptions]="[5 ,10, 20]" showFirstLastButtons class="iranSanseFont paginator__style"></mat-paginator>
+        </div>
+        <div class="no__result__div" *ngIf="!hasResult && !isLoading">
+            <h1 class="iranSanseFont">
+                برای این فرایند هیچ اطلاعاتی وجود ندارد
+            </h1>
+        </div>
+    </mat-tab>
+    <mat-tab label="فرایند های پایان یافته">
+        <mat-card style="margin-top: 5px;">
+            <form>
+                <mat-form-field style="width: 20%">
+                    <mat-select [(ngModel)]="logRequest.typeId" placeholder="انتخاب نوع فرایند" (selectionChange)="getFinishedWorkflowLogs()"
+                        name="workflowTypeId">
+                        <mat-option *ngFor="let workflowType of workflowTypes" [value]="workflowType.id">
+                            {{ workflowType.persianName }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field style="margin-right: 10px;">
+                    <input matInput type="number" placeholder="شناسه ی درخواست" [(ngModel)]="searchStartedLogRequest.RequestNumber"
+                        name="RequestNumber">
+                </mat-form-field>
+                <button pButton type="submit" (click)="searchFinishedWorkflowLogs()" icon="fa fa-search" iconPos="right"
+                    label="جست و جو"></button>
+            </form>
+        </mat-card>
+        <mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>
+        <div [hidden]="workflowLogs.length === 0">
+            <table mat-table [dataSource]="workflowLogsSource" style="width: 99%;text-align: center" class="iranSanseFont"
+                dir="rtl">
+                <ng-container matColumnDef="index">
+                    <th mat-header-cell *matHeaderCellDef>ردیف</th>
+                    <td mat-cell *matCellDef="let element;let index = index"> {{(WorkflowMatPaginator._pageIndex *
+                        WorkflowMatPaginator._pageSize) + index + 1 | persianNumber}} </td>
+                </ng-container>
+                <ng-container matColumnDef="WorkflowName">
+                    <th mat-header-cell *matHeaderCellDef>فرایند</th>
+                    <td mat-cell *matCellDef="let element"> {{element.WorkflowName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="RequestNumber">
+                    <th mat-header-cell *matHeaderCellDef>شناسه ی درخواست</th>
+                    <td mat-cell *matCellDef="let element"> {{element.RequestNumber | persianNumber}} </td>
+                </ng-container>
+                <ng-container matColumnDef="WorkflowVersion">
+                    <th mat-header-cell *matHeaderCellDef>نگارش</th>
+                    <td mat-cell *matCellDef="let element"> {{element.WorkflowVersion | persianNumber}} </td>
+                </ng-container>
+                <ng-container matColumnDef="CurrentTaskName">
+                    <th mat-header-cell *matHeaderCellDef>آخرین تسک انجام شده</th>
+                    <td mat-cell *matCellDef="let element"> {{element.CurrentTaskName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="TimeWasted">
+                    <th mat-header-cell *matHeaderCellDef>
+                        <span>زمان مصرف شده</span>
+                        <span>( دقیقه )</span>
+                    </th>
+                    <td mat-cell *matCellDef="let element"> {{element.TimeWasted | persianNumber}} </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedFinishedWorkflowColumns" style="text-align: center"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedFinishedWorkflowColumns;"></tr>
+            </table>
+            <mat-paginator #WorkflowFinishMatPaginator [pageSizeOptions]="[5 , 10, 20]" showFirstLastButtons class="iranSanseFont paginator__style"></mat-paginator>
+        </div>
+        <div class="no__result__div" *ngIf="!hasResult && !isLoading">
+            <h1 class="iranSanseFont">
+                برای این فرایند هیچ اطلاعاتی وجود ندارد
+            </h1>
+        </div>
+    </mat-tab>
+    <mat-tab label="خطا ها" *ngIf="false">
+        <mat-card style="margin-top: 5px;">
+            <form>
+                <mat-form-field style="width: 20%">
+                    <mat-select [(ngModel)]="logRequest.typeId" placeholder="انتخاب نوع فرایند" (selectionChange)="getWorkflowErrorLogs()"
+                        name="workflowTypeId">
+                        <mat-option *ngFor="let workflowType of workflowTypes" [value]="workflowType.id">
+                            {{ workflowType.persianName }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field style="margin-right: 10px;">
+                    <input matInput type="number" placeholder="شناسه ی درخواست" [(ngModel)]="searchStartedLogRequest.RequestNumber"
+                        name="RequestNumber">
+                </mat-form-field>
+                <button pButton type="submit" (click)="searchWorkflowErrorLogs()" icon="fa fa-search" iconPos="right"
+                    label="جست و جو"></button>
+            </form>
+        </mat-card>
+        <mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>
+        <table class="responstable" *ngIf="workflowLogs.length > 0">
+            <thead>
+                <tr>
+                    <th>ردیف</th>
+                    <th>فرایند</th>
+                    <th>شناسه ی درخواست</th>
+                    <th>نگارش</th>
+                    <th>تسک</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let workflowLog of workflowLogs; let i = index">
+                    <td>{{i + 1 | persianNumber }}</td>
+                    <td>{{workflowLog.WorkflowName }}</td>
+                    <td>{{workflowLog.RequestNumber | persianNumber}}</td>
+                    <td>{{workflowLog.WorkflowVersion | persianNumber}}</td>
+                    <td>{{workflowLog.TaskName}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="no__result__div" *ngIf="!hasResult && !isLoading">
+            <h1 class="iranSanseFont">
+                برای این فرایند هیچ اطلاعاتی وجود ندارد
+            </h1>
+        </div>
+    </mat-tab>
+</mat-tab-group>

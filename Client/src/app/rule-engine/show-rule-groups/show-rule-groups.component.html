@@ -1,0 +1,41 @@
+<p-growl [(value)]="errorMessages" [life]="'3000'"></p-growl>
+<button iconPos="right" pButton icon="pi pi-plus" (click)="addRuleItem()" label="افزودن گروه جدید"></button>
+<button iconPos="right" [disabled]="ruleGroups.length === 0" pButton icon="pi pi-ellipsis-v" (click)="openTestPage()"
+  *ngIf="false" label="تست قوانین"></button>
+
+<div class="no__result__div" *ngIf="hasResult === false">
+  <h1 class="iranSanseFont">
+    هیچ گروهی وجود ندارد .
+  </h1>
+</div>
+
+<div class="div__container" *ngIf="hasResult === true">
+  <table class="table table-hover table-bordered">
+    <thead>
+      <tr>
+        <th scope="col">ردیف</th>
+        <th scope="col" style="width: 15%;">نام</th>
+        <th scope="col">توضیحات</th>
+        <th scope="col" style="width: 10%">فعال / غیر فعال</th>
+        <th scope="col">
+          <button pButton icon="pi pi-refresh" (click)="getRuleGroups()"></button>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let ruleGroup of ruleGroups;let index = index">
+        <th>{{index + 1 | persianNumber}}</th>
+        <td>{{ruleGroup.Name}}</td>
+        <td>{{ruleGroup.Description}}</td>
+        <td>
+          <button pButton *ngIf="!ruleGroup.IsActive" type="button" icon="pi pi-times" class="ui-button-danger"
+            (click)="triggleActiveField(ruleGroup.Id)"></button>
+          <button pButton *ngIf="ruleGroup.IsActive" type="button" icon="pi pi-check" class="ui-button-success" (click)="triggleActiveField(ruleGroup.Id)"></button>
+        </td>
+        <td>
+          <button pButton icon="pi pi-pencil" (click)="addRuleItem(ruleGroup)"></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

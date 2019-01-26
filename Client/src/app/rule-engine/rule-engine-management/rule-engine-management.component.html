@@ -1,0 +1,18 @@
+<p-growl [(value)]="errorMessages" [life]="'3000'"></p-growl>
+<div style="text-align: right;">
+  <h4>
+    در این بخش شما میتوانید لیست قوانین مربوط به عملیات تخصیص را مشاهده کنید و در صورت لزوم آن ها را ویرایش کنید یا قانون جدید
+    اضافه کنید .
+  </h4>
+  <h5>تمام قوانین باز دارنده می باشند .</h5>
+</div>
+<hr>
+<div>
+  <div *ngIf="!isModifying">
+    <app-show-rule-groups [cartableType]='cartableType' (modifyRuleItems)="onModifyRuleItem($event)"></app-show-rule-groups>
+  </div>
+  <div *ngIf="isModifying">
+    <button iconPos="right" pButton icon="pi pi-arrow-right" (click)="isModifying = false" label="بازگشت"></button>
+    <app-show-rule-items [ruleGroup]='ruleGroup' (saveAction)="onSaveRuleGroup($event)"></app-show-rule-items>
+  </div>
+</div>

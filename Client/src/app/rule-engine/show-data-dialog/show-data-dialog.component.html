@@ -1,0 +1,24 @@
+<div class="div__top">
+  <h5>
+    انتخاب فرایند
+    <button style="margin:5px;" pButton icon="pi pi-times" class="ui-button-danger" (click)="dialogRef.close()"></button>
+  </h5>
+</div>
+<div dir="rtl" style="margin:5px;">
+  <mat-form-field class="search__form">
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="جست و جو">
+  </mat-form-field>
+  <table mat-table [dataSource]="dataSource" style="width: 100%;text-align: center" class="iranSanseFont" dir="rtl">
+    <ng-container matColumnDef="Id">
+      <th mat-header-cell *matHeaderCellDef>کد</th>
+      <td mat-cell *matCellDef="let element"> {{element.Id | persianNumber}} </td>
+    </ng-container>
+    <ng-container matColumnDef="Title">
+      <th mat-header-cell *matHeaderCellDef>عنوان</th>
+      <td mat-cell *matCellDef="let element"> {{element.Title}} </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selectItem(row)"></tr>
+  </table>
+  <mat-paginator #matPaginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons class="iranSanseFont paginator__style"></mat-paginator>
+</div>

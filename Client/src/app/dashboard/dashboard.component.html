@@ -1,0 +1,51 @@
+<p-growl [(value)]="errorMessages" [life]="'5000'"></p-growl>
+<mat-card>
+  <h3>
+    <span>داشبورد</span>
+    <span>{{dashboardText}}</span>
+  </h3>
+</mat-card>
+<div class="container" style="margin-top: 10px;" [hidden]="hideCharts">
+  <div class="row">
+    <div *ngFor="let workflowSummary of workflowSummaries" class="col-sm-3" style="border:solid 1px lightgray;text-align: center;height: 43vh;">
+      <div>
+        <span>{{workflowSummary.workflowName}}</span>
+      </div>
+      <div *ngIf="workflowSummary.isLoading" style="margin-top: 80px;">
+        <p-progressSpinner [style]="{width: '150px', height: '150px'}" strokeWidth="2"
+          animationDuration="1.0s"></p-progressSpinner>
+      </div>
+      <div *ngIf="!workflowSummary.isLoading">
+        <div *ngIf="!workflowSummary.datasets" class="no__result__part">
+          <h3>هیچ گزارشی وجود ندارد</h3>
+        </div>
+        <div *ngIf="workflowSummary.datasets" style="margin-bottom: 10px;">
+          <p-chart height="300px" type="pie" [data]="workflowSummary" [options]="pieOptions" (onDataSelect)="showWorkflowSummaryGraph($event)"></p-chart>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="showPendingGraph">
+  <button pButton class="btn__back" icon="pi pi-arrow-right" iconPos="right" (click)="showCharts()" label="بازگشت"></button>
+  <app-pending-task-graph [data]="workflowSummary" (showWorkflowDetail)="onShowWorkflowDetail($event)"></app-pending-task-graph>
+</div>
+<div *ngIf="showWorkflowDetail">
+  <button pButton class="btn__back" icon="pi pi-arrow-right" iconPos="right" (click)="showkflowDetail()" label="بازگشت"></button>
+  <p style="margin : 10px 5% 10px 0px; text-align: center">
+    <span style="color:#24E83E" class="pi pi-circle-on"></span>
+    <span class="span__description__text">موفق</span>
+    <span style="color:#EEEE19" class="pi pi-circle-on"></span>
+    <span class="span__description__text">اخطار</span>
+    <span style="color:#fb5a5a" class="pi pi-circle-on"></span>
+    <span class="span__description__text">زمان در حال اتمام</span>
+    <span style="color:#FF0000" class="pi pi-circle-on"></span>
+    <span class="span__description__text">زمان خاتمه یافته</span>
+    <span style="color:#00fefe" class="pi pi-circle-on"></span>
+    <span class="span__description__text">زمان تعریف نشده</span>
+    <span style="color:#8FBC8F" class="pi pi-circle-on"></span>
+    <span class="span__description__text">تسک طی نشده</span>
+  </p>
+  <app-workflow-detail-graph [data]="uniqKey"></app-workflow-detail-graph>
+</div>

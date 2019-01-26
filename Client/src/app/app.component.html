@@ -1,0 +1,11 @@
+<div style="text-align: right; width: 99.5%" dir="rtl" *ngIf="hasRole || isSinglePageLog">
+  <div class="div__menu" *ngIf="!hideHeader">
+    <span class="span__menu" *ngFor="let menu of menus" [routerLink]="menu.url">{{menu.name}}</span>
+  </div>
+  <div class="router__outlet">
+    <router-outlet></router-outlet>
+  </div>
+</div>
+<div *ngIf="hasRole === false && !isSinglePageLog">
+  <app-error></app-error>
+</div>

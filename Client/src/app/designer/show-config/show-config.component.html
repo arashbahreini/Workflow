@@ -1,0 +1,186 @@
+<p-growl [(value)]="errorMessages" [life]="'3000'"></p-growl>
+<div [hidden]="">
+  <div class="workflow__container__div">
+    <div style="text-align:center">
+      <h3>
+        <div>
+          <span>فرایند </span>
+          <span>{{workFlow.Name}}</span>
+          <span *ngIf="workFlowVersion"> | </span>
+          <span *ngIf="workFlowVersion">نگارش </span>
+          <span *ngIf="workFlowVersion">{{workFlowVersion | persianNumber}}</span>
+        </div>
+      </h3>
+      <hr style="width:80%">
+    </div>
+    <div>
+      <mat-form-field class="workflow__field">
+        <input matInput placeholder="نام" [(ngModel)]="workFlow.Name" disabled="true" />
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field class="workflow__field">
+        <mat-select placeholder="نوع اجرا" [(ngModel)]="workFlow.LaunchType" disabled="true">
+          <mat-option *ngFor="let lunchType of lunchTypes" [value]="lunchType.id">
+            {{ lunchType.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div *ngIf="workFlow.LaunchType === 2">
+      <mat-form-field class="workflow__field">
+        <input matInput placeholder="بازه" [(ngModel)]="workFlow.Period" disabled="true"/>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field class="workflow__field">
+        <input matInput placeholder="زمان لازم برای اجرای این فرایند ( دقیقه )" [(ngModel)]="workFlow.DeadLine" disabled="true" />
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-checkbox [(ngModel)]="workFlow.IsEnabled" disabled="true"></mat-checkbox>
+      <span>فعال بودن فرایند</span>
+    </div>
+    <div>
+      <mat-form-field class="textarea__form">
+        <textarea matInput [(ngModel)]="workFlow.Description" disabled="true" placeholder="توضیحات"></textarea>
+      </mat-form-field>
+    </div>
+
+    <div *ngIf="showLinkPanel">
+      <p-fieldset [collapsed]="false" class="fieldSet__task" [styleClass]="'task__container__div'" [legend]="'افزودن فرزند به کار ' + task.PersianName"
+        [toggleable]="true">
+        <div style="text-align:center">
+          <mat-form-field class="textarea__form" style="width:70%">
+            <mat-select placeholder="تسک فرزند را انتخاب کنید" [(ngModel)]="linkTask" panelClass="select__style">
+              <mat-option *ngFor="let linkTask of linkTasks" [value]="linkTask">
+                {{ linkTask.key + '.' + linkTask.text }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div *ngIf="task.isIf">
+          <p>
+            <span>پاسخ به کار پدر</span>
+            <button pButton [disabled]="task.doNodeId" type="button" (click)="task.ifResult = true" icon="pi pi-check" iconPos="right" label="بله"
+              [ngClass]="{'ui-button-success' : task.ifResult === true}"></button>
+            <button pButton [disabled]="task.elseNodeId" type="button" (click)="task.ifResult = false" icon="pi pi-times" iconPos="right"
+              label="خیر" [ngClass]="{'ui-button-success' : task.ifResult === false}"></button>
+            <span>است . </span>
+          </p>
+        </div>
+        <div style="text-align: center">
+          <button pButton type="button" iconPos="right" (click)="saveLink()" label="ذخیره" icon="pi pi-save" class="ui-button-success"></button>
+          <button pButton type="button" iconPos="right" (click)="cancelAddTask()" label="انصراف" icon="pi pi-times" class="ui-button-danger"></button>
+        </div>
+      </p-fieldset>
+    </div>
+
+    <div *ngIf="showSaveTaskPanel">
+      <p-fieldset [collapsed]="false" class="fieldSet__task" [styleClass]="'task__container__div'" [legend]="task.PersianName"
+        [toggleable]="true">
+        <div style="text-align:center">
+        </div>
+        <div>
+          <div *ngIf="task.isInSwitch === true && !task.goToWhile">
+            <span class="iranSanseFont">این تسک در صورتی اجرا میشود که کاربر درخواست دهنده </span>
+            <mat-form-field class="textarea__form" style="width:25%">
+              <mat-select [disabled]="task.isDefault" placeholder="انتخاب کاربر" [(ngModel)]="task.caseValue" panelClass="select__style">
+                <mat-option *ngFor="let employ of employs" [value]="employ.Id">
+                  {{ employ.FirstName + ' ' + employ.LastName }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <span class="iranSanseFont">باشد .</span>
+            <div *ngIf="!task.isDefaultInSwitch">
+              <p-checkbox name="groupname" [(ngModel)]="task.isDefault" binary="true"></p-checkbox>
+              <span class="iranSanseFont">پاسخ پیش فرض است</span>
+            </div>
+          </div>
+          <mat-form-field class="textarea__form" style="width:25%">
+            <mat-select [disabled]="taskEditMode" placeholder="نوع تسک را انتخاب کنید" [(ngModel)]="taskType" panelClass="select__style"
+            (selectionChange)="changeTaskTypeInList()">
+              <mat-option *ngFor="let taskType of taskTypes" [value]="taskType">
+                {{ taskType.description }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="textarea__form" style="width:70%" *ngIf="taskNames.length">
+            <mat-select placeholder="تسک را انتخاب کنید" [(ngModel)]="taskName" panelClass="select__style" (selectionChange)="changeTaskInList()">
+              <mat-option *ngFor="let taskName of taskNames" [value]="taskName">
+                {{ taskName.PersianName }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div *ngIf="task.parentTask?.isIf">
+          <p>
+            <span>پاسخ به کار پدر</span>
+            <button pButton [disabled]="task.parentTask.doNodeId" type="button" (click)="task.ifResult = true" icon="pi pi-check" iconPos="right"
+              label="بله" [ngClass]="{'ui-button-success' : task.ifResult === true}"></button>
+            <button pButton [disabled]="task.parentTask.elseNodeId" type="button" (click)="task.ifResult = false" icon="pi pi-times" iconPos="right"
+              label="خیر" [ngClass]="{'ui-button-success' : task.ifResult === false}"></button>
+            <span>است . </span>
+          </p>
+        </div>
+        <div *ngIf="task.parentTask?.isWhile">
+          <p>
+            <span>پاسخ به حلقه پدر</span>
+            <button pButton [disabled]="task.parentTask.doNodeId" type="button" (click)="task.whileResult = true" icon="pi pi-refresh" iconPos="right"
+              label="بله - دامه ی حلقه" [ngClass]="{'ui-button-success' : task.whileResult === true}"></button>
+            <button pButton [disabled]="task.parentTask.elseNodeId" type="button" (click)="task.whileResult = false" icon="pi pi-times"
+              iconPos="right" label="خیر - خروج از حلقه" [ngClass]="{'ui-button-success' : task.whileResult === false}"></button>
+            <span>است . </span>
+          </p>
+        </div>
+        <div>
+          <mat-form-field class="textarea__form">
+            <input matInput placeholder="توضیحات" [(ngModel)]="task.Description">
+          </mat-form-field>
+        </div>
+        <!-- <div>
+          <mat-checkbox [(ngModel)]="task.IsEnabled"></mat-checkbox>
+          <span class="iranSanseFont">فعال بودن</span>
+        </div> -->
+        <div *ngIf="task.parentTask?.isSwitch && task.parentTask?.isInWhile">
+          <mat-checkbox [(ngModel)]="task.goToWhile"></mat-checkbox>
+          <span class="iranSanseFont">به حلقه ادامه بده</span>
+        </div>
+
+        <div *ngIf="task.Settings.length > 1">
+          <hr>
+          <!-- {{task.Settings | json}} -->
+          <h4 style="text-align: center;color:gray" *ngIf="task.Settings.length > 0">
+            تنظیمات
+          </h4>
+          <table>
+            <tr *ngFor="let setting of task.Settings | isNotType">
+              <td>
+                <span class="iranSanseFont">
+                  {{setting.Name}} :
+                </span>
+              </td>
+              <td>
+                <mat-form-field *ngIf="setting.Name === 'زمان لازم'">
+                  <input matInput type="number" placeholder="زمان ( دقیقه )" [(ngModel)]="setting.Value" />
+                </mat-form-field>
+                <p-autoComplete dir="ltr" (onSelect)="onSelectRole(setting.Roles)" *ngIf="setting.Name === 'گروه کاربری'" [(ngModel)]="setting.Roles"
+                  [dropdown]="true" [suggestions]="filteredRoles" (completeMethod)="filterRoleMultiple($event, setting.Roles)"
+                  [multiple]="true" (onUnselect)="unselectRole($event, task, setting)"></p-autoComplete>
+                <p-autoComplete dir="ltr" (onSelect)="onSelectEmploy(setting.Users)" *ngIf="setting.Name === 'کاربر'" [(ngModel)]="setting.Users"
+                  [dropdown]="true" [suggestions]="filteredEmployes" (completeMethod)="filterEmployMultiple($event, setting.Users)"
+                  [multiple]="true" (onUnselect)="unselectEmploy($event, task, setting)"></p-autoComplete>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div style="text-align: center">
+          <button *ngIf="!taskEditMode" pButton type="button" iconPos="right" (click)="addTask()" label="افزودن" icon="pi pi-plus" class="ui-button-success"></button>
+          <button *ngIf="taskEditMode" pButton type="button" iconPos="right" (click)="saveTask()" label="ذخیره" icon="pi pi-save" class="ui-button-success"></button>
+          <button pButton type="button" iconPos="right" (click)="cancelAddTask()" label="انصراف" icon="pi pi-times" class="ui-button-danger"></button>
+        </div>
+      </p-fieldset>
+    </div>
+    <div [hidden]="!workFlow.Graph" align="center" #myDiagramDiv style="width: 100%;height: 87vh;margin-top: 10px;"></div>
+  </div>
+</div>

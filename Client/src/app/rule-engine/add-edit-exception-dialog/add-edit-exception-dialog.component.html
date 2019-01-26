@@ -1,0 +1,34 @@
+<div class="div__top">
+  <h5>
+    مدیریت استثنائات
+    <button style="margin:5px;" pButton icon="pi pi-times" class="ui-button-danger" (click)="dialogRef.close()"></button>
+  </h5>
+</div>
+<div dir="rtl" style="text-align: right;">
+  <p-growl [(value)]="errorMessages" [life]="'3000'"></p-growl>
+  <mat-card>
+    <div>
+      <mat-form-field style="width: 100%;">
+        <input matInput type="number" placeholder="کد پایانه" [(ngModel)]="data.data.TerminalNumber" maxlength="8"/>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field style="width: 100%;">
+        <input matInput type="number" placeholder="کد ملی" [(ngModel)]="data.data.NationalCode" maxlength="10" />
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field style="width: 100%;">
+        <input matInput type="number" placeholder="شماره پذیرنده" [(ngModel)]="data.data.AcceptorNumber" maxlength="15"/>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field style="width: 100%;">
+        <input matInput type="text" placeholder="شماره شبا" [(ngModel)]="data.data.Iban" />
+      </mat-form-field>
+    </div>
+  </mat-card>
+  <div style="text-align: right;margin:10px">
+    <button iconPos="right" pButton icon="pi pi-save" (click)="save()" label="ذخیره"></button>
+  </div>
+</div>

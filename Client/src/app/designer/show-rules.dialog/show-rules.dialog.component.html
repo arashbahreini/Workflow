@@ -1,0 +1,43 @@
+<p-growl [(value)]="errorMessages" [life]="'3000'"></p-growl>
+<div dir="rtl" style="text-align: right">
+  <div class="div__top">
+    <h5>
+      <button style="margin:5px;" pButton icon="pi pi-times" class="ui-button-danger" (click)="closeDialog(null)"></button>
+      مدیریت قوانین
+    </h5>
+  </div>
+  <mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>
+  <div *ngIf="hasResult === false" class="no__result__div">
+    <h2>
+      برای این فرایند هیچ قانونی تعریف نشده است
+    </h2>
+  </div>
+  <div *ngIf="hasResult === true">
+    <div class="div__container" *ngIf="hasResult === true">
+      <table class="table table-hover table-bordered">
+        <thead>
+          <tr>
+            <th scope="col">ردیف</th>
+            <th scope="col" style="width: 15%;">نام</th>
+            <th scope="col">توضیحات</th>
+            <th scope="col">انتخاب</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let ruleGroup of ruleGroups;let index = index">
+            <th>{{index + 1 | persianNumber}}</th>
+            <td>{{ruleGroup.Name}}</td>
+            <td>{{ruleGroup.Description}}</td>
+            <td>
+              <button *ngIf="ruleGroup.select" pButton icon="pi pi-check" class="ui-button-success" (click)="ruleGroup.select = !ruleGroup.select"></button>
+              <button *ngIf="!ruleGroup.select" pButton icon="pi pi-times" (click)="ruleGroup.select = !ruleGroup.select"></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="text-align: center;margin:10px;">
+      <button iconPos="right" pButton icon="pi pi-check" class="ui-button-success" (click)="closeDialog()" label="ذخیره"></button>
+    </div>
+  </div>
+</div>

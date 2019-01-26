@@ -1,0 +1,89 @@
+<div style="text-align: center">
+  <h3>
+    <span>
+      تست قوانین فرایند
+    </span>
+    <span>
+      {{cartableType.persianName}}
+    </span>
+  </h3>
+  <hr>
+</div>
+<div class="div__container">
+  <div style="display: flex">
+    <mat-form-field>
+      <mat-select placeholder="استان را انتخاب کنید" [(ngModel)]="testRequest.ProvinceId" (selectionChange)="getCities($event)">
+        <mat-option *ngFor="let province of provinces" [value]="province.Id">
+          {{province.Title}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="شهر را انتخاب کنید" [(ngModel)]="testRequest.CityId" [disabled]="cities.length === 0">
+        <mat-option *ngFor="let city of cities" [value]="city.Id">
+          {{city.Title}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field>
+      <input matInput type="number" placeholder="تعداد دسنگاه" [(ngModel)]="testRequest.PosCount" />
+    </mat-form-field>
+  </div>
+  <div style="display: flex">
+    <mat-form-field>
+      <mat-select placeholder="صنف را انتخاب کنید" (selectionChange)="getBussinessCategorySuplies($event)" [(ngModel)]="testRequest.BussinessCategoryId">
+        <mat-option *ngFor="let bussinessCategory of bussinessCategories" [value]="bussinessCategory.Id">
+          {{bussinessCategory.Title}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field style="width: 30%;">
+      <mat-select placeholder="زیر مجموعه ی صنف را انتخاب کنید" [(ngModel)]="testRequest.BussinessCategorySuplyId"
+        [disabled]="bussinessCategorySuplies.length === 0">
+        <mat-option *ngFor="let bussinessCategorySuply of bussinessCategorySuplies" [value]="bussinessCategorySuply.Id">
+          {{bussinessCategorySuply.Title}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div style="display: flex">
+    <mat-form-field>
+      <mat-select placeholder="برند دستگاه" [(ngModel)]="deviceBrand">
+        <mat-option *ngFor="let deviceBrand of deviceBrands" [value]="deviceBrand">
+          {{deviceBrand.Title}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="مدل دستگاه" [disabled]="deviceBrand.deviceModel.length === 0" [(ngModel)]="testRequest.DeviceModelId">
+        <mat-option *ngFor="let deviceModel of deviceBrand.deviceModel" [value]="deviceModel.Id">
+          {{deviceModel.Title}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field>
+      <mat-select placeholder="نوع سرویس" [(ngModel)]="testRequest.ServiceId">
+        <mat-option *ngFor="let service of services" [value]="service.Id">
+          {{service.Title}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field>
+      <mat-select placeholder="بانک" [(ngModel)]="testRequest.BankId">
+        <mat-option *ngFor="let bank of banks" [value]="bank.Id">
+          {{bank.Title}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>
+<div class="div__action">
+  <button iconPos="right" pButton icon="pi pi-save" (click)="submitTest()" label="انجام" class="ui-button-success"></button>
+  <button iconPos="right" pButton icon="pi pi-trash" label="پاک کردن فرم" class="ui-button-danger" style="margin-right: 10px"></button>
+</div>

@@ -1,0 +1,190 @@
+<p-growl [(value)]="errorMessages" [life]="'3000'"></p-growl>
+<mat-sidenav-container class="example-container">
+  <mat-sidenav #sidenav [mode]="'push'" class="side-nav" disableClose="true">
+    <div class="side-nav-field-container">
+      <div>
+        <mat-form-field class="side-nav-field" *ngIf="showLinkPanel">
+          <mat-select placeholder="تسک فرزند را انتخاب کنید" [(ngModel)]="linkTask" panelClass="select__style">
+            <mat-option *ngFor="let linkTask of linkTasks" [value]="linkTask">
+              {{ linkTask.key + '.' + linkTask.text }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div *ngIf="task.isInSwitch === true && !task.goToWhile">
+
+        <span class="iranSanseFont" *ngIf="task.parentTask.text === 'تسک چند شرطی کاربر ایجاد کننده'">این تسک در صورتی اجرا میشود که کاربر درخواست دهنده </span>
+        <mat-form-field class="side-nav-field" style="width:79%" *ngIf="task.parentTask.text === 'تسک چند شرطی کاربر ایجاد کننده'">
+          <mat-select [disabled]="task.isDefault" placeholder="انتخاب کاربر" [(ngModel)]="task.caseValue" panelClass="select__style">
+            <mat-option *ngFor="let employ of employs" [value]="employ.value">
+              {{employ.label}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <p class="iranSanseFont" style="margin:10px;" *ngIf="task.parentTask.text === 'تسک چند شرطی داینامیک'">این تسک
+          در صورتی اجرا میشود که شناسه ی مورد نظر با فیلد پایین همسان باشد.</p>
+        <div *ngIf="!task.isDefaultInSwitch">
+          <p-checkbox name="groupname" [(ngModel)]="task.isDefault" binary="true"></p-checkbox>
+          <span class="iranSanseFont" style="margin-right: 5px">پاسخ پیش فرض است</span>
+        </div>
+        <mat-form-field class="side-nav-field" style="width:79%" *ngIf="task.parentTask.text === 'تسک چند شرطی داینامیک' && !task.isDefault">
+          <input type="number" matInput placeholder="شناسه" [(ngModel)]="task.caseValue">
+        </mat-form-field>
+        <mat-form-field class="side-nav-field" style="width:79%" *ngIf="task.parentTask.text === 'تسک چند شرطی داینامیک'">
+          <input matInput placeholder="توضیح لینک" [(ngModel)]="task.caseLinkValue">
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field class="side-nav-field" *ngIf="!showLinkPanel">
+          <mat-select [disabled]="taskEditMode" placeholder="نوع تسک را انتخاب کنید" [(ngModel)]="taskType" panelClass="select__style"
+            (selectionChange)="changeTaskTypeInList()">
+            <mat-option *ngFor="let taskType of taskTypes" [value]="taskType">
+              {{ taskType.description }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field class="side-nav-field" *ngIf="taskNames.length">
+          <mat-select placeholder="تسک را انتخاب کنید" [(ngModel)]="taskName" panelClass="select__style"
+            (selectionChange)="changeTaskInList()">
+            <mat-option *ngFor="let taskName of taskNames" [value]="taskName">
+              {{ taskName.PersianName }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div *ngIf="task.parentTask?.isIf" class="side-nav-field">
+        <p>
+          <span>پاسخ به کار پدر</span>
+          <button pButton [disabled]="task.parentTask.doNodeId" type="button" (click)="task.ifResult = true" icon="pi pi-check"
+            iconPos="right" label="بله" style="margin-left:5px" [ngClass]="{'ui-button-success' : task.ifResult === true}"></button>
+          <button pButton [disabled]="task.parentTask.elseNodeId" type="button" (click)="task.ifResult = false" icon="pi pi-times"
+            iconPos="right" label="خیر" [ngClass]="{'ui-button-success' : task.ifResult === false}"></button>
+          <span style="margin-right: 5px;">است . </span>
+        </p>
+      </div>
+      <div>
+        <mat-form-field class="side-nav-field" *ngIf="!showLinkPanel">
+          <input matInput placeholder="توضیحات" [(ngModel)]="task.Description">
+        </mat-form-field>
+      </div>
+
+
+      <div *ngIf="task?.Settings?.length > 1" class="side-nav-field">
+        <hr>
+        <h4 style="text-align: center;color:gray" *ngIf="task.Settings.length > 0">
+          تنظیمات
+        </h4>
+        <div *ngFor="let setting of task.Settings | isNotType">
+          <div *ngIf="setting.Name !== 'قوانین'">
+            <span class="iranSanseFont" *ngIf="setting.Name !== 'getUserFromModel' && showUserSelector(task.Settings)">
+              {{setting.Name}} :
+            </span>
+            <div *ngIf="setting.Name === 'getUserFromModel'">
+              <mat-checkbox [(ngModel)]="setting.Value">دریافت کاربر از درخواست</mat-checkbox>
+            </div>
+          </div>
+          <mat-form-field class="side-nav-field" *ngIf="setting.Name === 'فرایند'" style="width: 500px;margin-right: 10px">
+            <mat-select placeholder="فرایند را انتخاب کنید" [(ngModel)]="+setting.Value" panelClass="select__style">
+              <mat-option *ngFor="let workflow of workflows" [value]="workflow.Id">
+                {{ (workflow.Id | persianNumber) + '. ' + workflow.Name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="side-nav-field" *ngIf="setting.Name === 'شروع از'">
+            <mat-select placeholder="تسک را انتخاب کنید" [(ngModel)]="+setting.Value" panelClass="select__style">
+              <mat-option *ngFor="let task of taskNamesForJump" [value]="task.key">
+                {{ (task.key | persianNumber) + '. ' + task.text }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field *ngIf="setting.Name === 'زمان لازم'">
+            <input matInput type="number" placeholder="زمان ( دقیقه )" [(ngModel)]="setting.Value" />
+          </mat-form-field>
+          <button *ngIf="setting.Name === 'قوانین'" pButton type="button" iconPos="right" (click)="showRules(setting)"
+            label="مدیریت قوانین" icon="pi pi-unlock"></button>
+          <div dir="ltr">
+            <p-multiSelect [style]="{'width':'100%'}" [options]="roles" [(ngModel)]="setting.Value" *ngIf="setting.Name === 'گروه کاربری' && showUserSelector(task.Settings)"></p-multiSelect>
+            <p-multiSelect [style]="{'width':'100%'}" [options]="employs" [(ngModel)]="setting.Value" *ngIf="setting.Name === 'کاربر' && showUserSelector(task.Settings)"></p-multiSelect>
+          </div>
+        </div>
+        <hr>
+      </div>
+      <div style="text-align: right; margin-right: 1%">
+        <button *ngIf="showAddTaskButton()" pButton type="button" label="افزودن" iconPos="right" (click)="addTask()"
+          icon="pi pi-plus" class="ui-button-success"></button>
+        <button *ngIf="taskEditMode" pButton type="button" iconPos="right" label="ذخیره" (click)="saveTask()" icon="pi pi-save"
+          class="ui-button-success"></button>
+        <button *ngIf="showLinkPanel" pButton type="button" iconPos="right" label="ذخیره" (click)="saveLink()" icon="pi pi-save"
+          class="ui-button-success"></button>
+        <button pButton type="button" iconPos="right" (click)="cancelAddTask()" label="انصراف" icon="pi pi-times" class="ui-button-danger"></button>
+      </div>
+    </div>
+  </mat-sidenav>
+  <mat-sidenav-content class="side-nav-content">
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="expandWorkflowConfig">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h3 *ngIf="workFlow.Name">
+              <div>
+                <span>فرایند </span>
+                <span>{{workFlow.Name}}</span>
+                <span *ngIf="workFlowVersion" style="margin:0px 5px 0px 5px"> - </span>
+                <span *ngIf="workFlowVersion">نگارش </span>
+                <span *ngIf="workFlowVersion">{{workFlowVersion | persianNumber}}</span>
+              </div>
+            </h3>
+          </mat-panel-title>
+          <mat-panel-description>
+            <h3>
+              تنظیمات فرایند
+            </h3>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <hr>
+        <div>
+          <mat-form-field class="workflow__field">
+            <input matInput placeholder="نام" [(ngModel)]="workFlow.Name" />
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field class="workflow__field">
+            <mat-select placeholder="نوع اجرا" [(ngModel)]="workFlow.LaunchType">
+              <mat-option *ngFor="let lunchType of lunchTypes" [value]="lunchType.id">
+                {{ lunchType.title + ' - ' + lunchType.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div *ngIf="workFlow.LaunchType === 2">
+          <mat-form-field class="workflow__field">
+            <input matInput placeholder="بازه" [(ngModel)]="workFlow.Period" />
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field class="workflow__field">
+            <input matInput placeholder="زمان لازم برای اجرای این فرایند ( دقیقه )" [(ngModel)]="workFlow.DeadLine" />
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-checkbox [(ngModel)]="workFlow.IsEnabled"></mat-checkbox>
+          <span class="iranSanseFont">فعال بودن فرایند</span>
+        </div>
+        <div>
+          <mat-form-field class="side-nav-field">
+            <textarea matInput [(ngModel)]="workFlow.Description" placeholder="توضیحات"></textarea>
+          </mat-form-field>
+        </div>
+        <div class="workflow__action__div">
+          <button iconPos="right" pButton icon="pi pi-arrow-right" class="management__button" (click)="back()" label="بازگشت"></button>
+          <button iconPos="right" pButton icon="pi pi-check" class="management__button ui-button-success" (click)="saveWorkflow()"
+            label="ذخیره"></button>
+          <button iconPos="right" pButton icon="pi pi-tasks" class="management__button" (click)="newTask()" label="تسک جدید"></button>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+    <div [hidden]="!workFlow.Graph" align="center" #myDiagramDiv class="graph__div"></div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

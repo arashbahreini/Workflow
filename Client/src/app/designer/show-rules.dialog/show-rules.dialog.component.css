@@ -1,0 +1,19 @@
+.div__top {
+    text-align: right;
+    background-color: #b9c1b9;
+}
+
+.no__result__div {
+    border: 1px solid lightgray;
+    text-align: center;
+    margin-top: 10px;
+    color: #a94442;
+    width: 80%;
+    margin-right: 10%;
+    margin-bottom: 10px;
+}
+
+table {
+    width: 96%;
+    margin: 10px 2% 0px 0px;
+}

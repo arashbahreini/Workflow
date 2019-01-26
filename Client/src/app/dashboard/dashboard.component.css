@@ -1,0 +1,28 @@
+.no__result__part {
+    color: #a94442;
+    height: 200px;
+    padding-top: 125px;
+}
+
+.btn__details {
+    width: 80%;
+    margin: 5px 0px 5px 0px;
+}
+
+.mat-card {
+    margin-top: 2vh;
+}
+
+.div__pendingGraph {
+    width: 90%;
+    margin-right: 5%;
+    height: 85vh;
+}
+
+.btn__back {
+    margin : 10px 5% 10px 0px
+}
+
+.span__description__text {
+    margin:10px;
+}

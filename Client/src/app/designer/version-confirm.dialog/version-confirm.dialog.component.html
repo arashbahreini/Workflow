@@ -1,0 +1,27 @@
+<div dir="rtl" style="text-align: right">
+  <div class="div__top">
+    <h5>
+      <button style="margin:5px;" pButton icon="pi pi-times" class="ui-button-danger" (click)="closeDialog(null)"></button>
+      تایید ذخیره ی فرایند
+    </h5>
+  </div>
+  <div style="margin-right:5px;">
+    <h4>
+      به دلیل تغییرات زیر فرایند شما در ورژن بعدی ذخیره میشود. آیا موافق هستید ؟
+    </h4>
+    <ul>
+      <li *ngFor="let warning of warningList" style="color:#D9534F">{{warning}}</li>
+    </ul>
+  </div>
+  <div style="margin-right:25px;">
+    <form>
+      <mat-form-field style="width: 90%">
+        <textarea matInput placeholder="توضیحات" [(ngModel)]="result.message" name="message"></textarea>
+      </mat-form-field>
+    </form>
+  </div>
+  <div style="text-align: center">
+    <button style="margin:5px;" pButton icon="pi pi-check" class="ui-button-success" (click)="closeDialog(true)" label="موافقم"></button>
+    <button style="margin:5px;" pButton icon="pi pi-times" class="ui-button-danger" (click)="closeDialog(false)" label="مخالفم"></button>
+  </div>
+</div>
