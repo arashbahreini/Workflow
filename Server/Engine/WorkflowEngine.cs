@@ -14,7 +14,7 @@ namespace workflow.Core
     /// <summary>
     /// workflow engine.
     /// </summary>
-    public class workflowEngine
+    public class WorkflowEngine
     {
         /// <summary>
         /// Settings file path.
@@ -56,7 +56,7 @@ namespace workflow.Core
         /// Creates a new instance of workflow engine.
         /// </summary>
         /// <param name="settingsFile">Settings file path.</param>
-        public workflowEngine(string settingsFile, bool? doLoadHistory = null)
+        public WorkflowEngine(string settingsFile, bool? doLoadHistory = null)
         {
             SettingsFile = settingsFile;
             Workflows = new List<Workflow>();
@@ -341,14 +341,6 @@ namespace workflow.Core
 
         public bool StartWorkflowModel(RequestModel model)
         {
-            if (model.Id == 9)
-            {
-                model.Id = 1;
-            }
-            else if (model.Id == 10)
-            {
-                model.Id = 7;
-            }
             var wf = GetLastVersionWorkflow(model.Id);
             if (wf == null)
             {

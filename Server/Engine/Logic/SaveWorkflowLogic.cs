@@ -19,7 +19,7 @@ namespace workflow.Core.Logic
             _workflowSettingsFile = workflowSettingsFile;
         }
         public static XNamespace xn = "urn:workflow-schema";
-        public IdVersionModel AddNewWorkflow(WorkflowInfo model, workflowEngine workflowEngine, List<TaskNameModel> taskNames)
+        public IdVersionModel AddNewWorkflow(WorkflowInfo model, WorkflowEngine workflowEngine, List<TaskNameModel> taskNames)
         {
             var xtasks = new XElement(xn + "Tasks");
 
@@ -122,7 +122,7 @@ namespace workflow.Core.Logic
                 Id = GetLastWorkflowId()
             };
         }
-        public IdVersionModel AddNewVersionWorkflow(WorkflowInfo model, workflowEngine workflowEngine, List<TaskNameModel> taskNames)
+        public IdVersionModel AddNewVersionWorkflow(WorkflowInfo model, WorkflowEngine workflowEngine, List<TaskNameModel> taskNames)
         {
             var wf = workflowEngine.GetWorkflow(model.Id, model.Version);
             if (wf != null)
@@ -232,7 +232,7 @@ namespace workflow.Core.Logic
                 Version = workflowEngine.SetWorkflowVersion(model.Id)
             };
         }
-        public IdVersionModel EditWorkflow(WorkflowInfo model, workflowEngine workflowEngine, List<TaskNameModel> taskNames)
+        public IdVersionModel EditWorkflow(WorkflowInfo model, WorkflowEngine workflowEngine, List<TaskNameModel> taskNames)
         {
             var wf = workflowEngine.GetWorkflow(model.Id, model.Version);
             if (wf != null)
@@ -314,7 +314,7 @@ namespace workflow.Core.Logic
         }
         public string GetLastWorkflowId()
         {
-            return new workflowEngine(_workflowSettingsFile).GetLastId();
+            return new WorkflowEngine(_workflowSettingsFile).GetLastId();
         }
         public void SaveJsonGraph(GraphModel graph, string path, string fileName)
         {

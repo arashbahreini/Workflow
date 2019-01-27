@@ -14,6 +14,57 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Engine\Engine.csproj" />
+    <ProjectReference Include="..\InfraStructure.cs\InfraStructure.cs.csproj" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <None Include="wwwroot\ClientCore\Fonts\farsi\IranianSansBold.ttf" />
+    <None Include="wwwroot\ClientCore\Fonts\farsi\IranianSansRegular.ttf" />
+    <None Include="wwwroot\ClientCore\Fonts\farsi\YekanWeb-Bold.eot" />
+    <None Include="wwwroot\ClientCore\Fonts\farsi\YekanWeb-Bold.svg" />
+    <None Include="wwwroot\ClientCore\Fonts\farsi\YekanWeb-Bold.ttf" />
+    <None Include="wwwroot\ClientCore\Fonts\farsi\YekanWeb-Bold.woff" />
+    <None Include="wwwroot\ClientCore\Fonts\farsi\YekanWeb-Bold.woff2" />
+    <None Include="wwwroot\ClientCore\Fonts\farsi\YekanWeb-Regular.eot" />
+    <None Include="wwwroot\ClientCore\Fonts\farsi\YekanWeb-Regular.svg" />
+    <None Include="wwwroot\ClientCore\Fonts\farsi\YekanWeb-Regular.ttf" />
+    <None Include="wwwroot\ClientCore\Fonts\farsi\YekanWeb-Regular.woff" />
+    <None Include="wwwroot\ClientCore\Fonts\farsi\YekanWeb-Regular.woff2" />
+    <None Include="wwwroot\ClientCore\Fonts\font-awesome\fontawesome-webfont.eot" />
+    <None Include="wwwroot\ClientCore\Fonts\font-awesome\fontawesome-webfont.svg" />
+    <None Include="wwwroot\ClientCore\Fonts\font-awesome\fontawesome-webfont.ttf" />
+    <None Include="wwwroot\ClientCore\Fonts\font-awesome\fontawesome-webfont.woff" />
+    <None Include="wwwroot\ClientCore\Fonts\font-awesome\fontawesome-webfont.woff2" />
+    <None Include="wwwroot\ClientCore\Fonts\font-awesome\FontAwesome.otf" />
+    <None Include="wwwroot\ClientCore\Fonts\fontawesome-webfont.eot" />
+    <None Include="wwwroot\ClientCore\Fonts\fontawesome-webfont.svg" />
+    <None Include="wwwroot\ClientCore\Fonts\fontawesome-webfont.ttf" />
+    <None Include="wwwroot\ClientCore\Fonts\fontawesome-webfont.woff" />
+    <None Include="wwwroot\ClientCore\Fonts\fontawesome-webfont.woff2" />
+    <None Include="wwwroot\ClientCore\Fonts\FontAwesome.otf" />
+    <None Include="wwwroot\fontawesome-webfont.svg" />
+    <None Include="wwwroot\fontawesome-webfont.woff2" />
+    <None Include="wwwroot\main.js" />
+    <None Include="wwwroot\main.js.map" />
+    <None Include="wwwroot\polyfills.js" />
+    <None Include="wwwroot\polyfills.js.map" />
+    <None Include="wwwroot\primeicons.svg" />
+    <None Include="wwwroot\roboto-v15-latin-regular.svg" />
+    <None Include="wwwroot\roboto-v15-latin-regular.woff2" />
+    <None Include="wwwroot\runtime.js" />
+    <None Include="wwwroot\runtime.js.map" />
+    <None Include="wwwroot\scripts.js" />
+    <None Include="wwwroot\scripts.js.map" />
+    <None Include="wwwroot\styles.js" />
+    <None Include="wwwroot\styles.js.map" />
+    <None Include="wwwroot\vendor.js" />
+    <None Include="wwwroot\vendor.js.map" />
   </ItemGroup>
 
 </Project>

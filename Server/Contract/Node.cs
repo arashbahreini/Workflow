@@ -6,14 +6,14 @@ using System.Text;
 
 namespace workflow.Core.Service.Contracts
 {
-    [DataContract]
+    
     public class Node
     {
-        [DataMember]
+        
         public string Id { get; private set; }
-        [DataMember]
+        
         public string Name { get; private set; }
-        [DataMember]
+        
         public string ParentId { get; private set; }
 
         public Node(string id, string name, string parentId)

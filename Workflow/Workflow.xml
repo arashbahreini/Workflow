@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <workflow>
-  <Setting name="workflowsFolder" value="C:\Workflow\Workflows" />
-  <Setting name="workflowsHistoryFolder" value="C:\Workflow\Workflows\History" />
-  <Setting name="trashFolder" value="C:\Workflow\Trash" />
-  <Setting name="tempFolder" value="C:\Workflow\Temp" />
-  <Setting name="xsd" value="C:\Workflow\Workflow.xsd" />
-  <Setting name="tasksNamesFile" value="C:\Workflow\TasksNames.json" />
-  <Setting name="tasksSettingsFile" value="C:\Workflow\TasksSettings.json" />
+  <Setting name="workflowsFolder" value="C:\work\Workflow\workflow\Workflows" />
+  <Setting name="workflowsHistoryFolder" value="C:\work\Workflow\workflow\Workflows\History" />
+  <Setting name="trashFolder" value="C:\work\Workflow\workflow\Trash" />
+  <Setting name="tempFolder" value="C:\work\Workflow\workflow\Temp" />
+  <Setting name="xsd" value="C:\work\Workflow\workflow\Workflow.xsd" />
+  <Setting name="tasksNamesFile" value="C:\work\Workflow\workflow\TasksNames.json" />
+  <Setting name="tasksSettingsFile" value="C:\work\Workflow\workflow\TasksSettings.json" />
 </workflow>

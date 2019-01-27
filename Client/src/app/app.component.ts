@@ -34,21 +34,5 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.checkToHasRole();
-  }
-
-  checkToHasRole() {
-    this.basicInformationService.checkAuthentication().subscribe(
-      (res: boolean) => {
-        if (res === true) {
-          this.hasRole = true;
-        } else {
-          this.hasRole = false;
-          this.router.navigate(['Error']);
-        }
-      }, (error: any) => {
-
-      }
-    );
   }
 }
