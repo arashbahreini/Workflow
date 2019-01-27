@@ -7,11 +7,14 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using workflow.Core;
 
 namespace Host
 {
     public class Program
     {
+
         public static void Main(string[] args)
         {
             CreateWebHostBuilder(args).Build().Run();

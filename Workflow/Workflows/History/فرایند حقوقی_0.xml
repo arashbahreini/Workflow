@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Workflow id="22" name="فرایند حقوقی" description="" xmlns="urn:workflow-schema">
+  <Settings>
+    <Setting name="launchType" value="trigger" />
+    <Setting name="enabled" value="true" />
+    <Setting name="period" value="00.00:00:00" />
+    <Setting name="version" value="0" />
+    <Setting name="deadLine" value="20" />
+  </Settings>
+  <Tasks>
+    <Task id="1" name="InsertToBlackList" description="" enabled="true" isCommon="false">
+      <Setting name="type" value="task" />
+      <Setting name="زمان لازم" value="5" />
+      <Setting name="کاربر" value="[1,43,167]" />
+      <Setting name="گروه کاربری" value="[]" />
+    </Task>
+    <Task id="2" name="Forward" description="" enabled="true" isCommon="true">
+      <Setting name="getUserFromModel" value="False" />
+      <Setting name="type" value="commonTask" />
+      <Setting name="کاربر" value="[24,43,170]" />
+      <Setting name="گروه کاربری" value="[]" />
+    </Task>
+  </Tasks>
+  <ExecutionGraph>
+    <Task id="1" index="1">
+      <Parent id="-1" />
+    </Task>
+    <Task id="2" index="2">
+      <Parent id="1" />
+    </Task>
+  </ExecutionGraph>
+</Workflow>

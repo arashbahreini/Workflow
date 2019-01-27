@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Workflow id="17" name="درخواست متعلقات" description="" xmlns="urn:workflow-schema">
+  <Settings>
+    <Setting name="launchType" value="trigger" />
+    <Setting name="enabled" value="true" />
+    <Setting name="period" value="00.00:00:00" />
+    <Setting name="version" value="4" />
+    <Setting name="deadLine" value="100" />
+    <Setting name="versionDescription" value="افزودن تسک های جدید به فرایند" />
+  </Settings>
+  <Tasks>
+    <Task id="1" name="SwitchDynamic" description="بررسی نوع متعلقات وارد شده" enabled="true" isCommon="false" />
+    <Task id="2" name="AddRequestToCartable" description="" enabled="true" isCommon="true">
+      <Setting name="getUserFromModel" value="" />
+      <Setting name="type" value="commonTask" />
+      <Setting name="کاربر" value="[1,43,167]" />
+      <Setting name="گروه کاربری" value="[]" />
+    </Task>
+    <Task id="3" name="CheckConfirm" description="" enabled="true" isCommon="false">
+      <Setting name="type" value="if" />
+      <Setting name="زمان لازم" value="10" />
+      <Setting name="کاربر" value="[1,43,167]" />
+      <Setting name="گروه کاربری" value="[]" />
+    </Task>
+    <Task id="4" name="CallBindAccessories" description="" enabled="true" isCommon="false">
+      <Setting name="type" value="task" />
+      <Setting name="کاربر" value="[43,24,170]" />
+      <Setting name="گروه کاربری" value="[]" />
+    </Task>
+    <Task id="5" name="Exit" description="" enabled="true" isCommon="true">
+      <Setting name="type" value="commonTask" />
+    </Task>
+  </Tasks>
+  <ExecutionGraph>
+    <Switch id="8000" parent="-1" switch="1" index="1">
+      <Case value="234">
+        <Task id="2" index="2">
+          <Parent id="-1" />
+        </Task>
+        <If id="1000" parent="2" if="3" index="3">
+          <Do>
+            <Task id="4" index="4">
+              <Parent id="-1" />
+            </Task>
+          </Do>
+          <Else>
+            <Task id="5" index="5">
+              <Parent id="-1" />
+            </Task>
+          </Else>
+        </If>
+      </Case>
+    </Switch>
+  </ExecutionGraph>
+</Workflow>

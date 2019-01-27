@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Workflow id="21" name="انصراف متعلقات" description="" xmlns="urn:workflow-schema">
+  <Settings>
+    <Setting name="launchType" value="trigger" />
+    <Setting name="enabled" value="true" />
+    <Setting name="period" value="00.00:00:00" />
+    <Setting name="version" value="0" />
+    <Setting name="deadLine" value="100" />
+  </Settings>
+  <Tasks>
+    <Task id="1" name="SwitchDynamic" description="بررسی نوع اقلام" enabled="true" isCommon="false" />
+  </Tasks>
+  <ExecutionGraph>
+    <Switch id="8000" parent="-1" switch="1" index="1" />
+  </ExecutionGraph>
+</Workflow>

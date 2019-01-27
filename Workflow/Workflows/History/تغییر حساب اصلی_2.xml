@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Workflow id="4" name="تغییر حساب اصلی" description="" xmlns="urn:workflow-schema">
+  <Settings>
+    <Setting name="launchType" value="trigger" />
+    <Setting name="enabled" value="true" />
+    <Setting name="period" value="00.00:00:00" />
+    <Setting name="version" value="2" />
+    <Setting name="deadLine" value="240" />
+    <Setting name="versionDescription" value="اضافه شدن تسک های شروع مجدد " />
+  </Settings>
+  <Tasks>
+    <Task id="1" name="AddRequestToCartable" description="" enabled="true" isCommon="true">
+      <Setting name="type" value="commonTask" />
+      <Setting name="کاربر" value="[24]" />
+      <Setting name="گروه کاربری" value="[]" />
+    </Task>
+    <Task id="2" name="CheckConfirm" description="" enabled="true" isCommon="false">
+      <Setting name="type" value="if" />
+      <Setting name="زمان لازم" value="5" />
+      <Setting name="کاربر" value="[24]" />
+      <Setting name="گروه کاربری" value="[]" />
+    </Task>
+    <Task id="3" name="Forward" description="" enabled="true" isCommon="true">
+      <Setting name="type" value="commonTask" />
+      <Setting name="کاربر" value="[25]" />
+      <Setting name="گروه کاربری" value="[]" />
+    </Task>
+    <Task id="4" name="CheckConfirm" description="" enabled="true" isCommon="false">
+      <Setting name="type" value="if" />
+      <Setting name="زمان لازم" value="5" />
+      <Setting name="کاربر" value="[25]" />
+      <Setting name="گروه کاربری" value="" />
+    </Task>
+    <Task id="5" name="CallShaparakKhadamat" description="" enabled="true" isCommon="false" />
+    <Task id="6" name="TrackShaparak" description="" enabled="true" isCommon="false">
+      <Setting name="type" value="if" />
+      <Setting name="زمان لازم" value="100" />
+    </Task>
+    <Task id="7" name="TrackKhadamat" description="" enabled="true" isCommon="false">
+      <Setting name="type" value="if" />
+      <Setting name="زمان لازم" value="100" />
+    </Task>
+    <Task id="8" name="Forward" description="" enabled="true" isCommon="true">
+      <Setting name="type" value="commonTask" />
+      <Setting name="کاربر" value="[-1]" />
+      <Setting name="گروه کاربری" value="[]" />
+    </Task>
+    <Task id="9" name="Forward" description="" enabled="true" isCommon="true">
+      <Setting name="type" value="commonTask" />
+      <Setting name="کاربر" value="[25]" />
+      <Setting name="گروه کاربری" value="[]" />
+    </Task>
+    <Task id="10" name="Forward" description="" enabled="true" isCommon="true">
+      <Setting name="type" value="commonTask" />
+      <Setting name="کاربر" value="[-1]" />
+      <Setting name="گروه کاربری" value="" />
+    </Task>
+    <Task id="11" name="SwitchTest" description="" enabled="true" isCommon="false" />
+    <Task id="12" name="Forward" description="" enabled="true" isCommon="true">
+      <Setting name="type" value="commonTask" />
+      <Setting name="کاربر" value="[25]" />
+      <Setting name="گروه کاربری" value="" />
+    </Task>
+    <Task id="13" name="CheckConfirm" description="" enabled="true" isCommon="false">
+      <Setting name="type" value="if" />
+      <Setting name="زمان لازم" value="5" />
+      <Setting name="کاربر" value="[25]" />
+      <Setting name="گروه کاربری" value="" />
+    </Task>
+    <Task id="14" name="JumpTo" description="شروع مجدد از تسک ارسال به شاپرک" enabled="true" isCommon="true">
+      <Setting name="type" value="commonTask" />
+      <Setting name="شروع از" value="5" />
+    </Task>
+    <Task id="15" name="Exit" description="" enabled="true" isCommon="true">
+      <Setting name="type" value="commonTask" />
+    </Task>
+    <Task id="16" name="Forward" description="" enabled="true" isCommon="true">
+      <Setting name="type" value="commonTask" />
+      <Setting name="کاربر" value="[1]" />
+      <Setting name="گروه کاربری" value="" />
+    </Task>
+    <Task id="17" name="CheckConfirm" description="" enabled="true" isCommon="false">
+      <Setting name="type" value="if" />
+      <Setting name="زمان لازم" value="5" />
+      <Setting name="کاربر" value="[1]" />
+      <Setting name="گروه کاربری" value="" />
+    </Task>
+    <Task id="18" name="JumpTo" description="شروع مجدد از تسک ارسال به شاپرک" enabled="true" isCommon="true">
+      <Setting name="type" value="commonTask" />
+      <Setting name="شروع از" value="5" />
+    </Task>
+    <Task id="19" name="Exit" description="" enabled="true" isCommon="true">
+      <Setting name="type" value="commonTask" />
+    </Task>
+    <Task id="21" name="SwitchTest" description="" enabled="true" isCommon="false" />
+    <Task id="22" name="Forward" description="" enabled="true" isCommon="true">
+      <Setting name="type" value="commonTask" />
+      <Setting name="کاربر" value="[24]" />
+      <Setting name="گروه کاربری" value="[]" />
+    </Task>
+    <Task id="23" name="CheckConfirm" description="" enabled="true" isCommon="false">
+      <Setting name="type" value="if" />
+      <Setting name="زمان لازم" value="5" />
+      <Setting name="کاربر" value="[24]" />
+      <Setting name="گروه کاربری" value="" />
+    </Task>
+    <Task id="24" name="JumpTo" description="شروع مجدد از تسک ارسال به شاپرک" enabled="true" isCommon="true">
+      <Setting name="type" value="commonTask" />
+      <Setting name="شروع از" value="5" />
+    </Task>
+    <Task id="25" name="Exit" description="" enabled="true" isCommon="true">
+      <Setting name="type" value="commonTask" />
+    </Task>
+    <Task id="26" name="Forward" description="" enabled="true" isCommon="true">
+      <Setting name="type" value="commonTask" />
+      <Setting name="کاربر" value="[64]" />
+      <Setting name="گروه کاربری" value="[]" />
+    </Task>
+    <Task id="27" name="CheckConfirm" description="" enabled="true" isCommon="false">
+      <Setting name="type" value="if" />
+      <Setting name="زمان لازم" value="5" />
+      <Setting name="کاربر" value="[64]" />
+      <Setting name="گروه کاربری" value="" />
+    </Task>
+    <Task id="28" name="JumpTo" description="شروع مجدد از تسک ارسال به شاپرک" enabled="true" isCommon="true">
+      <Setting name="type" value="commonTask" />
+      <Setting name="شروع از" value="5" />
+    </Task>
+    <Task id="29" name="Exit" description="" enabled="true" isCommon="true">
+      <Setting name="type" value="commonTask" />
+    </Task>
+    <Task id="30" name="InternalService" description="" enabled="true" isCommon="false">
+      <Setting name="type" value="task" />
+      <Setting name="زمان لازم" value="10" />
+    </Task>
+    <Task id="31" name="JumpTo" description="شروع مجدد از تایید درخواست" enabled="true" isCommon="true">
+      <Setting name="type" value="commonTask" />
+      <Setting name="شروع از" value="2" />
+    </Task>
+    <Task id="32" name="JumpTo" description="شروع مجدد از تایید درخواست" enabled="true" isCommon="true">
+      <Setting name="type" value="commonTask" />
+      <Setting name="شروع از" value="4" />
+    </Task>
+  </Tasks>
+  <ExecutionGraph>
+    <Task id="1" index="1">
+      <Parent id="-1" />
+    </Task>
+    <If id="1000" parent="1" if="2" index="2">
+      <Do>
+        <Task id="3" index="3">
+          <Parent id="-1" />
+        </Task>
+        <If id="1001" parent="3" if="4" index="4">
+          <Do>
+            <If id="1002" parent="-1" if="5" index="5">
+              <Do>
+                <If id="1003" parent="-1" if="6" index="6">
+                  <Do>
+                    <If id="1004" parent="-1" if="7" index="7">
+                      <Do>
+                        <Task id="30" index="30">
+                          <Parent id="-1" />
+                        </Task>
+                      </Do>
+                      <Else>
+                        <Switch id="8001" parent="-1" switch="21" index="21">
+                          <Case value="25">
+                            <Task id="26" index="26">
+                              <Parent id="-1" />
+                            </Task>
+                            <If id="1008" parent="26" if="27" index="27">
+                              <Do>
+                                <Task id="28" index="28">
+                                  <Parent id="-1" />
+                                </Task>
+                              </Do>
+                              <Else>
+                                <Task id="29" index="29">
+                                  <Parent id="-1" />
+                                </Task>
+                              </Else>
+                            </If>
+                          </Case>
+                          <Default>
+                            <Task id="22" index="22">
+                              <Parent id="-1" />
+                            </Task>
+                            <If id="1007" parent="22" if="23" index="23">
+                              <Do>
+                                <Task id="24" index="24">
+                                  <Parent id="-1" />
+                                </Task>
+                              </Do>
+                              <Else>
+                                <Task id="25" index="25">
+                                  <Parent id="-1" />
+                                </Task>
+                              </Else>
+                            </If>
+                          </Default>
+                        </Switch>
+                      </Else>
+                    </If>
+                  </Do>
+                  <Else>
+                    <Switch id="8000" parent="-1" switch="11" index="11">
+                      <Case value="1">
+                        <Task id="12" index="12">
+                          <Parent id="-1" />
+                        </Task>
+                        <If id="1005" parent="12" if="13" index="13">
+                          <Do>
+                            <Task id="14" index="14">
+                              <Parent id="-1" />
+                            </Task>
+                          </Do>
+                          <Else>
+                            <Task id="15" index="15">
+                              <Parent id="-1" />
+                            </Task>
+                          </Else>
+                        </If>
+                      </Case>
+                      <Default>
+                        <Task id="16" index="16">
+                          <Parent id="-1" />
+                        </Task>
+                        <If id="1006" parent="16" if="17" index="17">
+                          <Do>
+                            <Task id="18" index="18">
+                              <Parent id="-1" />
+                            </Task>
+                          </Do>
+                          <Else>
+                            <Task id="19" index="19">
+                              <Parent id="-1" />
+                            </Task>
+                          </Else>
+                        </If>
+                      </Default>
+                    </Switch>
+                  </Else>
+                </If>
+              </Do>
+              <Else>
+                <Task id="10" index="10">
+                  <Parent id="-1" />
+                </Task>
+              </Else>
+            </If>
+          </Do>
+          <Else>
+            <Task id="9" index="9">
+              <Parent id="-1" />
+            </Task>
+            <Task id="32" index="32">
+              <Parent id="9" />
+            </Task>
+          </Else>
+        </If>
+      </Do>
+      <Else>
+        <Task id="8" index="8">
+          <Parent id="-1" />
+        </Task>
+        <Task id="31" index="31">
+          <Parent id="8" />
+        </Task>
+      </Else>
+    </If>
+  </ExecutionGraph>
+</Workflow>

@@ -1,0 +1,237 @@
+﻿[
+  {
+    "name": "BankConfirm",
+    "persianName": "آیا بانک پایانه مورد نظر را تایید ابطال میکند ؟",
+    "type": "if"
+  },
+  {
+    "name": "CheckConfirm",
+    "persianName": "آیا درخواست تایید میشود ؟ ",
+    "type": "if"
+  },
+  {
+    "name": "InspectorConfirm",
+    "persianName": "آیا کارشناس بازاریابی تایید ابطال میکند ؟",
+    "type": "if"
+  },
+  {
+    "name": "NeedExternalCall",
+    "persianName": "آیا نیاز به تماس خارجی دارد",
+    "type": "if"
+  },
+  {
+    "name": "NeedNewMarketing",
+    "persianName": "آیا نیاز به بازاریابی جدید دارد؟",
+    "type": "if"
+  },
+  {
+    "name": "IsSystemOpenCode",
+    "persianName": "بررسی اینکه آیا پایانه جدید کد باز است یا خیر",
+    "type": "task"
+  },
+  {
+    "name": "IsPreviewsTerminalInstalled",
+    "persianName": "بررسی این که آیا پایانه قبلی منصوبه است یا خیر",
+    "type": "if"
+  },
+  {
+    "name": "IsCurrentTerminalInstalled",
+    "persianName": "بررسی این که آیا پایانه منصوبه است یا خیر",
+    "type": "if"
+  },
+  {
+    "name": "NeedCheckByBank",
+    "persianName": "آیا نیاز به بررسی توسط بانک وجود دارد",
+    "type": "if"
+  },
+  {
+    "name": "NeedCheckByBank_Confirm",
+    "persianName": "بررسی درخواست تایید توسط بانک",
+    "type": "task"
+  },
+  {
+    "name": "NeedCheckByBank_Reject",
+    "persianName": "بررسی درخواست تایید توسط کارشناس بازاریابی",
+    "type": "task"
+  },
+  {
+    "name": "Complete",
+    "persianName": "ارسال بر روی سوئیچ",
+    "type": "task"
+  },
+  {
+    "name": "AddToOutCallPortabl",
+    "persianName": "افزودن به کارتابل تماس خروجی",
+    "type": "task"
+  },
+  {
+    "name": "NeedExternalCall_Result",
+    "persianName": "اعلام نتیجه ی تماس خارجی",
+    "type": "task"
+  },
+  {
+    "name": "ForwardInspectorConfirm",
+    "persianName": "ارجا به کارشناس بازاریابی",
+    "type": "task"
+  },
+  {
+    "name": "SubmitNewMarketing",
+    "persianName": "ثبت بازاریابی جدید",
+    "type": "task"
+  },
+  {
+    "name": "ConfirmCancelation",
+    "persianName": "تایید ابطال",
+    "type": "task"
+  },
+  {
+    "name": "CheckCollectCartable",
+    "persianName": "بررسی کارتابل جمع آوری",
+    "type": "task"
+  },
+  {
+    "name": "AddToGatheringCartable",
+    "persianName": "افزودن به کارتابل جمع آوری",
+    "type": "task"
+  },
+  {
+    "name": "AddMarketingRequest",
+    "persianName": "اجرای فرایند بازاریابی",
+    "type": "task"
+  },
+  {
+    "name": "MarketingCheck1",
+    "persianName": "بررسی بازاریابی اول",
+    "type": "if"
+  },
+  {
+    "name": "MarketingCheck2",
+    "persianName": "بررسی بازاریابی دوم",
+    "type": "if"
+  },
+  {
+    "name": "MarketingCheck3",
+    "persianName": "بررسی بازاریابی سوم",
+    "type": "if"
+  },
+  {
+    "name": "AddRequestToCartable",
+    "persianName": "افزودن درخواست به کارتابل",
+    "type": "task"
+  },
+  {
+    "name": "ForwardToMarketingCheck2",
+    "persianName": "ارجا به بازرسی دوم",
+    "type": "task"
+  },
+  {
+    "name": "ForwardToMarketingCheck3",
+    "persianName": "ارجا به بازرسی سوم",
+    "type": "task"
+  },
+  {
+    "name": "CheckForEnd",
+    "persianName": "بررسی اتمام فرایند بازاریابی",
+    "type": "task"
+  },
+  {
+    "name": "ForwardToAssignmentCartable",
+    "persianName": "ارجا به کارتابل تخصیص",
+    "type": "task"
+  },
+  {
+    "name": "CallBindAccessories",
+    "persianName": "ارجا به کارتابل نصب متعلقات",
+    "type": "task"
+  },
+  {
+    "name": "AddRequestAcceptor",
+    "persianName": "افزودن درخواست پذیرنده",
+    "type": "task"
+  },
+  {
+    "name": "Forward",
+    "persianName": "ارجا به کارتابل",
+    "type": "commonTask"
+  },
+  {
+    "name": "AddRequestToCartable",
+    "persianName": "افزودن به کارتابل",
+    "type": "commonTask"
+  },
+  {
+    "name": "JumpTo",
+    "persianName": "شروع مجدد از تسک مشخص شده",
+    "type": "commonTask"
+  },
+  {
+    "name": "DisableRequest",
+    "persianName": "غیر فعال کردن درخواست",
+    "type": "commonTask"
+  },
+  {
+    "name": "Exit",
+    "persianName": "خروج از فرایند",
+    "type": "commonTask"
+  },
+  {
+    "name": "Check",
+    "persianName": "بررسی درخواست",
+    "type": "commonTask"
+  },
+  {
+    "name": "NeedExternalCall",
+    "persianName": "آیا نیاز به تماس خارجی دارد",
+    "type": "while"
+  },
+  {
+    "name": "SwitchEmploye",
+    "persianName": "تسک چند شرطی کاربر ایجاد کننده",
+    "type": "switch"
+  },
+  {
+    "name": "SwitchDynamic",
+    "persianName": "تسک چند شرطی داینامیک",
+    "type": "switch"
+  },
+  {
+    "name": "CallShaparakKhadamat",
+    "persianName": "ارسال به شاپرک",
+    "type": "if"
+  },
+  {
+    "name": "InternalService",
+    "persianName": "ویرایش داخلی",
+    "type": "task"
+  },
+  {
+    "name": "TrackKhadamat",
+    "persianName": "پیگیری درخواست از خدمات",
+    "type": "if"
+  },
+  {
+    "name": "TrackShaparak",
+    "persianName": "پیگیری درخواست از شاپرک",
+    "type": "if"
+  },
+  {
+    "name": "GetCode",
+    "persianName": "دریافت کد",
+    "type": "task"
+  },
+  {
+    "name": "CheckRule",
+    "persianName": "بررسی قوانین",
+    "type": "if"
+  },
+  {
+    "name": "StartWorkflow",
+    "persianName": "اجرای فرایند جدید",
+    "type": "task"
+  },
+  {
+    "name": "InsertToBlackList",
+    "persianName": "افزودن به کارتابل لیست سیاه",
+    "type": "task"
+  }
+]

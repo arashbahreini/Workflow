@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Workflow id="5" name="تغییر آدرس و کدپستی و صنف" description="" xmlns="urn:workflow-schema">
+  <Settings>
+    <Setting name="launchType" value="trigger" />
+    <Setting name="enabled" value="true" />
+    <Setting name="period" value="00.00:00:00" />
+    <Setting name="version" value="2" />
+    <Setting name="deadLine" value="370" />
+  </Settings>
+  <Tasks>
+    <Task id="1" name="CallShaparakKhadamat" description="" enabled="true" isCommon="false">
+      <Setting name="type" value="if" />
+      <Setting name="زمان لازم" value="180" />
+    </Task>
+    <Task id="5" name="Forward" description="" enabled="true" isCommon="true">
+      <Setting name="type" value="commonTask" />
+      <Setting name="کاربر" value="[24]" />
+      <Setting name="گروه کاربری" value="" />
+    </Task>
+    <Task id="6" name="TrackShaparak" description="" enabled="true" isCommon="false">
+      <Setting name="type" value="if" />
+      <Setting name="زمان لازم" value="5" />
+    </Task>
+    <Task id="7" name="CallKhadamat" description="" enabled="true" isCommon="false">
+      <Setting name="type" value="task" />
+      <Setting name="زمان لازم" value="180" />
+    </Task>
+    <Task id="8" name="TrackKhadamat" description="" enabled="true" isCommon="false">
+      <Setting name="type" value="if" />
+      <Setting name="زمان لازم" value="5" />
+    </Task>
+    <Task id="9" name="Forward" description="" enabled="true" isCommon="true">
+      <Setting name="type" value="commonTask" />
+      <Setting name="کاربر" value="[1]" />
+      <Setting name="گروه کاربری" value="" />
+    </Task>
+    <Task id="10" name="InternalService" description="" enabled="true" isCommon="false">
+      <Setting name="type" value="task" />
+      <Setting name="زمان لازم" value="5" />
+    </Task>
+    <Task id="11" name="Forward" description="" enabled="true" isCommon="true">
+      <Setting name="type" value="commonTask" />
+      <Setting name="کاربر" value="[1]" />
+      <Setting name="گروه کاربری" value="" />
+    </Task>
+    <Task id="12" name="AddRequestToCartable" description="" enabled="true" isCommon="true">
+      <Setting name="type" value="commonTask" />
+      <Setting name="کاربر" value="[81]" />
+      <Setting name="گروه کاربری" value="" />
+    </Task>
+  </Tasks>
+  <ExecutionGraph>
+    <Task id="12" index="12">
+      <Parent id="-1" />
+    </Task>
+    <If id="1000" parent="12" if="1" index="1">
+      <Do>
+        <If id="1001" parent="-1" if="6" index="6">
+          <Do>
+            <Task id="7" index="7">
+              <Parent id="-1" />
+            </Task>
+            <If id="1002" parent="7" if="8" index="8">
+              <Do>
+                <Task id="10" index="10">
+                  <Parent id="-1" />
+                </Task>
+              </Do>
+              <Else>
+                <Task id="11" index="11">
+                  <Parent id="-1" />
+                </Task>
+              </Else>
+            </If>
+          </Do>
+          <Else>
+            <Task id="9" index="9">
+              <Parent id="-1" />
+            </Task>
+          </Else>
+        </If>
+      </Do>
+      <Else>
+        <Task id="5" index="5">
+          <Parent id="-1" />
+        </Task>
+      </Else>
+    </If>
+  </ExecutionGraph>
+</Workflow>

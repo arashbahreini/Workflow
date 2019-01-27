@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Workflow id="6" name="تغییر اطلاعات شاپرکی پذیرنده" description="" xmlns="urn:workflow-schema">
+  <Settings>
+    <Setting name="launchType" value="trigger" />
+    <Setting name="enabled" value="true" />
+    <Setting name="period" value="00.00:00:00" />
+    <Setting name="version" value="0" />
+    <Setting name="deadLine" value="370" />
+  </Settings>
+  <Tasks>
+    <Task id="1" name="CallKhadamat" description="" enabled="true" isCommon="false">
+      <Setting name="type" value="if" />
+      <Setting name="زمان لازم" value="180" />
+    </Task>
+    <Task id="2" name="CallShaparakKhadamat" description="" enabled="true" isCommon="false">
+      <Setting name="type" value="if" />
+      <Setting name="زمان لازم" value="180" />
+    </Task>
+    <Task id="3" name="InternalService" description="" enabled="true" isCommon="false">
+      <Setting name="type" value="task" />
+      <Setting name="زمان لازم" value="5" />
+    </Task>
+    <Task id="4" name="Forward" description="" enabled="true" isCommon="true">
+      <Setting name="type" value="commonTask" />
+      <Setting name="کاربر" value="[1]" />
+      <Setting name="گروه کاربری" value="" />
+    </Task>
+    <Task id="5" name="Forward" description="" enabled="true" isCommon="true">
+      <Setting name="type" value="commonTask" />
+      <Setting name="کاربر" value="[24]" />
+      <Setting name="گروه کاربری" value="" />
+    </Task>
+  </Tasks>
+  <ExecutionGraph>
+    <If id="1000" parent="-1" if="1" index="1">
+      <Do>
+        <If id="1001" parent="-1" if="2" index="2">
+          <Do>
+            <Task id="3" index="3">
+              <Parent id="-1" />
+            </Task>
+          </Do>
+          <Else>
+            <Task id="4" index="4">
+              <Parent id="-1" />
+            </Task>
+          </Else>
+        </If>
+      </Do>
+      <Else>
+        <Task id="5" index="5">
+          <Parent id="-1" />
+        </Task>
+      </Else>
+    </If>
+  </ExecutionGraph>
+</Workflow>
