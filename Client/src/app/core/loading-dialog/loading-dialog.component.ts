@@ -29,10 +29,9 @@ export class LoadingService {
         }
       });
     }, 1);
-
   }
 
   stop() {
-    this.dialog.closeAll();
+    setTimeout(() => { this.dialog.closeAll(); }, 1);
   }
 }

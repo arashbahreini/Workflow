@@ -1,5 +1,5 @@
 
-import {throwError as observableThrowError,  Observable } from 'rxjs';
+import { throwError as observableThrowError, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { WorkFlowModel } from '../model/workflow.model';
 import { Http, Headers, Response, RequestOptions, RequestMethod } from '@angular/http';
@@ -12,6 +12,7 @@ import { version } from 'punycode';
 import { IdVersionModel } from '../model/id-version.model';
 import { CommonTaskModel } from '../model/common-task.model';
 import { TaskTypeModel } from '../model/task-type.model';
+import { ResultModel } from '../model/result-model';
 
 @Injectable()
 export class WorkflowService {

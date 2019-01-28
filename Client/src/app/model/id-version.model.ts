@@ -1,4 +1,4 @@
 export class IdVersionModel {
-    public Id: string;
-    public Version: string;
+    public id: string;
+    public version: string;
 }

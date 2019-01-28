@@ -108,9 +108,6 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.getTaskTypes();
-    this.getEmploys();
-    this.getRoles();
-
     if (this.workFlowId) {
       this.getWorkflow();
     } else {
@@ -126,44 +123,6 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
     this.graphInitializer();
   }
 
-  getEmploys() {
-    this.employs = [];
-    this.workflowService.getEmploys().subscribe(
-      (res: any) => {
-        if (res) {
-          if (res.length > 0) {
-            res.forEach(element => {
-              this.employs.push({
-                label: this.employeLogicService.getEmploysFullName(element),
-                value: element.Id
-              });
-            });
-          }
-        }
-      },
-      (error: any) => { }
-    );
-  }
-
-  getRoles() {
-    this.roles = [];
-    this.workflowService.getRoles().subscribe(
-      (res: any) => {
-        if (res) {
-          if (res.length > 0) {
-            res.forEach(element => {
-              this.roles.push({
-                value: element.ID,
-                label: element.Title
-              });
-            });
-          }
-        }
-      },
-      (error: any) => { }
-    );
-  }
-
   filterEmployMultiple(event, selectedUsers: string[]) {
     this.filteredEmployes = this.filterEmployes(event.query, this.employs);
     for (const item of selectedUsers) {
@@ -175,29 +134,29 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
   }
 
   changeTaskInList() {
-    this.task.PersianName = this.taskName.PersianName;
-    this.task.Name = this.taskName.Name;
-    this.task.isIf = this.taskName.Type === 'if';
-    this.task.IsCommon = this.taskName.Type === 'commonTask';
-    if (this.task.Name === 'JumpTo') {
-      this.taskNamesForJump = this.workFlow.Graph.nodeDataArray.filter(x => x.key !== this.task.key);
+    this.task.persianName = this.taskName.persianName;
+    this.task.name = this.taskName.name;
+    this.task.isIf = this.taskName.type === 'if';
+    this.task.isCommon = this.taskName.type === 'commonTask';
+    if (this.task.name === 'JumpTo') {
+      this.taskNamesForJump = this.workFlow.graph.nodeDataArray.filter(x => x.key !== this.task.key);
       this.taskNamesForJump = this.taskNamesForJump.filter(x => x.text !== 'شروع مجدد از تسک مشخص شده');
     }
-    if (this.task.Name === 'StartWorkflow') {
+    if (this.task.name === 'StartWorkflow') {
       this.getWorkflows();
     }
 
-    this.workflowService.getSettingNames(this.task.Name).subscribe(
+    this.workflowService.getSettingNames(this.task.name).subscribe(
       (res: string[]) => {
-        this.task.Settings = [];
+        this.task.settings = [];
         for (let i = 0; i < res.length; i++) {
-          this.task.Settings.push({
-            Name: res[i],
-            Value: res[i] === 'type' ? this.taskNames.find(x => x.Name === this.task.Name).Type : '',
-            Attributes: res,
+          this.task.settings.push({
+            name: res[i],
+            value: res[i] === 'type' ? this.taskNames.find(x => x.name === this.task.name).type : '',
+            attributes: res,
             isNewSetting: true,
-            Roles: [],
-            Users: []
+            roles: [],
+            users: []
           });
         }
       }, (error: any) => {
@@ -212,7 +171,7 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
     this.workflowService.getWorkFlows().subscribe(
       (res: WorkFlowModel[]) => {
         this.workflows = this.workFlowId ?
-          res.filter(x => x.Id !== this.workFlowId) :
+          res.filter(x => x.id !== this.workFlowId) :
           res;
         this.loading.stop();
       }, (error: any) => {
@@ -253,22 +212,6 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
     }
     return filtered;
   }
-
-  // onSelectEmploy(emp: any) {
-  //   const tempList = [];
-  //   for (let i = 0; i < emp.length; i++) {
-  //     tempList.push(this.employs.find(x => x.FullName === emp[i]).Id);
-  //   }
-  //   this.task.Settings.find(x => x.Name === 'کاربر').Value = JSON.stringify(tempList);
-  // }
-
-  // onSelectRole(role: any) {
-  //   const tempList = [];
-  //   for (let i = 0; i < role.length; i++) {
-  //     tempList.push(this.roles.find(x => x.Title === role[i]).ID);
-  //   }
-  //   this.task.Settings.find(x => x.Name === 'گروه کاربری').Value = JSON.stringify(tempList);
-  // }
 
   refreshPage() {
   }
@@ -428,20 +371,20 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
 
     this.myDiagram.zoomToFit();
 
-    if (!this.workFlow.Graph) {
-      this.workFlow.Graph = new GraphModel();
+    if (!this.workFlow.graph) {
+      this.workFlow.graph = new GraphModel();
     }
-    this.workFlow.Graph.class = 'go.GraphLinksModel';
-    this.workFlow.Graph.nodeKeyProperty = 'key';
+    this.workFlow.graph.class = 'go.graphLinksModel';
+    this.workFlow.graph.nodeKeyProperty = 'key';
     this.myDiagram.model = new go.Model();
 
-    this.myDiagram.model = go.Model.fromJson(JSON.stringify(this.workFlow.Graph));
+    this.myDiagram.model = go.Model.fromJson(JSON.stringify(this.workFlow.graph));
   }
 
   showUserSelector(settings: SettingModel[]) {
-    if (settings.find(x => x.Name === 'getUserFromModel')) {
-      if (settings.find(x => x.Name === 'getUserFromModel').Value.toString() === 'true' ||
-        settings.find(x => x.Name === 'getUserFromModel').Value.toString() === 'True') {
+    if (settings.find(x => x.name === 'getUserFromModel')) {
+      if (settings.find(x => x.name === 'getUserFromModel').value.toString() === 'true' ||
+        settings.find(x => x.name === 'getUserFromModel').value.toString() === 'True') {
         return false;
       }
     }
@@ -450,27 +393,27 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
 
   deleteNode(e, obj) {
     const node: TaskModel = obj.part.adornedPart.data;
-    this.workFlow.Graph.linkDataArray = JSON.parse(this.myDiagram.model.toJson()).linkDataArray;
-    this.workFlow.Graph.nodeDataArray = JSON.parse(this.myDiagram.model.toJson()).nodeDataArray;
-    this.workFlow.Graph.class = JSON.parse(this.myDiagram.model.toJson()).class;
-    this.workFlow.Graph.nodeDataArray.splice(this.workFlow.Graph.nodeDataArray.findIndex(x => x.key === node.key), 1);
-    this.workFlow.Graph.linkDataArray = this.graphLogicService.removeLinksOfRemovedNode(this.workFlow, node);
-    if (this.workFlow.Graph.whileGroups) {
-      this.workFlow.Graph.whileGroups = this.graphLogicService.removeWhileFromWhileGroup(this.workFlow, node);
+    this.workFlow.graph.linkDataArray = JSON.parse(this.myDiagram.model.toJson()).linkDataArray;
+    this.workFlow.graph.nodeDataArray = JSON.parse(this.myDiagram.model.toJson()).nodeDataArray;
+    this.workFlow.graph.class = JSON.parse(this.myDiagram.model.toJson()).class;
+    this.workFlow.graph.nodeDataArray.splice(this.workFlow.graph.nodeDataArray.findIndex(x => x.key === node.key), 1);
+    this.workFlow.graph.linkDataArray = this.graphLogicService.removeLinksOfRemovedNode(this.workFlow, node);
+    if (this.workFlow.graph.whileGroups) {
+      this.workFlow.graph.whileGroups = this.graphLogicService.removeWhileFromWhileGroup(this.workFlow, node);
     }
-    this.workFlow.Tasks = this.taskLogicService.removeTaskFromTaskList(this.workFlow.Tasks, node.taskId);
-    this.workFlow.NewVersion = true;
+    this.workFlow.tasks = this.taskLogicService.removeTaskFromTaskList(this.workFlow.tasks, node.taskId);
+    this.workFlow.newVersion = true;
     this.workFlow.isGraphEdited = true;
 
-    if (this.workFlow.Graph.nodeDataArray.find(x => x.doNodeId === node.key)) {
-      this.workFlow.Graph.nodeDataArray.find(x => x.doNodeId === node.key).doNodeId = null;
+    if (this.workFlow.graph.nodeDataArray.find(x => x.doNodeId === node.key)) {
+      this.workFlow.graph.nodeDataArray.find(x => x.doNodeId === node.key).doNodeId = null;
     }
 
-    if (this.workFlow.Graph.nodeDataArray.find(x => x.elseNodeId === node.key)) {
-      this.workFlow.Graph.nodeDataArray.find(x => x.elseNodeId === node.key).elseNodeId = null;
+    if (this.workFlow.graph.nodeDataArray.find(x => x.elseNodeId === node.key)) {
+      this.workFlow.graph.nodeDataArray.find(x => x.elseNodeId === node.key).elseNodeId = null;
     }
 
-    this.myDiagram.model = go.Model.fromJson(this.workFlow.Graph);
+    this.myDiagram.model = go.Model.fromJson(this.workFlow.graph);
   }
 
   openEditPanel(e, obj) {
@@ -479,15 +422,15 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
     this.task = new TaskModel();
     this.showSaveTaskPanel = true;
     this.task = JSON.parse(JSON.stringify(obj.part.adornedPart.data));
-    this.task.Description = obj.part.adornedPart.data.description;
-    this.task.PersianName = this.task.text;
-    this.task.Name = this.workFlow.Tasks.find(x => x.Id === this.task.taskId).Name;
-    this.task.Settings = JSON.parse(JSON.stringify(this.workFlow.Tasks.find(x => x.Id === this.task.taskId).Settings));
+    this.task.description = obj.part.adornedPart.data.description;
+    this.task.persianName = this.task.text;
+    this.task.name = this.workFlow.tasks.find(x => x.id === this.task.taskId).name;
+    this.task.settings = JSON.parse(JSON.stringify(this.workFlow.tasks.find(x => x.id === this.task.taskId).settings));
     const linkToTask =
-      this.workFlow.Graph.linkDataArray.find(x => x.to === this.task.key) ?
-        this.workFlow.Graph.linkDataArray.find(x => x.to === this.task.key) :
+      this.workFlow.graph.linkDataArray.find(x => x.to === this.task.key) ?
+        this.workFlow.graph.linkDataArray.find(x => x.to === this.task.key) :
         new LinkDataArrayModel();
-    const parent = this.workFlow.Graph.nodeDataArray.find(x => x.key === linkToTask.from);
+    const parent = this.workFlow.graph.nodeDataArray.find(x => x.key === linkToTask.from);
     this.task.parentTask = new TaskModel();
     this.task.parentTask.text = parent ? parent.text : '';
 
@@ -497,7 +440,7 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
       this.taskType = this.taskTypes.find(x => x.name === 'if');
     } else if (this.task.isWhile) {
       this.taskType = this.taskTypes.find(x => x.name === 'while');
-    } else if (this.task.IsCommon) {
+    } else if (this.task.isCommon) {
       this.taskType = this.taskTypes.find(x => x.name === 'commonTask');
     } else if (this.task.isSwitch) {
       this.taskType = this.taskTypes.find(x => x.name === 'switch');
@@ -505,39 +448,38 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
       this.taskType = this.taskTypes.find(x => x.name === 'task');
     }
     this.changeTaskTypeInList();
-    // this.taskName = this.taskNames.find(x => x.Name === this.task.Name);
 
-    if (this.task.Settings.find(x => x.Name === 'کاربر')) {
-      if (this.workFlow.Tasks.find(x => x.Id === this.task.taskId).Settings.find(x => x.Name === 'کاربر').Value === '') {
-        this.task.Settings.find(x => x.Name === 'کاربر').Value = [];
+    if (this.task.settings.find(x => x.name === 'کاربر')) {
+      if (this.workFlow.tasks.find(x => x.id === this.task.taskId).settings.find(x => x.name === 'کاربر').value === '') {
+        this.task.settings.find(x => x.name === 'کاربر').value = [];
       }
-      if (typeof this.workFlow.Tasks.find(x => x.Id === this.task.taskId).Settings.find(x => x.Name === 'کاربر').Value === 'string') {
-        if (this.workFlow.Tasks.find(x => x.Id === this.task.taskId).Settings.find(x => x.Name === 'کاربر').Value === '') {
-          this.workFlow.Tasks.find(x => x.Id === this.task.taskId).Settings.find(x => x.Name === 'کاربر').Value = '[]';
+      if (typeof this.workFlow.tasks.find(x => x.id === this.task.taskId).settings.find(x => x.name === 'کاربر').value === 'string') {
+        if (this.workFlow.tasks.find(x => x.id === this.task.taskId).settings.find(x => x.name === 'کاربر').value === '') {
+          this.workFlow.tasks.find(x => x.id === this.task.taskId).settings.find(x => x.name === 'کاربر').value = '[]';
         }
-        this.task.Settings.find(x => x.Name === 'کاربر').Value
-          = JSON.parse(this.workFlow.Tasks.find(x => x.Id === this.task.taskId).Settings.find(x => x.Name === 'کاربر').Value);
+        this.task.settings.find(x => x.name === 'کاربر').value
+          = JSON.parse(this.workFlow.tasks.find(x => x.id === this.task.taskId).settings.find(x => x.name === 'کاربر').value);
       }
     }
-    if (this.task.Settings.find(x => x.Name === 'گروه کاربری')) {
-      if (this.workFlow.Tasks.find(x => x.Id === this.task.taskId).Settings.find(x => x.Name === 'گروه کاربری').Value === '') {
-        this.task.Settings.find(x => x.Name === 'گروه کاربری').Value = [];
+    if (this.task.settings.find(x => x.name === 'گروه کاربری')) {
+      if (this.workFlow.tasks.find(x => x.id === this.task.taskId).settings.find(x => x.name === 'گروه کاربری').value === '') {
+        this.task.settings.find(x => x.name === 'گروه کاربری').value = [];
       }
-      if (typeof this.workFlow.Tasks.find(x => x.Id === this.task.taskId).Settings.find(x => x.Name === 'گروه کاربری').Value === 'string') {
-        if (this.workFlow.Tasks.find(x => x.Id === this.task.taskId).Settings.find(x => x.Name === 'گروه کاربری').Value === '') {
-          this.workFlow.Tasks.find(x => x.Id === this.task.taskId).Settings.find(x => x.Name === 'گروه کاربری').Value = '[]';
+      if (typeof this.workFlow.tasks.find(x => x.id === this.task.taskId).settings.find(x => x.name === 'گروه کاربری').value === 'string') {
+        if (this.workFlow.tasks.find(x => x.id === this.task.taskId).settings.find(x => x.name === 'گروه کاربری').value === '') {
+          this.workFlow.tasks.find(x => x.id === this.task.taskId).settings.find(x => x.name === 'گروه کاربری').value = '[]';
         }
-        this.task.Settings.find(x => x.Name === 'گروه کاربری').Value
-          = JSON.parse(this.workFlow.Tasks.find(x => x.Id === this.task.taskId).Settings.find(x => x.Name === 'گروه کاربری').Value);
+        this.task.settings.find(x => x.name === 'گروه کاربری').value
+          = JSON.parse(this.workFlow.tasks.find(x => x.id === this.task.taskId).settings.find(x => x.name === 'گروه کاربری').value);
       }
     }
 
-    if (this.task.Name === 'JumpTo') {
-      const nodes = this.workFlow.Graph.nodeDataArray.filter(x => x.key !== this.task.key);
+    if (this.task.name === 'JumpTo') {
+      const nodes = this.workFlow.graph.nodeDataArray.filter(x => x.key !== this.task.key);
       this.taskNamesForJump = nodes.filter(x => x.text !== 'شروع مجدد از تسک مشخص شده');
       this.loading.stop();
     }
-    if (this.task.Name === 'StartWorkflow') {
+    if (this.task.name === 'StartWorkflow') {
       this.getWorkflows();
     }
     this.sidenav.open();
@@ -558,27 +500,27 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
     this.e = e;
     this.linkTasks = [];
     this.task.parentTask = obj.part.adornedPart.data;
-    this.task.parentTask.PersianName = this.task.parentTask.text;
-    this.task.parentTask.Name = this.workFlow.Tasks.find(x => x.Id === this.task.parentTask.taskId).Name;
+    this.task.parentTask.persianName = this.task.parentTask.text;
+    this.task.parentTask.name = this.workFlow.tasks.find(x => x.id === this.task.parentTask.taskId).name;
 
     // if (this.task.isIf) {
     //   this.task.parentTask = new TaskModel();
     //   this.task.parentTask.isIf = true;
     // }
 
-    const validation = this.graphValidationService.openLinkPanelValidation(this.workFlow.Graph, this.task);
+    const validation = this.graphValidationService.openLinkPanelValidation(this.workFlow.graph, this.task);
     if (validation.success === false) {
       this.showErrorMessage(validation.messages);
       return;
     }
-    this.linkTasks = this.workFlow.Graph.nodeDataArray.filter(x => x.key !== this.task.key);
+    this.linkTasks = this.workFlow.graph.nodeDataArray.filter(x => x.key !== this.task.key);
     this.showLinkPanel = true;
     // this.taskEditMode = true;
     this.sidenav.open();
   }
 
   saveLink() {
-    const validation = this.graphValidationService.saveLink(this.workFlow.Graph, this.task, this.linkTask);
+    const validation = this.graphValidationService.saveLink(this.workFlow.graph, this.task, this.linkTask);
     if (validation.success === false) {
       this.showErrorMessage(validation.messages);
       return;
@@ -590,7 +532,7 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
     if (this.task.parentTask.isIf) {
       link.text = this.task.ifResult ? 'بله' : 'خیر';
 
-      const task = this.workFlow.Graph.nodeDataArray.find(x => x.key === this.task.parentTask.key);
+      const task = this.workFlow.graph.nodeDataArray.find(x => x.key === this.task.parentTask.key);
       if (this.task.ifResult === true) {
         task.doNodeId = this.linkTask.key;
       } else if (this.task.ifResult === false) {
@@ -598,13 +540,13 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
       }
     }
 
-    if (this.workFlow.Graph.nodeDataArray.find(x => x.key === link.to).isRoot) {
-      this.workFlow.Graph.nodeDataArray.find(x => x.key === link.to).isRoot = false;
-      this.workFlow.Graph.nodeDataArray.find(x => x.key === link.from).isRoot = true;
+    if (this.workFlow.graph.nodeDataArray.find(x => x.key === link.to).isRoot) {
+      this.workFlow.graph.nodeDataArray.find(x => x.key === link.to).isRoot = false;
+      this.workFlow.graph.nodeDataArray.find(x => x.key === link.from).isRoot = true;
     }
 
-    this.workFlow.Graph.linkDataArray.push(link);
-    this.myDiagram.model = go.Model.fromJson(JSON.stringify(this.workFlow.Graph));
+    this.workFlow.graph.linkDataArray.push(link);
+    this.myDiagram.model = go.Model.fromJson(JSON.stringify(this.workFlow.graph));
     this.cancelAddTask();
   }
 
@@ -621,9 +563,9 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
     // TO SET isDefaultInSwitch FIELD
     this.task.isDefaultInSwitch = false;
     if (this.task.parentTask.isSwitch) {
-      if (this.workFlow.Graph.linkDataArray) {
-        this.workFlow.Graph.linkDataArray.filter(x => x.from === this.task.parentTask.key).forEach(element => {
-          const switchChield = this.workFlow.Graph.nodeDataArray.find(x => x.key === element.to);
+      if (this.workFlow.graph.linkDataArray) {
+        this.workFlow.graph.linkDataArray.filter(x => x.from === this.task.parentTask.key).forEach(element => {
+          const switchChield = this.workFlow.graph.nodeDataArray.find(x => x.key === element.to);
           if (switchChield.isDefault) {
             this.task.isDefaultInSwitch = true;
           }
@@ -634,7 +576,7 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
     if (this.task.parentTask.isSwitch) {
       this.task.isInSwitch = true;
     }
-    const validation = this.graphValidationService.openAddPanelValidation(this.workFlow.Graph, this.task, this.workFlow.Graph.whileGroups);
+    const validation = this.graphValidationService.openAddPanelValidation(this.workFlow.graph, this.task, this.workFlow.graph.whileGroups);
     if (validation.success === false) {
       this.showErrorMessage(validation.messages);
       return;
@@ -658,7 +600,7 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
     }
 
     this.checkAndSetRoot();
-    if (this.workFlow.IsNew) {
+    if (this.workFlow.isNew) {
       this.saveNewWorkflow();
     } else {
       this.checkSaveExistWorkflow();
@@ -666,9 +608,9 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
   }
 
   checkAndSetRoot() {
-    if (!this.workFlow.Graph.nodeDataArray.find(x => x.isRoot)) {
-      this.workFlow.Graph.nodeDataArray.forEach(element => {
-        if (!this.workFlow.Graph.linkDataArray.find(x => x.to === element.key)) {
+    if (!this.workFlow.graph.nodeDataArray.find(x => x.isRoot)) {
+      this.workFlow.graph.nodeDataArray.forEach(element => {
+        if (!this.workFlow.graph.linkDataArray.find(x => x.to === element.key)) {
           element.isRoot = true;
         }
       });
@@ -676,19 +618,19 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
   }
 
   // unselectEmploy(event: string, task: TaskModel) {
-  //   const users = JSON.parse(task.Settings.find(x => x.Name === 'کاربر').Value);
-  //   const user = this.employs.find(x => x.FullName === event).Id;
+  //   const users = JSON.parse(task.settings.find(x => x.name === 'کاربر').value);
+  //   const user = this.employs.find(x => x.FullName === event).id;
   //   const index = users.indexOf(user);
   //   users.splice(index, 1);
-  //   this.task.Settings.find(x => x.Name === 'کاربر').Value = JSON.stringify(users);
+  //   this.task.settings.find(x => x.name === 'کاربر').value = JSON.stringify(users);
   // }
 
   // unselectRole(event: string, task: TaskModel) {
-  //   const roles = JSON.parse(task.Settings.find(x => x.Name === 'گروه کاربری').Value);
+  //   const roles = JSON.parse(task.settings.find(x => x.name === 'گروه کاربری').value);
   //   const role = this.roles.find(x => x.Title === event).ID;
   //   const index = roles.indexOf(role);
   //   roles.splice(index, 1);
-  //   this.task.Settings.find(x => x.Name === 'گروه کاربری').Value = JSON.stringify(roles);
+  //   this.task.settings.find(x => x.name === 'گروه کاربری').value = JSON.stringify(roles);
   // }
 
   showRules(setting: SettingModel) {
@@ -715,7 +657,7 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
       this.workFlow,
       this.originalWorkFlow);
 
-    if (this.workFlow.NewVersion) {
+    if (this.workFlow.newVersion) {
       const dialogRef = this.dialog.open(VersionConfirmDialogComponent, {
         data: this.workFlow.versionChangeList,
         width: '50%',
@@ -723,7 +665,7 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
       });
       dialogRef.afterClosed().subscribe((res: VersionConfirmModel) => {
         if (res.success) {
-          this.workFlow.VersionDescription = res.message;
+          this.workFlow.versionDescription = res.message;
           this.saveExistWorkFlow();
         }
       });
@@ -733,8 +675,8 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
   }
 
   saveExistWorkFlow() {
-    // this.workFlow.Graph.nodeDataArray = JSON.parse(this.myDiagram.model.toJson()).nodeDataArray;
-    // this.workFlow.Graph.linkDataArray = JSON.parse(this.myDiagram.model.toJson()).linkDataArray;
+    // this.workFlow.graph.nodeDataArray = JSON.parse(this.myDiagram.model.toJson()).nodeDataArray;
+    // this.workFlow.graph.linkDataArray = JSON.parse(this.myDiagram.model.toJson()).linkDataArray;
     this.errorMessages = [];
     this.properLinks();
     const req = JSON.stringify(this.workFlow);
@@ -745,7 +687,7 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
           return;
         }
         this.errorMessages.push({ severity: 'success', summary: 'پیغام موفق', detail: 'فرایند با موفقیت ذخیره شد', });
-        this.router.navigate(['../../designer/config/' + res.Id + '/' + res.Version]);
+        this.router.navigate(['../../designer/config/' + res.id + '/' + res.Version]);
         this.workFlowVersion = res.Version;
         this.getWorkflow();
       }, (error: any) => {
@@ -755,9 +697,9 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
   }
 
   properLinks() {
-    const linkDataArray = this.workFlow.Graph.linkDataArray;
-    const nodeDataArray = this.workFlow.Graph.nodeDataArray;
-    if (!this.workFlow.Graph.linkDataArray) {
+    const linkDataArray = this.workFlow.graph.linkDataArray;
+    const nodeDataArray = this.workFlow.graph.nodeDataArray;
+    if (!this.workFlow.graph.linkDataArray) {
       return;
     }
     while (linkDataArray.filter(x => x.from > x.to).length > 0) {
@@ -771,13 +713,13 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
         // TO SET NODE KEYS
         // const nodeToChange = nodeDataArray.find(x => x.key === targetLink.to);
         // if (nodeToChange.text === 'شروع مجدد از تسک مشخص شده') {
-        //   const task = this.workFlow.Tasks.find(x => x.Id === nodeToChange.taskId);
-        //   task.Settings.find(x => x.Value === targetLink.to).Value = from;
+        //   const task = this.workFlow.tasks.find(x => x.id === nodeToChange.taskId);
+        //   task.settings.find(x => x.value === targetLink.to).value = from;
         // }
-        this.workFlow.Tasks.forEach(element => {
-          if (element.Name === 'JumpTo') {
-            if (element.Settings.find(x => x.Value === targetLink.to.toString())) {
-              element.Settings.find(x => x.Value === targetLink.to.toString()).Value = from;
+        this.workFlow.tasks.forEach(element => {
+          if (element.name === 'JumpTo') {
+            if (element.settings.find(x => x.value === targetLink.to.toString())) {
+              element.settings.find(x => x.value === targetLink.to.toString()).value = from;
             }
           }
         });
@@ -807,16 +749,16 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
   }
 
   saveNewWorkflow() {
-    this.workFlow.Graph.linkDataArray = JSON.parse(this.myDiagram.model.toJson()).linkDataArray;
+    this.workFlow.graph.linkDataArray = JSON.parse(this.myDiagram.model.toJson()).linkDataArray;
     this.errorMessages = [];
-    this.workFlow.Path += this.workFlow.Name;
-    this.workFlow.IsNew = true;
+    this.workFlow.path += this.workFlow.name;
+    this.workFlow.isNew = true;
     this.properLinks();
     this.workflowService.saveWorkflow(this.workFlow).subscribe(
       (res: IdVersionModel) => {
         if (res) {
           this.errorMessages.push({ severity: 'success', summary: 'پیغام موفق', detail: 'فرایند با موفقیت ذخیره شد', });
-          this.router.navigate(['../../designer/config/' + res.Id + '/' + 0]);
+          this.router.navigate(['../../designer/config/' + res.id + '/' + 0]);
           this.getWorkflow();
         } else {
           this.errorMessages.push({ severity: 'error', summary: 'پیغام خطا', detail: 'اشکال سیستمی وجود دارد', });
@@ -828,8 +770,8 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
   }
 
   addTask() {
-    if (!this.workFlow.Graph.whileGroups) {
-      this.workFlow.Graph.whileGroups = [];
+    if (!this.workFlow.graph.whileGroups) {
+      this.workFlow.graph.whileGroups = [];
     }
     const taskValidation = this.taskValidationService.addTaskValidation(this.task);
     if (taskValidation.success === false) {
@@ -865,49 +807,49 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
       }
     }
 
-    if (this.workFlow.Graph.nodeDataArray.length === 0) {
+    if (this.workFlow.graph.nodeDataArray.length === 0) {
       this.task.isRoot = true;
     }
 
-    this.task.Id = this.generateTaskId();
+    this.task.id = this.generateTaskId();
     this.task.key = this.generateNodeKey();
-    if (this.task.Settings.find(x => x.Name === 'کاربر')) {
-      if (this.task.Settings.find(x => x.Name === 'کاربر').Value === '') {
-        this.task.Settings.find(x => x.Name === 'کاربر').Value = '[]';
+    if (this.task.settings.find(x => x.name === 'کاربر')) {
+      if (this.task.settings.find(x => x.name === 'کاربر').value === '') {
+        this.task.settings.find(x => x.name === 'کاربر').value = '[]';
       } else {
-        this.task.Settings.find(x => x.Name === 'کاربر').Value = JSON.stringify(this.task.Settings.find(x => x.Name === 'کاربر').Value);
+        this.task.settings.find(x => x.name === 'کاربر').value = JSON.stringify(this.task.settings.find(x => x.name === 'کاربر').value);
       }
     }
-    if (this.task.Settings.find(x => x.Name === 'گروه کاربری')) {
-      if (this.task.Settings.find(x => x.Name === 'گروه کاربری').Value === '') {
-        this.task.Settings.find(x => x.Name === 'گروه کاربری').Value = '[]';
+    if (this.task.settings.find(x => x.name === 'گروه کاربری')) {
+      if (this.task.settings.find(x => x.name === 'گروه کاربری').value === '') {
+        this.task.settings.find(x => x.name === 'گروه کاربری').value = '[]';
       } else {
-        this.task.Settings.find(x => x.Name === 'گروه کاربری').Value =
-          JSON.stringify(this.task.Settings.find(x => x.Name === 'گروه کاربری').Value);
+        this.task.settings.find(x => x.name === 'گروه کاربری').value =
+          JSON.stringify(this.task.settings.find(x => x.name === 'گروه کاربری').value);
       }
     }
-    this.workFlow.Tasks.push(this.task);
+    this.workFlow.tasks.push(this.task);
 
-    this.workFlow.Graph.linkDataArray = JSON.parse(this.myDiagram.model.toJson()).linkDataArray;
-    this.workFlow.Graph.nodeDataArray = JSON.parse(this.myDiagram.model.toJson()).nodeDataArray;
-    this.workFlow.Graph.class = JSON.parse(this.myDiagram.model.toJson()).class;
+    this.workFlow.graph.linkDataArray = JSON.parse(this.myDiagram.model.toJson()).linkDataArray;
+    this.workFlow.graph.nodeDataArray = JSON.parse(this.myDiagram.model.toJson()).nodeDataArray;
+    this.workFlow.graph.class = JSON.parse(this.myDiagram.model.toJson()).class;
 
     if (this.task.isInSwitch) {
       if (this.task.isDefault) {
-        this.workFlow.Graph.linkDataArray.push({
+        this.workFlow.graph.linkDataArray.push({
           from: this.task.parentTask.key,
           to: this.task.key,
           text: 'پیش فرض'
         });
       } else if (this.task.parentTask.text === 'تسک چند شرطی کاربر ایجاد کننده') {
         const emp = this.employs.find(x => x.value === this.task.caseValue);
-        this.workFlow.Graph.linkDataArray.push({
+        this.workFlow.graph.linkDataArray.push({
           from: this.task.parentTask.key,
           to: this.task.key,
           text: emp.label
         });
       } else if (this.task.parentTask.text === 'تسک چند شرطی داینامیک') {
-        this.workFlow.Graph.linkDataArray.push({
+        this.workFlow.graph.linkDataArray.push({
           from: this.task.parentTask.key,
           to: this.task.key,
           text:
@@ -918,7 +860,7 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
       }
     } else {
       if (this.task.parentTask.key) {
-        this.workFlow.Graph.linkDataArray.push({
+        this.workFlow.graph.linkDataArray.push({
           from: this.task.parentTask.key,
           to: this.task.key,
           text: this.determineLinkText()
@@ -928,7 +870,7 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
 
     if (this.task.parentTask) {
       if (this.task.parentTask.isIf) {
-        const parent = this.workFlow.Graph.nodeDataArray.find(x => x.key === this.task.parentTask.key);
+        const parent = this.workFlow.graph.nodeDataArray.find(x => x.key === this.task.parentTask.key);
         if (this.task.ifResult === true) {
           parent.doNodeId = this.task.key;
         } else if (this.task.ifResult === false) {
@@ -939,7 +881,7 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
 
     if (this.task.parentTask) {
       if (this.task.parentTask.isWhile) {
-        const parent = this.workFlow.Graph.nodeDataArray.find(x => x.key === this.task.parentTask.key);
+        const parent = this.workFlow.graph.nodeDataArray.find(x => x.key === this.task.parentTask.key);
         if (this.task.whileResult === true) {
           parent.doNodeId = this.task.key;
         } else if (this.task.whileResult === false) {
@@ -948,26 +890,26 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
       }
     }
 
-    this.workFlow.Graph.nodeDataArray.push({
+    this.workFlow.graph.nodeDataArray.push({
       key: this.task.key,
-      text: this.task.PersianName,
+      text: this.task.persianName,
       color: this.determineNodeColor(),
-      Id: this.task.Id,
+      Id: this.task.id,
       isIf: this.task.isIf,
       isSwitch: this.task.isSwitch,
       isInSwitch: this.task.isInSwitch,
       isWhile: this.task.isWhile,
-      IsCommon: this.task.IsCommon,
-      description: this.task.Description,
+      IsCommon: this.task.isCommon,
+      description: this.task.description,
       loc: this.task.parentTask ? this.task.parentTask.taskId ? this.setLocation() : '' : '',
-      taskId: this.task.Id,
+      taskId: this.task.id,
       isInWhile: this.task.isInWhile ? true : false,
       caseValue: this.task.caseValue,
       isRoot: this.task.isRoot,
       isDefault: this.task.isDefault,
     });
 
-    this.myDiagram.model = go.Model.fromJson(this.workFlow.Graph);
+    this.myDiagram.model = go.Model.fromJson(this.workFlow.graph);
     console.log(this.task);
     this.cancelAddTask();
   }
@@ -1011,22 +953,22 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
   }
 
   generateNodeKey() {
-    if (!this.workFlow.Graph.nodeDataArray) {
-      this.workFlow.Graph.nodeDataArray = [];
+    if (!this.workFlow.graph.nodeDataArray) {
+      this.workFlow.graph.nodeDataArray = [];
     }
-    if (this.workFlow.Graph.nodeDataArray.length === 0) {
+    if (this.workFlow.graph.nodeDataArray.length === 0) {
       return 1;
     }
     const nodeKeys: number[] = [];
-    this.workFlow.Graph.nodeDataArray.forEach(element => {
+    this.workFlow.graph.nodeDataArray.forEach(element => {
       nodeKeys.push(element.key);
     });
     return Math.max(...nodeKeys) + 1;
   }
 
   public generateTaskId() {
-    if (this.workFlow.Tasks.length > 0) {
-      return Math.max(...this.workFlow.Tasks.map(x => x.Id)) + 1;
+    if (this.workFlow.tasks.length > 0) {
+      return Math.max(...this.workFlow.tasks.map(x => x.id)) + 1;
     } else {
       return 1;
     }
@@ -1046,28 +988,28 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    const graphValidation = this.graphValidationService.editNodeValidate(this.task, this.workFlow.Graph);
+    const graphValidation = this.graphValidationService.editNodeValidate(this.task, this.workFlow.graph);
     if (graphValidation.success === false) {
       this.showErrorMessage(graphValidation.messages);
       return;
     }
 
-    const node = this.workFlow.Graph.nodeDataArray.find(x => x.key === this.task.key);
-    node.text = this.task.PersianName;
+    const node = this.workFlow.graph.nodeDataArray.find(x => x.key === this.task.key);
+    node.text = this.task.persianName;
 
-    if (this.task.Settings.find(x => x.Name === 'کاربر')) {
-      if (this.task.Settings.find(x => x.Name === 'کاربر').Value === '') {
-        this.task.Settings.find(x => x.Name === 'کاربر').Value = '[]';
+    if (this.task.settings.find(x => x.name === 'کاربر')) {
+      if (this.task.settings.find(x => x.name === 'کاربر').value === '') {
+        this.task.settings.find(x => x.name === 'کاربر').value = '[]';
       } else {
-        this.task.Settings.find(x => x.Name === 'کاربر').Value = JSON.stringify(this.task.Settings.find(x => x.Name === 'کاربر').Value);
+        this.task.settings.find(x => x.name === 'کاربر').value = JSON.stringify(this.task.settings.find(x => x.name === 'کاربر').value);
       }
     }
-    if (this.task.Settings.find(x => x.Name === 'گروه کاربری')) {
-      if (this.task.Settings.find(x => x.Name === 'گروه کاربری').Value === '') {
-        this.task.Settings.find(x => x.Name === 'گروه کاربری').Value = '[]';
+    if (this.task.settings.find(x => x.name === 'گروه کاربری')) {
+      if (this.task.settings.find(x => x.name === 'گروه کاربری').value === '') {
+        this.task.settings.find(x => x.name === 'گروه کاربری').value = '[]';
       } else {
-        this.task.Settings.find(x => x.Name === 'گروه کاربری').Value =
-          JSON.stringify(this.task.Settings.find(x => x.Name === 'گروه کاربری').Value);
+        this.task.settings.find(x => x.name === 'گروه کاربری').value =
+          JSON.stringify(this.task.settings.find(x => x.name === 'گروه کاربری').value);
       }
     }
 
@@ -1075,15 +1017,15 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
       node.caseValue = this.task.caseValue;
     }
 
-    let task = this.workFlow.Tasks.find(x => x.Id === this.task.taskId);
+    let task = this.workFlow.tasks.find(x => x.id === this.task.taskId);
     task = this.task;
-    task.description = this.task.Description;
-    this.workFlow.Tasks.find(x => x.Id === this.task.taskId).Name = this.task.Name;
-    this.workFlow.Tasks.find(x => x.Id === this.task.taskId).PersianName = this.task.PersianName;
-    this.workFlow.Tasks.find(x => x.Id === this.task.taskId).Description = this.task.Description;
-    this.workFlow.Tasks.find(x => x.Id === this.task.taskId).Settings = this.task.Settings;
-    this.workFlow.Graph.nodeDataArray.find(x => x.key === this.task.key).description = this.task.Description;
-    this.myDiagram.model = go.Model.fromJson(JSON.stringify(this.workFlow.Graph));
+    task.description = this.task.description;
+    this.workFlow.tasks.find(x => x.id === this.task.taskId).name = this.task.name;
+    this.workFlow.tasks.find(x => x.id === this.task.taskId).persianName = this.task.persianName;
+    this.workFlow.tasks.find(x => x.id === this.task.taskId).description = this.task.description;
+    this.workFlow.tasks.find(x => x.id === this.task.taskId).settings = this.task.settings;
+    this.workFlow.graph.nodeDataArray.find(x => x.key === this.task.key).description = this.task.description;
+    this.myDiagram.model = go.Model.fromJson(JSON.stringify(this.workFlow.graph));
     this.cancelAddTask();
   }
 
@@ -1102,9 +1044,9 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
   }
 
   public getWorkflow() {
-    this.workFlow.Graph.nodeDataArray = [];
-    this.workFlow.Graph.linkDataArray = [];
-    this.workFlow.Graph.whileGroups = [];
+    this.workFlow.graph.nodeDataArray = [];
+    this.workFlow.graph.linkDataArray = [];
+    this.workFlow.graph.whileGroups = [];
 
     this.loading.start();
     this.workFlow = new WorkFlowModel();
@@ -1112,17 +1054,17 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
       (res: WorkFlowModel) => {
         this.workFlow = res;
         if (this.workFlow) {
-          this.workFlow.NewVersion = false;
+          this.workFlow.newVersion = false;
         }
-        this.workFlow.IsNew = false;
+        this.workFlow.isNew = false;
         this.originalWorkFlow = JSON.parse(JSON.stringify(this.workFlow));
-        if (this.workFlow.Graph) {
-          this.workFlow.Graph = this.workFlow.Graph;
+        if (this.workFlow.graph) {
+          this.workFlow.graph = this.workFlow.graph;
         }
         this.getLunchTypes();
         // this.fillTaskAutoComplete();
         // this.fillRoleAutocomplete();
-        this.myDiagram.model = go.Model.fromJson(this.workFlow.Graph);
+        this.myDiagram.model = go.Model.fromJson(this.workFlow.graph);
         this.loading.stop();
       }, (error: any) => {
         this.errorMessages.push({ severity: 'error', summary: 'پیغام خطا', detail: error, });
@@ -1140,16 +1082,13 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
     this.taskNames = [];
     this.workflowService.getTaskNames().subscribe(
       (res: TaskNameModel[]) => {
-        this.taskNames = res.filter(x => x.Type === this.taskType.name);
-        // TODO. HANDLE THIS ACTION IN SERVER SIDE
-        this.workFlow.Tasks = this.taskLogicService.fillTaskPersianNames(this.workFlow, this.taskNames);
+        this.taskNames = res.filter(x => x.type === this.taskType.name);
+        this.workFlow.tasks = this.taskLogicService.fillTaskPersianNames(this.workFlow, this.taskNames);
         if (this.showSaveTaskPanel) {
-          this.taskName = this.taskNames.find(x => x.Name === this.task.Name);
+          this.taskName = this.taskNames.find(x => x.name === this.task.name);
         }
-        // this.taskName = this.taskNames.find(x => x.Name === this.task.Name);
-
         this.task.isIf = this.taskType.name === 'if' ? true : false;
-        this.task.IsCommon = this.taskType.name === 'commonTask' ? true : false;
+        this.task.isCommon = this.taskType.name === 'commonTask' ? true : false;
         this.task.isWhile = this.taskType.name === 'while' ? true : false;
         this.task.isSwitch = this.taskType.name === 'switch' ? true : false;
         this.task.isTask = this.taskType.name === 'task' ? true : false;

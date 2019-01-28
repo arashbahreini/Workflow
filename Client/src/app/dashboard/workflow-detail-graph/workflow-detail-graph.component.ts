@@ -4,7 +4,7 @@ import { LoadingService } from '../../core/loading-dialog/loading-dialog.compone
 import { WorkFlowModel } from '../../model/workflow.model';
 import { DatePipe } from '@angular/common';
 import { PersianNumberPipe } from '../../pipes/persian-number.pipe';
-import * as go from "gojs";
+import * as go from 'gojs';
 import { GraphModel } from '../../model/graph.model';
 
 
@@ -43,22 +43,24 @@ export class WorkflowDetailGraphComponent implements OnInit {
       () => {
         this.loading.stop();
       }, () => this.loading.stop()
-    )
+    );
   }
 
   convertFields() {
-    this.workflowDetail.Graph.nodeDataArray.forEach(element => {
-      if (element.StartDate)
+    this.workflowDetail.graph.nodeDataArray.forEach(element => {
+      if (element.StartDate) {
         element.StartDateDescription = ' شروع در ' + this.persianNumberPipe.transform(element.StartDate);
-      if (element.EndDate)
+      }
+      if (element.EndDate) {
         element.EndDateDescription = ' پایان در ' + this.persianNumberPipe.transform(element.EndDate);
+      }
       if (element.DeadLine) {
         element.DeadLineDescription = 'مهلت انجام کار' + this.persianNumberPipe.transform(element.DeadLine) + ' دقیقه است .';
       }
 
     });
 
-    this.workflowDetail.Graph.nodeDataArray.forEach(element => {
+    this.workflowDetail.graph.nodeDataArray.forEach(element => {
       switch (element.Status) {
         case 'Success':
           element.color = '#24E83E';
@@ -86,103 +88,115 @@ export class WorkflowDetailGraphComponent implements OnInit {
 
   //#region graphInitializer
   public graphInitializer() {
-    var $ = go.GraphObject.make;
+    const $ = go.GraphObject.make;
     this.myDiagram =
       $(go.Diagram, this.element.nativeElement,  // must name or refer to the DIV HTML element
         {
           initialContentAlignment: go.Spot.Center,
-          "toolManager.mouseWheelBehavior": go.ToolManager.WheelZoom,
+          'toolManager.mouseWheelBehavior': go.ToolManager.WheelZoom,
           layout: $(go.LayeredDigraphLayout,
             {
               columnSpacing: 5,
               setsPortSpots: false,
-              direction : 90,
+              direction: 90,
               layerSpacing: 60
             })
         });
 
     this.myDiagram.nodeTemplate =
-      $(go.Node, "Auto",
-        new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
+      $(go.Node, 'Auto',
+        new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
         // define the node's outer shape, which will surround the TextBlock
-        $(go.Shape, "RoundedRectangle",
+        $(go.Shape, 'RoundedRectangle',
           {
             parameter1: 20,  // the corner has a large radius
-            fill: $(go.Brush, "Linear", { 0: "rgb(254, 201, 0)", 1: "rgb(254, 162, 0)" }),
+            fill: $(go.Brush, 'Linear', { 0: 'rgb(254, 201, 0)', 1: 'rgb(254, 162, 0)' }),
             stroke: null,
-            portId: "",  // this Shape is the Node's port, not the whole Node
-            cursor: "pointer",
+            portId: '',  // this Shape is the Node's port, not the whole Node
+            cursor: 'pointer',
             strokeWidth: 0
           },
         ),
         $(go.TextBlock,
           {
-            font: "bold 11pt IranianSansRegular, bold IranianSansRegular, IranianSansRegular",
+            font: 'bold 11pt IranianSansRegular, bold IranianSansRegular, IranianSansRegular',
             editable: true  // editing the text automatically updates the model data
           },
-          new go.Binding("text").makeTwoWay())
+          new go.Binding('text').makeTwoWay())
       );
 
     // define the Node template
     this.myDiagram.nodeTemplate =
-      $(go.Node, "Auto",
+      $(go.Node, 'Auto',
         {
           fromSpot: go.Spot.Right,
           toSpot: go.Spot.Left
         },
-        new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
+        new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
         // define the node's outer shape, which will surround the TextBlock
-        $(go.Shape, "RoundedRectangle",
+        $(go.Shape, 'RoundedRectangle',
           {
             parameter1: 20,  // the corner has a large radius
-            fill: $(go.Brush, "Linear", { 0: "rgb(254, 201, 0)", 1: "rgb(254, 162, 0)" }),
+            fill: $(go.Brush, 'Linear', { 0: 'rgb(254, 201, 0)', 1: 'rgb(254, 162, 0)' }),
             stroke: null,
-            portId: "",  // this Shape is the Node's port, not the whole Node
-            cursor: "pointer",
+            portId: '',  // this Shape is the Node's port, not the whole Node
+            cursor: 'pointer',
             strokeWidth: 0
           },
-          new go.Binding("fill", "color"),
+          new go.Binding('fill', 'color'),
         ),
-        $(go.Panel, "Table",
+        $(go.Panel, 'Table',
           { defaultAlignment: go.Spot.Right, margin: 4 },
           $(go.TextBlock,
             { row: 0, column: 100, columnSpan: 3, alignment: go.Spot.Center },
-            { font: "bold 12pt IranianSansRegular" }, new go.Binding("text", "key")),
-          $(go.TextBlock, "-",
+            { font: 'bold 12pt IranianSansRegular' }, new go.Binding('text', 'key')),
+          $(go.TextBlock, '-',
             { row: 0, column: 90 }),
-          $(go.TextBlock, "",
+          $(go.TextBlock, '',
             { row: 0, column: 80 }),
           $(go.TextBlock,
             { row: 0, column: 0 },
-            { font: "bold 12pt IranianSansRegular" }, new go.Binding("text")),
+            { font: 'bold 12pt IranianSansRegular' }, new go.Binding('text')),
           $(go.TextBlock,
-            new go.Binding("visible", "StartDateDescription", function (s) {
-              if (s) return true; else return false;
+            new go.Binding('visible', 'StartDateDescription', function (s) {
+              if (s) {
+                return true;
+              } else {
+                return false;
+              }
             }),
             { row: 2, alignment: go.Spot.Right },
-            { font: "bold 12pt IranianSansRegular" }, new go.Binding("text", "StartDateDescription")),
+            { font: 'bold 12pt IranianSansRegular' }, new go.Binding('text', 'StartDateDescription')),
           $(go.TextBlock,
-            new go.Binding("visible", "EndDateDescription", function (s) {
-              if (s) return true; else return false;
+            new go.Binding('visible', 'EndDateDescription', function (s) {
+              if (s) {
+                return true;
+              } else {
+                return false;
+              }
             }),
             { row: 3, alignment: go.Spot.Right },
-            { font: "bold 12pt IranianSansRegular" }, new go.Binding("text", "EndDateDescription")),
+            { font: 'bold 12pt IranianSansRegular' }, new go.Binding('text', 'EndDateDescription')),
           $(go.TextBlock,
-            new go.Binding("visible", "DeadLineDescription", function (s) {
-              if (s) return true; else return false;
+            new go.Binding('visible', 'DeadLineDescription', function (s) {
+              if (s) {
+                return true;
+              } else {
+                return false;
+              }
             }),
             { row: 1, alignment: go.Spot.Right },
-            { font: "bold 12pt IranianSansRegular" }, new go.Binding("text", "DeadLineDescription")),
+            { font: 'bold 12pt IranianSansRegular' }, new go.Binding('text', 'DeadLineDescription')),
         )
       );
 
     this.myDiagram.nodeTemplate.selectionAdornmentTemplate =
-      $(go.Adornment, "Spot",
-        $(go.Panel, "Auto",
-          $(go.Shape, { fill: null, stroke: "blue", strokeWidth: 2 }),
+      $(go.Adornment, 'Spot',
+        $(go.Panel, 'Auto',
+          $(go.Shape, { fill: null, stroke: 'blue', strokeWidth: 2 }),
           $(go.Placeholder)  // a Placeholder sizes itself to the selected Node
         ),
-        // the button to create a "next" node, at the top-right corner
+        // the button to create a 'next' node, at the top-right corner
       ); // end Adornment
 
     this.myDiagram.linkTemplate =
@@ -192,39 +206,41 @@ export class WorkflowDetailGraphComponent implements OnInit {
           reshapable: true, relinkableFrom: true, relinkableTo: true,
           toShortLength: 3
         },
-        new go.Binding("points").makeTwoWay(),
-        new go.Binding("curviness"),
+        new go.Binding('points').makeTwoWay(),
+        new go.Binding('curviness'),
         $(go.Shape,  // the link shape
           { strokeWidth: 1.5 }),
         $(go.Shape,  // the arrowhead
-          { toArrow: "standard", stroke: null }),
-        $(go.Panel, "Auto",
+          { toArrow: 'standard', stroke: null }),
+        $(go.Panel, 'Auto',
           $(go.Shape,  // the label background, which becomes transparent around the edges
             {
-              fill: $(go.Brush, "Radial",
-                { 0: "rgb(240, 240, 240)", 0.3: "rgb(240, 240, 240)", 1: "rgba(240, 240, 240, 0)" }),
+              fill: $(go.Brush, 'Radial',
+                { 0: 'rgb(240, 240, 240)', 0.3: 'rgb(240, 240, 240)', 1: 'rgba(240, 240, 240, 0)' }),
               stroke: null
             }),
-          $(go.TextBlock, "",  // the label text
+          $(go.TextBlock, '',  // the label text
             {
-              textAlign: "center",
-              font: "bold 11pt IranianSansRegular, bold IranianSansRegular, IranianSansRegular",
+              textAlign: 'center',
+              font: 'bold 11pt IranianSansRegular, bold IranianSansRegular, IranianSansRegular',
               margin: 4,
               editable: true  // enable in-place editing
             },
             // editing the text automatically updates the model data
-            new go.Binding("text").makeTwoWay())
+            new go.Binding('text').makeTwoWay())
         )
       );
-    // read in the JSON data from the "mySavedModel" element
+    // read in the JSON data from the 'mySavedModel' element
     this.myDiagram.allowTextEdit = false;
     this.myDiagram.allowDelete = false;
 
-    if (!this.workflowDetail.Graph) this.workflowDetail.Graph = new GraphModel();
-    this.workflowDetail.Graph.class = "go.GraphLinksModel";
-    this.workflowDetail.Graph.nodeKeyProperty = 'key';
+    if (!this.workflowDetail.graph) {
+      this.workflowDetail.graph = new GraphModel();
+    }
+    this.workflowDetail.graph.class = 'go.GraphLinksModel';
+    this.workflowDetail.graph.nodeKeyProperty = 'key';
     this.myDiagram.model = new go.Model();
-    this.myDiagram.model = go.Model.fromJson(JSON.stringify(this.workflowDetail.Graph));
+    this.myDiagram.model = go.Model.fromJson(JSON.stringify(this.workflowDetail.graph));
   }
   //#endregion
 }

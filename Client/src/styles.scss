@@ -7,21 +7,21 @@
 
 @font-face {
     font-family: 'IranianSansBold';
-        src: url('/ClientCore/Fonts/farsi/YekanWeb-Bold.ttf') format('truetype');
+        src: url('/assets/Fonts/farsi/YekanWeb-Bold.ttf') format('truetype');
     font-weight: bold;
     font-style: normal;
       }
 
       @font-face {
         font-family: 'IranianSansRegular';
-            src: url('/ClientCore/Fonts/farsi/YekanWeb-Regular.ttf') format('truetype');
+            src: url('/assets/Fonts/farsi/YekanWeb-Regular.ttf') format('truetype');
         font-weight: normal;
         font-style: normal;
           }
 
           @font-face {
             font-family: 'IranianSansSmall';
-                src: url('/ClientCore/Fonts/farsi//YekanWeb-Regular.ttf') format('truetype');
+                src: url('/assets/Fonts/farsi//YekanWeb-Regular.ttf') format('truetype');
             font-weight: 100;
             font-style: italic;
               }
@@ -30,7 +30,7 @@
 
 @font-face {
     font-family: 'Iranian Sans';
-        src: url('/Core/SiteCore/fonts/farsi/YekanWeb-Regular.ttf') format('truetype');
+        src: url('/assets/fonts/farsi/YekanWeb-Regular.ttf') format('truetype');
     font-weight: bold;
     font-style: normal;
 }

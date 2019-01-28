@@ -39,7 +39,7 @@ export class ManagerComponent implements OnInit {
   startWorkFlow(workflow: WorkFlowModel) {
     this.loading.start();
     const data = {
-      'Id': workflow.Id,
+      'Id': workflow.id,
       'TaskModel': '{\'EmployeeID\':250,' + '\'RequestNumber\': '
         + workflow.requestNumber + ',' + '\'RequestID\': ' + workflow.requestId + ',' + '\'RequestType\':2}'
     };

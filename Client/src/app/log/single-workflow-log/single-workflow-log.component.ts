@@ -61,24 +61,24 @@ export class SingleWorkflowLogComponent implements OnInit {
 
   setNodeColors() {
     if (this.hasResult) {
-      this.workFlow.Graph.nodeDataArray.forEach(element => {
+      this.workFlow.graph.nodeDataArray.forEach(element => {
         element.color = 'lightgray';
       });
 
-      this.workFlow.Graph.nodeDataArray.forEach(element => {
+      this.workFlow.graph.nodeDataArray.forEach(element => {
         if (this.workflowLogs.TraversedIndexes.find(x => x === element.key)) {
           element.color = 'lightgreen';
         }
       });
 
       if (this.workflowLogs.StockedIndex) {
-        if (this.workFlow.Graph.nodeDataArray.find(x => x.key === this.workflowLogs.StockedIndex)) {
-          this.workFlow.Graph.nodeDataArray.find(x => x.key === this.workflowLogs.StockedIndex).color = 'lightblue';
+        if (this.workFlow.graph.nodeDataArray.find(x => x.key === this.workflowLogs.StockedIndex)) {
+          this.workFlow.graph.nodeDataArray.find(x => x.key === this.workflowLogs.StockedIndex).color = 'lightblue';
         }
       }
       if (this.workflowLogs.HasStockedIndexError) {
-        if (this.workFlow.Graph.nodeDataArray.find(x => x.key === this.workflowLogs.StockedIndex)) {
-          this.workFlow.Graph.nodeDataArray.find(x => x.key === this.workflowLogs.StockedIndex).color = 'red';
+        if (this.workFlow.graph.nodeDataArray.find(x => x.key === this.workflowLogs.StockedIndex)) {
+          this.workFlow.graph.nodeDataArray.find(x => x.key === this.workflowLogs.StockedIndex).color = 'red';
         }
       }
     }
@@ -206,12 +206,12 @@ export class SingleWorkflowLogComponent implements OnInit {
     this.myDiagram.allowTextEdit = false;
     this.myDiagram.allowDelete = false;
 
-    if (!this.workFlow.Graph) {
-      this.workFlow.Graph = new GraphModel();
+    if (!this.workFlow.graph) {
+      this.workFlow.graph = new GraphModel();
     }
-    this.workFlow.Graph.class = 'go.GraphLinksModel';
-    this.workFlow.Graph.nodeKeyProperty = 'key';
+    this.workFlow.graph.class = 'go.graphLinksModel';
+    this.workFlow.graph.nodeKeyProperty = 'key';
     this.myDiagram.model = new go.Model();
-    this.myDiagram.model = go.Model.fromJson(JSON.stringify(this.workFlow.Graph));
+    this.myDiagram.model = go.Model.fromJson(JSON.stringify(this.workFlow.graph));
   }
 }

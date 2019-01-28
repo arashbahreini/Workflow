@@ -62,15 +62,15 @@ export class PendingTaskGraphComponent implements OnInit {
   }
 
   properTaskDescription() {
-    this.workFlow.Graph.nodeDataArray.forEach(element => {
+    this.workFlow.graph.nodeDataArray.forEach(element => {
       element.pendingDescription = 'در حال اجرا : ' + element.pendingNumber;
     });
 
-    this.workFlow.Graph.nodeDataArray.forEach(element => {
+    this.workFlow.graph.nodeDataArray.forEach(element => {
       element.doneDescription = 'انجام شده : ' + element.doneNumber;
     });
 
-    this.workFlow.Graph.nodeDataArray.forEach(element => {
+    this.workFlow.graph.nodeDataArray.forEach(element => {
       element.stopDescription = 'متوقف شده : ' + element.stopNumber;
     });
   }
@@ -216,13 +216,13 @@ export class PendingTaskGraphComponent implements OnInit {
 
     this.myDiagram.addDiagramListener('ObjectDoubleClicked', this.openDetailDialog.bind(this));
     this.myDiagram.zoomToFit();
-    if (!this.workFlow.Graph) {
-      this.workFlow.Graph = new GraphModel();
+    if (!this.workFlow.graph) {
+      this.workFlow.graph = new GraphModel();
     }
-    this.workFlow.Graph.class = 'go.GraphLinksModel';
-    this.workFlow.Graph.nodeKeyProperty = 'key';
+    this.workFlow.graph.class = 'go.GraphLinksModel';
+    this.workFlow.graph.nodeKeyProperty = 'key';
     this.myDiagram.model = new go.Model();
-    this.myDiagram.model = go.Model.fromJson(JSON.stringify(this.workFlow.Graph));
+    this.myDiagram.model = go.Model.fromJson(JSON.stringify(this.workFlow.graph));
   }
   //#endregion
 

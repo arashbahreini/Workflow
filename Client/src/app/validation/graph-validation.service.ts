@@ -28,12 +28,12 @@ export class GraphValidationService {
     let selectedRoles = [];
     this.result = new ResultModel();
 
-    if (task.Settings.length > 0) {
-      if (task.Settings.find(x => x.Name === 'کاربر')) {
-        selectedEmploys = task.Settings.find(x => x.Name === 'کاربر').Value;
+    if (task.settings.length > 0) {
+      if (task.settings.find(x => x.name === 'کاربر')) {
+        selectedEmploys = task.settings.find(x => x.name === 'کاربر').value;
       }
-      if (task.Settings.find(x => x.Name === 'گروه کاربری')) {
-        selectedRoles = task.Settings.find(x => x.Name === 'گروه کاربری').Value;
+      if (task.settings.find(x => x.name === 'گروه کاربری')) {
+        selectedRoles = task.settings.find(x => x.name === 'گروه کاربری').value;
       }
     }
 
@@ -51,14 +51,12 @@ export class GraphValidationService {
       this.result.messages.push('هیچ پاسخی انتخاب نشده است');
     }
 
-    if ((task.Settings.find(x => x.Name === 'کاربر') || task.Settings.find(x => x.Name === 'گروه کاربری')) &&
+    if ((task.settings.find(x => x.name === 'کاربر') || task.settings.find(x => x.name === 'گروه کاربری')) &&
       selectedEmploys.length === 0 &&
       selectedRoles.length === 0) {
-        debugger;
-
-      if (task.Settings.find(x => x.Name === 'getUserFromModel')) {
-        if (task.Settings.find(x => x.Name === 'getUserFromModel').Value.toString() === 'false' ||
-        task.Settings.find(x => x.Name === 'getUserFromModel').Value.toString() === 'False') {
+      if (task.settings.find(x => x.name === 'getUserFromModel')) {
+        if (task.settings.find(x => x.name === 'getUserFromModel').value.toString() === 'false' ||
+        task.settings.find(x => x.name === 'getUserFromModel').value.toString() === 'False') {
           this.result.success = false;
           this.result.messages.push('برای این کار باید حد اقل یک گروه کاربری یا یک کاربر انتخاب کنید');
         }

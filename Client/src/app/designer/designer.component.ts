@@ -9,6 +9,7 @@ import { MessageService } from 'primeng/components/common/messageservice';
 import { LoadingService } from '../core/loading-dialog/loading-dialog.component';
 import { WorkflowLogRequestModel } from '../model/workflow-log-request.model';
 import { WorkflowTypeModel } from '../model/workflow-type.model';
+import { ResultModel } from '../model/result-model';
 
 @Component({
   selector: 'app-designer',
@@ -43,14 +44,12 @@ export class DesignerComponent implements OnInit {
     this.workflowService.getWorkFlows().subscribe(
       (res: WorkFlowModel[]) => {
         this.workflows = res;
+        this.loading.stop();
       },
       (error: any) => {
         this.loading.stop();
       },
-      () => {
-        this.loading.stop();
-      }
-    )
+    );
   }
 
   getHistoryWorkFlows() {
@@ -67,7 +66,7 @@ export class DesignerComponent implements OnInit {
       () => {
         this.loading.stop();
       }
-    )
+    );
   }
 
   getWorkflowTypes() {

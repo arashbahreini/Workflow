@@ -10,51 +10,55 @@ export class GraphLogicService {
   constructor() { }
 
   removeWhileFromWhileGroup(wf: WorkFlowModel, node: TaskModel): WhileModel[] {
-    let whileId;
-    wf.Graph.whileGroups.forEach(element => {
+    let whileId: any;
+    wf.graph.whileGroups.forEach(element => {
       element.taskIds.forEach(taskId => {
-        if (taskId === node.key) whileId = element.whileKey;
+        if (taskId === node.key) {
+          whileId = element.whileKey;
+        }
       });
     });
 
-    wf.Graph.whileGroups.forEach(element => {
+    wf.graph.whileGroups.forEach(element => {
       if (element.whileKey === whileId) {
         element.taskIds = element.taskIds.filter(x => x !== node.key);
       }
     });
-    return wf.Graph.whileGroups;
+    return wf.graph.whileGroups;
   }
 
   removeLinksOfRemovedNode(wf: WorkFlowModel, node: TaskModel): LinkDataArrayModel[] {
     if (node.isInWhile) {
       let whileGroup: WhileModel;
-      wf.Graph.whileGroups.forEach(element => {
+      wf.graph.whileGroups.forEach(element => {
         element.taskIds.forEach(taskId => {
-          if (taskId === node.key) whileGroup = element;
+          if (taskId === node.key) {
+            whileGroup = element;
+          }
         });
       });
       if (whileGroup) {
         if (whileGroup.taskIds.length === 1) {
-          wf.Graph.linkDataArray = wf.Graph.linkDataArray.filter(x => x.from !== node.key && x.to != node.key);
+          wf.graph.linkDataArray = wf.graph.linkDataArray.filter(x => x.from !== node.key && x.to !== node.key);
         } else {
-          let childNode = wf.Graph.nodeDataArray.find(
-            x => x.key === wf.Graph.linkDataArray.find(x => x.from === node.key).to);
+          const childNode = wf.graph.nodeDataArray.find(
+            x => x.key === wf.graph.linkDataArray.find(xxx => xxx.from === node.key).to);
 
           // 1. remove link to child.
-          wf.Graph.linkDataArray = wf.Graph.linkDataArray.filter(x => x.from !== node.key);
+          wf.graph.linkDataArray = wf.graph.linkDataArray.filter(x => x.from !== node.key);
           // 2. connect parent node to child node.
-          wf.Graph.linkDataArray.find(x => x.to === node.key).to = childNode.key;
+          wf.graph.linkDataArray.find(x => x.to === node.key).to = childNode.key;
         }
       }
     } else if (node.isWhile) {
-      let whileGroup: WhileModel = wf.Graph.whileGroups.find(x => x.whileKey === node.key);
-      wf.Graph.linkDataArray = wf.Graph.linkDataArray.filter(x => x.from != node.key && x.to != node.key);
+      const whileGroup: WhileModel = wf.graph.whileGroups.find(x => x.whileKey === node.key);
+      wf.graph.linkDataArray = wf.graph.linkDataArray.filter(x => x.from !== node.key && x.to !== node.key);
       whileGroup.taskIds.forEach(element => {
-        wf.Graph.linkDataArray = wf.Graph.linkDataArray.filter(x => x.from != element && x.to != element);
+        wf.graph.linkDataArray = wf.graph.linkDataArray.filter(x => x.from !== element && x.to !== element);
       });
     } else {
-      return wf.Graph.linkDataArray.filter(x => x.from != node.key && x.to != node.key);
+      return wf.graph.linkDataArray.filter(x => x.from !== node.key && x.to !== node.key);
     }
-    return wf.Graph.linkDataArray;
+    return wf.graph.linkDataArray;
   }
 }

@@ -31,14 +31,14 @@ export class ShowRulesDialogComponent implements OnInit {
     if (data === null) {
       this.dialogRef.close(data);
     } else {
-      this.setting.Rules = [];
-      this.setting.Value = [];
+      this.setting.rules = [];
+      this.setting.value = [];
       this.ruleGroups.forEach(element => {
         if (element.select) {
-          this.setting.Rules.push(element.Id);
+          this.setting.rules.push(element.Id);
         }
       });
-      this.setting.Value = JSON.stringify(this.setting.Rules);
+      this.setting.value = JSON.stringify(this.setting.rules);
       this.dialogRef.close(this.setting);
     }
   }
@@ -51,8 +51,8 @@ export class ShowRulesDialogComponent implements OnInit {
       (res: RuleGroupModel[]) => {
         res.forEach(element => {
           if (element.IsActive) {
-            if (this.setting.Value) {
-              const rules = JSON.parse(this.setting.Value);
+            if (this.setting.value) {
+              const rules = JSON.parse(this.setting.value);
               if (rules.find(x => x === element.Id)) {
                 element.select = true;
               }

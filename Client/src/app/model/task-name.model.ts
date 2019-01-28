@@ -1,5 +1,5 @@
 export class TaskNameModel {
-    public Name: string;
-    public PersianName: string;
-    public Type: string;
+    public name: string;
+    public persianName: string;
+    public type: string;
 }

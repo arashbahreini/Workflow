@@ -49,7 +49,7 @@
           <mat-select placeholder="تسک را انتخاب کنید" [(ngModel)]="taskName" panelClass="select__style"
             (selectionChange)="changeTaskInList()">
             <mat-option *ngFor="let taskName of taskNames" [value]="taskName">
-              {{ taskName.PersianName }}
+              {{ taskName.persianName }}
             </mat-option>
           </mat-select>
         </mat-form-field>

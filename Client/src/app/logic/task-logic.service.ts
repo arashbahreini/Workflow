@@ -9,16 +9,17 @@ export class TaskLogicService {
   constructor() { }
 
   public fillTaskPersianNames(workFlow: WorkFlowModel, taskNames: TaskNameModel[]) {
-    if (workFlow.Tasks.length > 0) {
-      for (let task of workFlow.Tasks) {
-        if (taskNames.find(x => x.Name === task.Name))
-          task.PersianName = taskNames.find(x => x.Name === task.Name).PersianName;
+    if (workFlow.tasks.length > 0) {
+      for (const task of workFlow.tasks) {
+        if (taskNames.find(x => x.name === task.name)) {
+          task.persianName = taskNames.find(x => x.name === task.name).persianName;
+        }
       }
     }
-    return workFlow.Tasks;
+    return workFlow.tasks;
   }
 
-  removeTaskFromTaskList(tasks: TaskModel[],taskId: number): TaskModel[] {
-    return tasks.filter(x => x.Id !== taskId);
+  removeTaskFromTaskList(tasks: TaskModel[], taskId: number): TaskModel[] {
+    return tasks.filter(x => x.id !== taskId);
   }
 }

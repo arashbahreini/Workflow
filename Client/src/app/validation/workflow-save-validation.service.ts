@@ -12,23 +12,23 @@ export class WorkflowSaveValidationService {
     const result: ResultModel = new ResultModel();
 
     const isUsersMatch = { value: [], success: true };
-    workFlow.Graph.nodeDataArray.filter(x => x.isIf).forEach(element => {
-      if (workFlow.Graph.linkDataArray.find(x => x.to === element.key)) {
-        const condition = workFlow.Tasks.find(x => x.Id === element.taskId);
-        const from = workFlow.Graph.linkDataArray.find(x => x.to === element.key).from;
-        const taskId = workFlow.Graph.nodeDataArray.find(x => x.key === from).taskId;
-        const parent = workFlow.Tasks.find(x => x.Id === taskId);
+    workFlow.graph.nodeDataArray.filter(x => x.isIf).forEach(element => {
+      if (workFlow.graph.linkDataArray.find(x => x.to === element.key)) {
+        const condition = workFlow.tasks.find(x => x.id === element.taskId);
+        const from = workFlow.graph.linkDataArray.find(x => x.to === element.key).from;
+        const taskId = workFlow.graph.nodeDataArray.find(x => x.key === from).taskId;
+        const parent = workFlow.tasks.find(x => x.id === taskId);
 
-        if (parent.Name === 'Forward' || parent.Name === 'AddRequestToCartable') {
-          if (parent.Settings.find(x => x.Name === 'کاربر') && condition.Settings.find(x => x.Name === 'کاربر')) {
-            if (parent.Settings.find(x => x.Name === 'کاربر').Value === '') {
-              parent.Settings.find(x => x.Name === 'کاربر').Value = '[]';
+        if (parent.name === 'Forward' || parent.name === 'AddRequestToCartable') {
+          if (parent.settings.find(x => x.name === 'کاربر') && condition.settings.find(x => x.name === 'کاربر')) {
+            if (parent.settings.find(x => x.name === 'کاربر').value === '') {
+              parent.settings.find(x => x.name === 'کاربر').value = '[]';
             }
-            const parentUsers = parent.Settings.find(x => x.Name === 'کاربر').Value;
-            if (condition.Settings.find(x => x.Name === 'کاربر').Value === '') {
-              condition.Settings.find(x => x.Name === 'کاربر').Value = '[]';
+            const parentUsers = parent.settings.find(x => x.name === 'کاربر').value;
+            if (condition.settings.find(x => x.name === 'کاربر').value === '') {
+              condition.settings.find(x => x.name === 'کاربر').value = '[]';
             }
-            const conditionUsers = condition.Settings.find(x => x.Name === 'کاربر').Value;
+            const conditionUsers = condition.settings.find(x => x.name === 'کاربر').value;
             if (JSON.stringify(parentUsers) !== JSON.stringify(conditionUsers)) {
               isUsersMatch.success = false;
               isUsersMatch.value.push(parent);
@@ -36,15 +36,15 @@ export class WorkflowSaveValidationService {
             }
           }
 
-          if (parent.Settings.find(x => x.Name === 'گروه کاربری') && condition.Settings.find(x => x.Name === 'گروه کاربری')) {
-            if (parent.Settings.find(x => x.Name === 'گروه کاربری').Value === '') {
-              parent.Settings.find(x => x.Name === 'گروه کاربری').Value = '[]';
+          if (parent.settings.find(x => x.name === 'گروه کاربری') && condition.settings.find(x => x.name === 'گروه کاربری')) {
+            if (parent.settings.find(x => x.name === 'گروه کاربری').value === '') {
+              parent.settings.find(x => x.name === 'گروه کاربری').value = '[]';
             }
-            const parentRoles = parent.Settings.find(x => x.Name === 'گروه کاربری').Value;
-            if (condition.Settings.find(x => x.Name === 'گروه کاربری').Value === '') {
-              condition.Settings.find(x => x.Name === 'گروه کاربری').Value = '[]';
+            const parentRoles = parent.settings.find(x => x.name === 'گروه کاربری').value;
+            if (condition.settings.find(x => x.name === 'گروه کاربری').value === '') {
+              condition.settings.find(x => x.name === 'گروه کاربری').value = '[]';
             }
-            const conditionRoles = condition.Settings.find(x => x.Name === 'گروه کاربری').Value;
+            const conditionRoles = condition.settings.find(x => x.name === 'گروه کاربری').value;
             if (JSON.stringify(parentRoles) !== JSON.stringify(conditionRoles)) {
               isUsersMatch.success = false;
               isUsersMatch.value.push(parent);
@@ -60,45 +60,45 @@ export class WorkflowSaveValidationService {
       result.messages.push(
         'کاربران و گروه های کاربری تعریف شده در هر تسک ارجاع دهنده باید با تسک پیگیری کننده ی بعد از آن یکسان باشند' +
         ' در تسک های ' +
-        workFlow.Graph.nodeDataArray.find(x => x.taskId === isUsersMatch.value[0].Id).key +
+        workFlow.graph.nodeDataArray.find(x => x.taskId === isUsersMatch.value[0].id).key +
         ' و ' +
-        workFlow.Graph.nodeDataArray.find(x => x.taskId === isUsersMatch.value[1].Id).key);
+        workFlow.graph.nodeDataArray.find(x => x.taskId === isUsersMatch.value[1].id).key);
     }
 
-    if (!workFlow.DeadLine) {
+    if (!workFlow.deadLine) {
       result.success = false;
       result.messages.push('برای فرایند هیچ زمانی انتخاب نشده است');
     }
 
-    if (!workFlow.Name) {
+    if (!workFlow.name) {
       result.success = false;
       result.messages.push('فیلد نام خالیست');
     }
-    if (workFlow.LaunchType === null || workFlow.LaunchType === undefined) {
+    if (workFlow.launchType === null || workFlow.launchType === undefined) {
       result.messages.push('فیلد نوع اجرا خالیست');
       result.success = false;
     }
 
     if (
-      workFlow.LaunchType === 2 &&
-      (workFlow.Period === null ||
-        workFlow.Period === undefined ||
-        workFlow.Period === '00.00:00:00')) {
+      workFlow.launchType === 2 &&
+      (workFlow.period === null ||
+        workFlow.period === undefined ||
+        workFlow.period === '00.00:00:00')) {
       result.messages.push('فیلد بازه خالیست');
       result.success = false;
     }
 
-    if (workFlow.Graph) {
-      if (workFlow.Graph.nodeDataArray.length > 0) {
+    if (workFlow.graph) {
+      if (workFlow.graph.nodeDataArray.length > 0) {
         const conditions = [];
-        workFlow.Graph.nodeDataArray.forEach(element => {
+        workFlow.graph.nodeDataArray.forEach(element => {
           if (element.isIf) {
             conditions.push(element);
           }
         });
 
         conditions.forEach(element => {
-          if (workFlow.Graph.linkDataArray.filter(x => x.from === element.key).length < 2) {
+          if (workFlow.graph.linkDataArray.filter(x => x.from === element.key).length < 2) {
             result.messages.push('هر شرط در گراف باید دارای دو فرزند داشته باشد');
             result.success = false;
           }
@@ -107,22 +107,22 @@ export class WorkflowSaveValidationService {
     }
 
     let totalTime = 0;
-    workFlow.Tasks.forEach(element => {
-      if (element.Settings.find(x => x.Name === 'زمان لازم')) {
-        totalTime += +element.Settings.find(x => x.Name === 'زمان لازم').Value;
+    workFlow.tasks.forEach(element => {
+      if (element.settings.find(x => x.name === 'زمان لازم')) {
+        totalTime += +element.settings.find(x => x.name === 'زمان لازم').value;
       }
     });
 
-    if (workFlow.DeadLine < totalTime) {
+    if (workFlow.deadLine < totalTime) {
       result.messages
         .push('زمان لازم برای اجرای فرایند باید بیشتر از مجموع زمان تسک ها باشد. مجموع زمان تسک ها : ' + totalTime + ' دقیقه ');
       result.success = false;
     }
 
     const notConnectedNodes: NodeDataArrayModel[] = [];
-    workFlow.Graph.nodeDataArray.forEach(element => {
-      if (workFlow.Graph.linkDataArray) {
-        if (!workFlow.Graph.linkDataArray.find(x => x.to === element.key)) {
+    workFlow.graph.nodeDataArray.forEach(element => {
+      if (workFlow.graph.linkDataArray) {
+        if (!workFlow.graph.linkDataArray.find(x => x.to === element.key)) {
           notConnectedNodes.push(element);
         }
       }
@@ -137,47 +137,47 @@ export class WorkflowSaveValidationService {
   }
 
   checkForNeedNewVersion(workFlow: WorkFlowModel, originalWorkFlow: WorkFlowModel): WorkFlowModel {
-    workFlow.NewVersion = false;
+    workFlow.newVersion = false;
     workFlow.versionChangeList = [];
-    if (workFlow.Name !== originalWorkFlow.Name) {
+    if (workFlow.name !== originalWorkFlow.name) {
       workFlow.versionChangeList.push('تغییر نام فلو');
-      workFlow.NewVersion = true;
+      workFlow.newVersion = true;
     }
 
-    if (workFlow.LaunchType !== originalWorkFlow.LaunchType) {
+    if (workFlow.launchType !== originalWorkFlow.launchType) {
       workFlow.versionChangeList.push('تغییر نوع اجرای فلو');
-      workFlow.NewVersion = true;
+      workFlow.newVersion = true;
     }
 
-    if (workFlow.Period !== originalWorkFlow.Period) {
+    if (workFlow.period !== originalWorkFlow.period) {
       workFlow.versionChangeList.push('تغییر زمان لازم برای اجرای فرایند');
-      workFlow.NewVersion = true;
+      workFlow.newVersion = true;
     }
 
-    if (workFlow.Tasks.length === originalWorkFlow.Tasks.length) {
+    if (workFlow.tasks.length === originalWorkFlow.tasks.length) {
       let taskChange: boolean;
-      for (let i = 0; i < workFlow.Tasks.length; i++) {
-        const task = workFlow.Tasks[i];
-        const originalTask = originalWorkFlow.Tasks[i];
+      for (let i = 0; i < workFlow.tasks.length; i++) {
+        const task = workFlow.tasks[i];
+        const originalTask = originalWorkFlow.tasks[i];
         if (
-          task.Id !== originalTask.Id ||
-          task.Name !== originalTask.Name ||
-          task.IsEnabled !== originalTask.IsEnabled) {
+          task.id !== originalTask.id ||
+          task.name !== originalTask.name ||
+          task.isEnabled !== originalTask.isEnabled) {
           taskChange = true;
         }
       }
       if (taskChange) {
         workFlow.versionChangeList.push('تغییر در تسک ها');
-        workFlow.NewVersion = true;
+        workFlow.newVersion = true;
       }
     } else {
       workFlow.versionChangeList.push('تغییر در تسک ها');
-      workFlow.NewVersion = true;
+      workFlow.newVersion = true;
     }
 
     if (workFlow.isGraphEdited) {
       workFlow.versionChangeList.push('ویرایش گراف');
-      workFlow.NewVersion = true;
+      workFlow.newVersion = true;
     }
     return workFlow;
   }

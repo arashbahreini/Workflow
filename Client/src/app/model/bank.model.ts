@@ -1,4 +1,4 @@
-import { BranchModel } from "./branch.model";
+import { BranchModel } from './branch.model';
 
 export class BankModel {
     public Id: number;

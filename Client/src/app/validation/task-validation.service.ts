@@ -9,13 +9,13 @@ export class TaskValidationService {
 
   public addTaskValidation(task: TaskModel): ResultModel {
     this.result = new ResultModel();
-    if (!task.Name) {
+    if (!task.name) {
       this.result.success = false;
       this.result.messages.push('نام خالیست');
     }
 
-    if (task.Settings) {
-      if (task.Settings.find(x => x.Name === 'زمان لازم' && (x.Value === '' || x.Value === null))) {
+    if (task.settings) {
+      if (task.settings.find(x => x.name === 'زمان لازم' && (x.value === '' || x.value === null))) {
         this.result.success = false;
         this.result.messages.push('برای این این تسک هیچ زمانی انتخاب نشده است');
       }
@@ -27,8 +27,8 @@ export class TaskValidationService {
   public editTaskValidation(task: TaskModel): ResultModel {
     this.result = new ResultModel();
 
-    if (task.Settings) {
-      if (task.Settings.find(x => x.Name === 'زمان لازم' && (x.Value === '' || x.Value === null))) {
+    if (task.settings) {
+      if (task.settings.find(x => x.name === 'زمان لازم' && (x.value === '' || x.value === null))) {
         this.result.success = false;
         this.result.messages.push('برای این این تسک هیچ زمانی انتخاب نشده است');
       }
@@ -36,28 +36,28 @@ export class TaskValidationService {
 
     let selectedEmploys = [];
     let selectedRoles = [];
-    if (task.Settings) {
-      if (task.Settings.length > 0) {
-        if (task.Settings.find(x => x.Name === 'کاربر')) {
-          selectedEmploys = task.Settings.find(x => x.Name === 'کاربر').Value;
+    if (task.settings) {
+      if (task.settings.length > 0) {
+        if (task.settings.find(x => x.name === 'کاربر')) {
+          selectedEmploys = task.settings.find(x => x.name === 'کاربر').value;
         }
-        if (task.Settings.find(x => x.Name === 'گروه کاربری')) {
-          selectedRoles = task.Settings.find(x => x.Name === 'گروه کاربری').Value;
+        if (task.settings.find(x => x.name === 'گروه کاربری')) {
+          selectedRoles = task.settings.find(x => x.name === 'گروه کاربری').value;
         }
       }
     }
 
-    if (!task.Name) {
+    if (!task.name) {
       this.result.success = false;
       this.result.messages.push('نام خالیست');
     }
-    if (task.Settings) {
-      if ((task.Settings.find(x => x.Name === 'کاربر') || task.Settings.find(x => x.Name === 'گروه کاربری')) &&
+    if (task.settings) {
+      if ((task.settings.find(x => x.name === 'کاربر') || task.settings.find(x => x.name === 'گروه کاربری')) &&
         selectedEmploys.length === 0 &&
         selectedRoles.length === 0) {
-        if (task.Settings.find(x => x.Name === 'getUserFromModel')) {
-          if (task.Settings.find(x => x.Name === 'getUserFromModel').Value.toString() === 'false' ||
-            task.Settings.find(x => x.Name === 'getUserFromModel').Value.toString() === 'False') {
+        if (task.settings.find(x => x.name === 'getUserFromModel')) {
+          if (task.settings.find(x => x.name === 'getUserFromModel').value.toString() === 'false' ||
+            task.settings.find(x => x.name === 'getUserFromModel').value.toString() === 'False') {
             this.result.success = false;
             this.result.messages.push('برای این کار باید حد اقل یک گروه کاربری یا یک کاربر انتخاب کنید');
           }

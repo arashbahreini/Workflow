@@ -1,14 +1,13 @@
 import { SettingModel } from './setting.model';
 
 export class TaskModel {
-    public Description: string;
     public description: string;
-    public Id: number;
-    public IsEnabled: boolean;
-    public Name: string;
-    public Settings: SettingModel[];
-    public PersianName: string;
-    public IsCommon?: boolean;
+    public id: number;
+    public isEnabled: boolean;
+    public name: string;
+    public settings: SettingModel[];
+    public persianName: string;
+    public isCommon?: boolean;
     public type: string;
     public parentTask: TaskModel;
     public isIf: boolean;
@@ -34,9 +33,9 @@ export class TaskModel {
     public isDefaultInSwitch: boolean;
 
     constructor() {
-        this.IsEnabled = true;
-        this.Description = '';
-        this.Settings = [];
-        this.IsCommon = false;
+        this.isEnabled = true;
+        this.description = '';
+        this.settings = [];
+        this.isCommon = false;
     }
 }
