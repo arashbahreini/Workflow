@@ -5,7 +5,7 @@
       <h3>
         <div>
           <span>فرایند </span>
-          <span>{{workFlow.Name}}</span>
+          <span>{{workFlow.name}}</span>
           <span *ngIf="workFlowVersion"> | </span>
           <span *ngIf="workFlowVersion">نگارش </span>
           <span *ngIf="workFlowVersion">{{workFlowVersion | persianNumber}}</span>
@@ -15,7 +15,7 @@
     </div>
     <div>
       <mat-form-field class="workflow__field">
-        <input matInput placeholder="نام" [(ngModel)]="workFlow.Name" disabled="true" />
+        <input matInput placeholder="نام" [(ngModel)]="workFlow.name" disabled="true" />
       </mat-form-field>
     </div>
     <div>
@@ -29,21 +29,21 @@
     </div>
     <div *ngIf="workFlow.LaunchType === 2">
       <mat-form-field class="workflow__field">
-        <input matInput placeholder="بازه" [(ngModel)]="workFlow.Period" disabled="true"/>
+        <input matInput placeholder="بازه" [(ngModel)]="workFlow.period" disabled="true"/>
       </mat-form-field>
     </div>
     <div>
       <mat-form-field class="workflow__field">
-        <input matInput placeholder="زمان لازم برای اجرای این فرایند ( دقیقه )" [(ngModel)]="workFlow.DeadLine" disabled="true" />
+        <input matInput placeholder="زمان لازم برای اجرای این فرایند ( دقیقه )" [(ngModel)]="workFlow.deadLine" disabled="true" />
       </mat-form-field>
     </div>
     <div>
-      <mat-checkbox [(ngModel)]="workFlow.IsEnabled" disabled="true"></mat-checkbox>
+      <mat-checkbox [(ngModel)]="workFlow.isEnabled" disabled="true"></mat-checkbox>
       <span>فعال بودن فرایند</span>
     </div>
     <div>
       <mat-form-field class="textarea__form">
-        <textarea matInput [(ngModel)]="workFlow.Description" disabled="true" placeholder="توضیحات"></textarea>
+        <textarea matInput [(ngModel)]="workFlow.description" disabled="true" placeholder="توضیحات"></textarea>
       </mat-form-field>
     </div>
 
@@ -77,7 +77,7 @@
     </div>
 
     <div *ngIf="showSaveTaskPanel">
-      <p-fieldset [collapsed]="false" class="fieldSet__task" [styleClass]="'task__container__div'" [legend]="task.PersianName"
+      <p-fieldset [collapsed]="false" class="fieldSet__task" [styleClass]="'task__container__div'" [legend]="task.persianName"
         [toggleable]="true">
         <div style="text-align:center">
         </div>
@@ -86,7 +86,7 @@
             <span class="iranSanseFont">این تسک در صورتی اجرا میشود که کاربر درخواست دهنده </span>
             <mat-form-field class="textarea__form" style="width:25%">
               <mat-select [disabled]="task.isDefault" placeholder="انتخاب کاربر" [(ngModel)]="task.caseValue" panelClass="select__style">
-                <mat-option *ngFor="let employ of employs" [value]="employ.Id">
+                <mat-option *ngFor="let employ of employs" [value]="employ.id">
                   {{ employ.FirstName + ' ' + employ.LastName }}
                 </mat-option>
               </mat-select>
@@ -108,7 +108,7 @@
           <mat-form-field class="textarea__form" style="width:70%" *ngIf="taskNames.length">
             <mat-select placeholder="تسک را انتخاب کنید" [(ngModel)]="taskName" panelClass="select__style" (selectionChange)="changeTaskInList()">
               <mat-option *ngFor="let taskName of taskNames" [value]="taskName">
-                {{ taskName.PersianName }}
+                {{ taskName.persianName }}
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -123,52 +123,33 @@
             <span>است . </span>
           </p>
         </div>
-        <div *ngIf="task.parentTask?.isWhile">
-          <p>
-            <span>پاسخ به حلقه پدر</span>
-            <button pButton [disabled]="task.parentTask.doNodeId" type="button" (click)="task.whileResult = true" icon="pi pi-refresh" iconPos="right"
-              label="بله - دامه ی حلقه" [ngClass]="{'ui-button-success' : task.whileResult === true}"></button>
-            <button pButton [disabled]="task.parentTask.elseNodeId" type="button" (click)="task.whileResult = false" icon="pi pi-times"
-              iconPos="right" label="خیر - خروج از حلقه" [ngClass]="{'ui-button-success' : task.whileResult === false}"></button>
-            <span>است . </span>
-          </p>
-        </div>
         <div>
           <mat-form-field class="textarea__form">
-            <input matInput placeholder="توضیحات" [(ngModel)]="task.Description">
+            <input matInput placeholder="توضیحات" [(ngModel)]="task.description">
           </mat-form-field>
         </div>
-        <!-- <div>
-          <mat-checkbox [(ngModel)]="task.IsEnabled"></mat-checkbox>
-          <span class="iranSanseFont">فعال بودن</span>
-        </div> -->
-        <div *ngIf="task.parentTask?.isSwitch && task.parentTask?.isInWhile">
-          <mat-checkbox [(ngModel)]="task.goToWhile"></mat-checkbox>
-          <span class="iranSanseFont">به حلقه ادامه بده</span>
-        </div>
-
-        <div *ngIf="task.Settings.length > 1">
+        {{task.settings | json}}
+        <div *ngIf="task.settings.length > 1">
           <hr>
-          <!-- {{task.Settings | json}} -->
-          <h4 style="text-align: center;color:gray" *ngIf="task.Settings.length > 0">
+          <h4 style="text-align: center;color:gray" *ngIf="task.settings.length > 0">
             تنظیمات
           </h4>
           <table>
-            <tr *ngFor="let setting of task.Settings | isNotType">
+            <tr *ngFor="let setting of task.settings | isNotType">
               <td>
                 <span class="iranSanseFont">
-                  {{setting.Name}} :
+                  {{setting.name}} :
                 </span>
               </td>
               <td>
-                <mat-form-field *ngIf="setting.Name === 'زمان لازم'">
+                <mat-form-field *ngIf="setting.name === 'زمان لازم'">
                   <input matInput type="number" placeholder="زمان ( دقیقه )" [(ngModel)]="setting.Value" />
                 </mat-form-field>
-                <p-autoComplete dir="ltr" (onSelect)="onSelectRole(setting.Roles)" *ngIf="setting.Name === 'گروه کاربری'" [(ngModel)]="setting.Roles"
-                  [dropdown]="true" [suggestions]="filteredRoles" (completeMethod)="filterRoleMultiple($event, setting.Roles)"
+                <p-autoComplete dir="ltr" (onSelect)="onSelectRole(setting.roles)" *ngIf="setting.name === 'گروه کاربری'" [(ngModel)]="setting.roles"
+                  [dropdown]="true" [suggestions]="filteredRoles" (completeMethod)="filterRoleMultiple($event, setting.roles)"
                   [multiple]="true" (onUnselect)="unselectRole($event, task, setting)"></p-autoComplete>
-                <p-autoComplete dir="ltr" (onSelect)="onSelectEmploy(setting.Users)" *ngIf="setting.Name === 'کاربر'" [(ngModel)]="setting.Users"
-                  [dropdown]="true" [suggestions]="filteredEmployes" (completeMethod)="filterEmployMultiple($event, setting.Users)"
+                <p-autoComplete dir="ltr" (onSelect)="onSelectEmploy(setting.users)" *ngIf="setting.name === 'کاربر'" [(ngModel)]="setting.users"
+                  [dropdown]="true" [suggestions]="filteredEmployes" (completeMethod)="filterEmployMultiple($event, setting.users)"
                   [multiple]="true" (onUnselect)="unselectEmploy($event, task, setting)"></p-autoComplete>
               </td>
             </tr>
