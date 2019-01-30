@@ -108,6 +108,8 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.getTaskTypes();
+    this.getEmploys();
+    this.getRoles();
     if (this.workFlowId) {
       this.getWorkflow();
     } else {
@@ -121,6 +123,69 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.graphInitializer();
+  }
+
+  getEmploys() {
+    // this.employs = [];
+    // this.workflowService.getEmploys().subscribe(
+    //   (res: any) => {
+    //     if (res) {
+    //       if (res.length > 0) {
+    //         res.forEach(element => {
+    //           this.employs.push({
+    //             label: this.employeLogicService.getEmploysFullName(element),
+    //             value: element.Id
+    //           });
+    //         });
+    //       }
+    //     }
+    //   },
+    //   (error: any) => { }
+    // );
+    this.employs = [];
+    this.employs.push({
+      label: 'کاربر تست یکم',
+      value: 1
+    });
+    this.employs.push({
+      label: 'کاربر تست دوم',
+      value: 2
+    });
+    this.employs.push({
+      label: 'کاربر تست سوم',
+      value: 3
+    });
+  }
+
+  getRoles() {
+    this.roles = [];
+    // this.workflowService.getRoles().subscribe(
+    //   (res: any) => {
+    //     if (res) {
+    //       if (res.length > 0) {
+    //         res.forEach(element => {
+    //           this.roles.push({
+    //             value: element.ID,
+    //             label: element.Title
+    //           });
+    //         });
+    //       }
+    //     }
+    //   },
+    //   (error: any) => { }
+    // );
+    this.roles.push({
+      label: 'نقش تست یکم',
+      value: 1
+    });
+    this.roles.push({
+      label: 'نقش تست دوم',
+      value: 2
+    });
+    this.roles.push({
+      label: 'نقش تست سوم',
+      value: 3
+    });
   }
 
   filterEmployMultiple(event, selectedUsers: string[]) {
@@ -617,22 +682,6 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
     }
   }
 
-  // unselectEmploy(event: string, task: TaskModel) {
-  //   const users = JSON.parse(task.settings.find(x => x.name === 'کاربر').value);
-  //   const user = this.employs.find(x => x.FullName === event).id;
-  //   const index = users.indexOf(user);
-  //   users.splice(index, 1);
-  //   this.task.settings.find(x => x.name === 'کاربر').value = JSON.stringify(users);
-  // }
-
-  // unselectRole(event: string, task: TaskModel) {
-  //   const roles = JSON.parse(task.settings.find(x => x.name === 'گروه کاربری').value);
-  //   const role = this.roles.find(x => x.Title === event).ID;
-  //   const index = roles.indexOf(role);
-  //   roles.splice(index, 1);
-  //   this.task.settings.find(x => x.name === 'گروه کاربری').value = JSON.stringify(roles);
-  // }
-
   showRules(setting: SettingModel) {
     if (!this.workFlowId) {
       this.errorMessages.push({ severity: 'error', summary: 'پیغام خطا', detail: 'برای این فرایند هنوز هیچ شناسه ای ثبت نشده است', });
@@ -751,9 +800,10 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
   saveNewWorkflow() {
     this.workFlow.graph.linkDataArray = JSON.parse(this.myDiagram.model.toJson()).linkDataArray;
     this.errorMessages = [];
-    this.workFlow.path += this.workFlow.name;
     this.workFlow.isNew = true;
     this.properLinks();
+    this.workFlow = new WorkFlowModel();
+    this.workFlow.name = 'Arash';
     this.workflowService.saveWorkflow(this.workFlow).subscribe(
       (res: IdVersionModel) => {
         if (res) {

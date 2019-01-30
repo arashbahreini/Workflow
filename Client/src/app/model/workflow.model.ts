@@ -27,7 +27,6 @@ export class WorkFlowModel {
         this.isEnabled = true;
         this.description = '';
         this.period = '';
-        this.path = 'C:\\workflow\\Workflows\\';
         this.isNew = true;
         this.tasks = [];
         this.graph = new GraphModel();

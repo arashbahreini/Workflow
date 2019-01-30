@@ -69,6 +69,7 @@ hr {
 .example-container {
     width: 100%;
     border: 1px solid rgba(0, 0, 0, 0.5);
+    /* height: 98vh; */
 }
 
 .example-sidenav-content {

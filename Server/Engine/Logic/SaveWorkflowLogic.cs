@@ -78,7 +78,7 @@ namespace workflow.Core.Logic
             }
 
             var xGraph = new XElement(xn + "ExecutionGraph");
-            if (model.Graph.nodeDataArray != null)
+            if (model.Graph.NodeDataArray != null)
             {
                 xGraph = new GraphCompatibility.GraphCompatibility(
                     taskNames,
@@ -191,7 +191,7 @@ namespace workflow.Core.Logic
                 }
 
                 var xGraph = xdoc.Root.Element(xn + "ExecutionGraph");
-                if (model.Graph.nodeDataArray.Any())
+                if (model.Graph.NodeDataArray.Any())
                 {
                     if (xGraph != null)
                         xGraph.Remove();
@@ -288,7 +288,7 @@ namespace workflow.Core.Logic
                 }
 
                 var xGraph = xdoc.Root.Element(xn + "ExecutionGraph");
-                if (model.Graph.nodeDataArray.Any())
+                if (model.Graph.NodeDataArray.Any())
                 {
                     if (xGraph != null)
                         xGraph.Remove();

@@ -66,47 +66,47 @@
       </div>
       <div>
         <mat-form-field class="side-nav-field" *ngIf="!showLinkPanel">
-          <input matInput placeholder="توضیحات" [(ngModel)]="task.Description">
+          <input matInput placeholder="توضیحات" [(ngModel)]="task.description">
         </mat-form-field>
       </div>
 
 
-      <div *ngIf="task?.Settings?.length > 1" class="side-nav-field">
+      <div *ngIf="task?.settings?.length > 1" class="side-nav-field">
         <hr>
-        <h4 style="text-align: center;color:gray" *ngIf="task.Settings.length > 0">
+        <h4 style="text-align: center;color:gray" *ngIf="task.settings.length > 0">
           تنظیمات
         </h4>
-        <div *ngFor="let setting of task.Settings | isNotType">
-          <div *ngIf="setting.Name !== 'قوانین'">
-            <span class="iranSanseFont" *ngIf="setting.Name !== 'getUserFromModel' && showUserSelector(task.Settings)">
-              {{setting.Name}} :
+        <div *ngFor="let setting of task.settings | isNotType">
+          <div *ngIf="setting.name !== 'قوانین'">
+            <span class="iranSanseFont" *ngIf="setting.name !== 'getUserFromModel' && showUserSelector(task.settings)">
+              {{setting.name}} :
             </span>
-            <div *ngIf="setting.Name === 'getUserFromModel'">
-              <mat-checkbox [(ngModel)]="setting.Value">دریافت کاربر از درخواست</mat-checkbox>
+            <div *ngIf="setting.name === 'getUserFromModel'">
+              <mat-checkbox [(ngModel)]="setting.value">دریافت کاربر از درخواست</mat-checkbox>
             </div>
           </div>
-          <mat-form-field class="side-nav-field" *ngIf="setting.Name === 'فرایند'" style="width: 500px;margin-right: 10px">
-            <mat-select placeholder="فرایند را انتخاب کنید" [(ngModel)]="+setting.Value" panelClass="select__style">
-              <mat-option *ngFor="let workflow of workflows" [value]="workflow.Id">
-                {{ (workflow.Id | persianNumber) + '. ' + workflow.Name }}
+          <mat-form-field class="side-nav-field" *ngIf="setting.name === 'فرایند'" style="width: 500px;margin-right: 10px">
+            <mat-select placeholder="فرایند را انتخاب کنید" [(ngModel)]="+setting.value" panelClass="select__style">
+              <mat-option *ngFor="let workflow of workflows" [value]="workflow.id">
+                {{ (workflow.id | persianNumber) + '. ' + workflow.name }}
               </mat-option>
             </mat-select>
           </mat-form-field>
-          <mat-form-field class="side-nav-field" *ngIf="setting.Name === 'شروع از'">
-            <mat-select placeholder="تسک را انتخاب کنید" [(ngModel)]="+setting.Value" panelClass="select__style">
+          <mat-form-field class="side-nav-field" *ngIf="setting.name === 'شروع از'">
+            <mat-select placeholder="تسک را انتخاب کنید" [(ngModel)]="+setting.value" panelClass="select__style">
               <mat-option *ngFor="let task of taskNamesForJump" [value]="task.key">
                 {{ (task.key | persianNumber) + '. ' + task.text }}
               </mat-option>
             </mat-select>
           </mat-form-field>
-          <mat-form-field *ngIf="setting.Name === 'زمان لازم'">
-            <input matInput type="number" placeholder="زمان ( دقیقه )" [(ngModel)]="setting.Value" />
+          <mat-form-field *ngIf="setting.name === 'زمان لازم'">
+            <input matInput type="number" placeholder="زمان ( دقیقه )" [(ngModel)]="setting.value" />
           </mat-form-field>
-          <button *ngIf="setting.Name === 'قوانین'" pButton type="button" iconPos="right" (click)="showRules(setting)"
+          <button *ngIf="setting.name === 'قوانین'" pButton type="button" iconPos="right" (click)="showRules(setting)"
             label="مدیریت قوانین" icon="pi pi-unlock"></button>
           <div dir="ltr">
-            <p-multiSelect [style]="{'width':'100%'}" [options]="roles" [(ngModel)]="setting.Value" *ngIf="setting.Name === 'گروه کاربری' && showUserSelector(task.Settings)"></p-multiSelect>
-            <p-multiSelect [style]="{'width':'100%'}" [options]="employs" [(ngModel)]="setting.Value" *ngIf="setting.Name === 'کاربر' && showUserSelector(task.Settings)"></p-multiSelect>
+            <p-multiSelect [style]="{'width':'100%'}" [options]="roles" [(ngModel)]="setting.value" *ngIf="setting.name === 'گروه کاربری' && showUserSelector(task.settings)"></p-multiSelect>
+            <p-multiSelect [style]="{'width':'100%'}" [options]="employs" [(ngModel)]="setting.value" *ngIf="setting.name === 'کاربر' && showUserSelector(task.settings)"></p-multiSelect>
           </div>
         </div>
         <hr>
@@ -127,10 +127,10 @@
       <mat-expansion-panel [expanded]="expandWorkflowConfig">
         <mat-expansion-panel-header>
           <mat-panel-title>
-            <h3 *ngIf="workFlow.Name">
+            <h3 *ngIf="workFlow.name">
               <div>
                 <span>فرایند </span>
-                <span>{{workFlow.Name}}</span>
+                <span>{{workFlow.name}}</span>
                 <span *ngIf="workFlowVersion" style="margin:0px 5px 0px 5px"> - </span>
                 <span *ngIf="workFlowVersion">نگارش </span>
                 <span *ngIf="workFlowVersion">{{workFlowVersion | persianNumber}}</span>
@@ -146,35 +146,35 @@
         <hr>
         <div>
           <mat-form-field class="workflow__field">
-            <input matInput placeholder="نام" [(ngModel)]="workFlow.Name" />
+            <input matInput placeholder="نام" [(ngModel)]="workFlow.name" />
           </mat-form-field>
         </div>
         <div>
           <mat-form-field class="workflow__field">
-            <mat-select placeholder="نوع اجرا" [(ngModel)]="workFlow.LaunchType">
+            <mat-select placeholder="نوع اجرا" [(ngModel)]="workFlow.launchType">
               <mat-option *ngFor="let lunchType of lunchTypes" [value]="lunchType.id">
                 {{ lunchType.title + ' - ' + lunchType.name }}
               </mat-option>
             </mat-select>
           </mat-form-field>
         </div>
-        <div *ngIf="workFlow.LaunchType === 2">
+        <div *ngIf="workFlow.launchType === 2">
           <mat-form-field class="workflow__field">
-            <input matInput placeholder="بازه" [(ngModel)]="workFlow.Period" />
+            <input matInput placeholder="بازه" [(ngModel)]="workFlow.period" />
           </mat-form-field>
         </div>
         <div>
           <mat-form-field class="workflow__field">
-            <input matInput placeholder="زمان لازم برای اجرای این فرایند ( دقیقه )" [(ngModel)]="workFlow.DeadLine" />
+            <input matInput placeholder="زمان لازم برای اجرای این فرایند ( دقیقه )" [(ngModel)]="workFlow.deadLine" />
           </mat-form-field>
         </div>
         <div>
-          <mat-checkbox [(ngModel)]="workFlow.IsEnabled"></mat-checkbox>
+          <mat-checkbox [(ngModel)]="workFlow.isEnabled"></mat-checkbox>
           <span class="iranSanseFont">فعال بودن فرایند</span>
         </div>
         <div>
           <mat-form-field class="side-nav-field">
-            <textarea matInput [(ngModel)]="workFlow.Description" placeholder="توضیحات"></textarea>
+            <textarea matInput [(ngModel)]="workFlow.description" placeholder="توضیحات"></textarea>
           </mat-form-field>
         </div>
         <div class="workflow__action__div">
@@ -185,6 +185,6 @@
         </div>
       </mat-expansion-panel>
     </mat-accordion>
-    <div [hidden]="!workFlow.Graph" align="center" #myDiagramDiv class="graph__div"></div>
+    <div [hidden]="!workFlow.graph" align="center" #myDiagramDiv class="graph__div"></div>
   </mat-sidenav-content>
 </mat-sidenav-container>

@@ -50,7 +50,7 @@ namespace Host.Controllers
             return new WorkflowGet(_config.Value.WorkflowSettingsFile).GetSettings(name).Data;
         }
         [HttpPost]
-        public IdVersionModel SaveWorkFlow(WorkflowInfo workFlow)
+        public IdVersionModel SaveWorkFlow([FromBody]WorkflowInfo workFlow)
         {
             return new WorkflowModify(_config.Value.WorkflowSettingsFile).SaveWorkflow(workFlow).Data;
         }

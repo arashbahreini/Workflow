@@ -40,20 +40,20 @@ namespace GraphCompatibility
             _model = JsonConvert.DeserializeObject<GraphModel>(JsonConvert.SerializeObject(model));
 
             // TO DESIGN ROOT
-            DesignRoot(model.nodeDataArray.Where(x => x.isRoot == true).FirstOrDefault());
+            DesignRoot(model.NodeDataArray.Where(x => x.IsRoot == true).FirstOrDefault());
 
-            if (model.linkDataArray != null)
+            if (model.LinkDataArray != null)
             {
-                model.linkDataArray = model.linkDataArray.OrderBy(x => x.to).ToList();
-                foreach (var item in model.linkDataArray)
+                model.LinkDataArray = model.LinkDataArray.OrderBy(x => x.To).ToList();
+                foreach (var item in model.LinkDataArray)
                 {
-                    if (item.from != 0 && item.to != 0)
+                    if (item.From != 0 && item.To != 0)
                     {
-                        var fromNode = model.nodeDataArray.Where(x => x.key == item.from).FirstOrDefault();
-                        var toNode = model.nodeDataArray.Where(x => x.key == item.to).FirstOrDefault();
-                        if (toNode.isIf) XmlIfGenerator(toNode, fromNode);
+                        var fromNode = model.NodeDataArray.Where(x => x.Key == item.From).FirstOrDefault();
+                        var toNode = model.NodeDataArray.Where(x => x.Key == item.To).FirstOrDefault();
+                        if (toNode.IsIf) XmlIfGenerator(toNode, fromNode);
                         // else if (toNode.isWhile) XmlWhileGenerator(toNode, fromNode);
-                        else if (toNode.isSwitch) XmlSwitchGenerator(toNode, fromNode);
+                        else if (toNode.IsSwitch) XmlSwitchGenerator(toNode, fromNode);
                         else XmlTaskGenerator(toNode, fromNode);
                     }
                 }
@@ -66,11 +66,11 @@ namespace GraphCompatibility
             //{
             //    XmlWhileGenerator(root, null);
             //}
-            if (root.isSwitch)
+            if (root.IsSwitch)
             {
                 XmlSwitchGenerator(root, null);
             }
-            else if (root.isIf)
+            else if (root.IsIf)
             {
                 XmlIfGenerator(root, null);
             }
@@ -82,30 +82,30 @@ namespace GraphCompatibility
         public void XmlSwitchGenerator(NodeDataArray node = null, NodeDataArray parent = null)
         {
             if (parent == null) parent = new NodeDataArray();
-            if (parent.isIf)
+            if (parent.IsIf)
             {
-                if (parent.doNodeId == node.key)
+                if (parent.DoNodeId == node.Key)
                 {
                     var xRoot = new XElement(xn + "Switch",
                         new XAttribute("id", switchId++),
                         new XAttribute("parent", "-1"),
-                        new XAttribute("switch", node.taskId),
-                        new XAttribute("index", node.key));
+                        new XAttribute("switch", node.TaskId),
+                        new XAttribute("index", node.Key));
                     xGraph.Descendants()
-                         .Where(x => (string)x.Attribute("index") == parent.key.ToString())
+                         .Where(x => (string)x.Attribute("index") == parent.Key.ToString())
                          .FirstOrDefault()
                          .Element(xn + "Do")
                          .Add(xRoot);
                 }
-                else if (parent.elseNodeId == node.key)
+                else if (parent.ElseNodeId == node.Key)
                 {
                     var xRoot = new XElement(xn + "Switch",
                         new XAttribute("id", switchId++),
                         new XAttribute("parent", "-1"),
-                        new XAttribute("switch", node.taskId),
-                        new XAttribute("index", node.key));
+                        new XAttribute("switch", node.TaskId),
+                        new XAttribute("index", node.Key));
                     xGraph.Descendants()
-                         .Where(x => (string)x.Attribute("index") == parent.key.ToString())
+                         .Where(x => (string)x.Attribute("index") == parent.Key.ToString())
                          .FirstOrDefault()
                          .Element(xn + "Else")
                          .Add(xRoot);
@@ -115,10 +115,10 @@ namespace GraphCompatibility
                     var xRoot = new XElement(xn + "Switch",
                         new XAttribute("id", switchId++),
                         new XAttribute("parent", ifId - 1),
-                        new XAttribute("switch", node.taskId),
-                        new XAttribute("index", node.key));
+                        new XAttribute("switch", node.TaskId),
+                        new XAttribute("index", node.Key));
                     xGraph.Descendants()
-                         .Where(x => (string)x.Attribute("index") == parent.key.ToString())
+                         .Where(x => (string)x.Attribute("index") == parent.Key.ToString())
                          .FirstOrDefault()
                          .AddAfterSelf(xRoot);
                 }
@@ -151,15 +151,15 @@ namespace GraphCompatibility
             //}
             else
             {
-                if (parent.key != 0)
+                if (parent.Key != 0)
                 {
                     var xRoot = new XElement(xn + "Switch",
                         new XAttribute("id", switchId++),
-                        new XAttribute("parent", parent.taskId.ToString()),
-                        new XAttribute("switch", node.taskId),
-                        new XAttribute("index", node.key));
+                        new XAttribute("parent", parent.TaskId.ToString()),
+                        new XAttribute("switch", node.TaskId),
+                        new XAttribute("index", node.Key));
                     xGraph.Descendants()
-                         .Where(x => (string)x.Attribute("index") == parent.key.ToString())
+                         .Where(x => (string)x.Attribute("index") == parent.Key.ToString())
                          .FirstOrDefault()
                          .AddAfterSelf(xRoot);
                 }
@@ -168,8 +168,8 @@ namespace GraphCompatibility
                     var xRoot = new XElement(xn + "Switch",
                         new XAttribute("id", switchId++),
                         new XAttribute("parent", "-1"),
-                        new XAttribute("switch", node.taskId),
-                        new XAttribute("index", node.key));
+                        new XAttribute("switch", node.TaskId),
+                        new XAttribute("index", node.Key));
                     xGraph.Add(xRoot);
                 }
             }
@@ -238,34 +238,34 @@ namespace GraphCompatibility
         public void XmlTaskGenerator(NodeDataArray node = null, NodeDataArray parent = null)
         {
             if (parent == null) parent = new NodeDataArray();
-            if (parent.isIf)
+            if (parent.IsIf)
             {
-                if (parent.doNodeId == node.key)
+                if (parent.DoNodeId == node.Key)
                 {
                     var xRoot = new XElement(xn + "Task",
-                        new XAttribute("id", node.taskId),
-                        new XAttribute("index", node.key));
+                        new XAttribute("id", node.TaskId),
+                        new XAttribute("index", node.Key));
                     var xParent = new XElement(xn + "Parent",
                         new XAttribute("id", "-1"));
                     xRoot.Add(xParent);
 
                     xGraph.Descendants()
-                     .Where(x => (string)x.Attribute("index") == parent.key.ToString())
+                     .Where(x => (string)x.Attribute("index") == parent.Key.ToString())
                      .FirstOrDefault()
                      .Element(xn + "Do")
                      .Add(xRoot);
                 }
-                else if (parent.elseNodeId == node.key)
+                else if (parent.ElseNodeId == node.Key)
                 {
                     var xRoot = new XElement(xn + "Task",
-                        new XAttribute("id", node.taskId),
-                        new XAttribute("index", node.key));
+                        new XAttribute("id", node.TaskId),
+                        new XAttribute("index", node.Key));
                     var xParent = new XElement(xn + "Parent",
                         new XAttribute("id", "-1"));
                     xRoot.Add(xParent);
 
                     xGraph.Descendants()
-                     .Where(x => (string)x.Attribute("index") == parent.key.ToString())
+                     .Where(x => (string)x.Attribute("index") == parent.Key.ToString())
                      .FirstOrDefault()
                      .Element(xn + "Else")
                      .Add(xRoot);
@@ -273,62 +273,62 @@ namespace GraphCompatibility
                 else
                 {
                     var xRoot = new XElement(xn + "Task",
-                        new XAttribute("id", node.taskId),
-                        new XAttribute("index", node.key));
+                        new XAttribute("id", node.TaskId),
+                        new XAttribute("index", node.Key));
                     var xParent = new XElement(xn + "Parent",
                         new XAttribute("id", ifId - 1));
                     xRoot.Add(xParent);
 
                     xGraph.Descendants()
-                     .Where(x => (string)x.Attribute("index") == parent.key.ToString())
+                     .Where(x => (string)x.Attribute("index") == parent.Key.ToString())
                      .FirstOrDefault()
                      .AddAfterSelf(xRoot);
                 }
             }
-            else if (parent.isSwitch && node.isInSwitch)
+            else if (parent.IsSwitch && node.IsInSwitch)
             {
-                if (node.isDefault == true)
+                if (node.IsDefault == true)
                 {
                     var xDefault = new XElement(xn + "Default");
                     var xRoot = new XElement(xn + "Task",
-                        new XAttribute("id", node.taskId),
-                        new XAttribute("index", node.key));
+                        new XAttribute("id", node.TaskId),
+                        new XAttribute("index", node.Key));
                     var xParent = new XElement(xn + "Parent",
                         new XAttribute("id", "-1"));
                     xRoot.Add(xParent);
                     xDefault.Add(xRoot);
                     xGraph.Descendants()
-                     .Where(x => (string)x.Attribute("index") == parent.key.ToString())
+                     .Where(x => (string)x.Attribute("index") == parent.Key.ToString())
                      .FirstOrDefault()
                      .Add(xDefault);
                 }
                 else
                 {
                     var xCase = new XElement(xn + "Case",
-                        new XAttribute("value", node.caseValue));
+                        new XAttribute("value", node.CaseValue));
                     var xRoot = new XElement(xn + "Task",
-                        new XAttribute("id", node.taskId),
-                        new XAttribute("index", node.key));
+                        new XAttribute("id", node.TaskId),
+                        new XAttribute("index", node.Key));
                     var xParent = new XElement(xn + "Parent",
                         new XAttribute("id", "-1"));
                     xRoot.Add(xParent);
                     xCase.Add(xRoot);
                     xGraph.Descendants()
-                     .Where(x => (string)x.Attribute("index") == parent.key.ToString())
+                     .Where(x => (string)x.Attribute("index") == parent.Key.ToString())
                      .FirstOrDefault()
                      .AddFirst(xCase);
                 }
             }
-            else if (parent.isSwitch && !node.isInSwitch)
+            else if (parent.IsSwitch && !node.IsInSwitch)
             {
                 var xRoot = new XElement(xn + "Task",
-                    new XAttribute("id", node.taskId),
-                    new XAttribute("index", node.key));
+                    new XAttribute("id", node.TaskId),
+                    new XAttribute("index", node.Key));
                 var xParent = new XElement(xn + "Parent",
                     new XAttribute("id", switchId - 1));
                 xRoot.Add(xParent);
                 xGraph.Descendants()
-                 .Where(x => (string)x.Attribute("index") == parent.key.ToString())
+                 .Where(x => (string)x.Attribute("index") == parent.Key.ToString())
                  .FirstOrDefault()
                  .AddAfterSelf(xRoot);
             }
@@ -360,27 +360,27 @@ namespace GraphCompatibility
             //}
             else
             {
-                if (parent.key != 0)
+                if (parent.Key != 0)
                 {
                     var xRoot = new XElement(xn + "Task",
-                        new XAttribute("id", node.taskId),
-                        new XAttribute("index", node.key));
+                        new XAttribute("id", node.TaskId),
+                        new XAttribute("index", node.Key));
                     var xParent = new XElement(xn + "Parent",
-                        new XAttribute("id", parent.key == 0 ? "-1" : parent.taskId.ToString()));
+                        new XAttribute("id", parent.Key == 0 ? "-1" : parent.TaskId.ToString()));
                     xRoot.Add(xParent);
 
                     xGraph.Descendants()
-                         .Where(x => (string)x.Attribute("index") == parent.key.ToString())
+                         .Where(x => (string)x.Attribute("index") == parent.Key.ToString())
                          .FirstOrDefault()
                          .AddAfterSelf(xRoot);
                 }
                 else
                 {
                     var xRoot = new XElement(xn + "Task",
-                        new XAttribute("id", node.taskId),
-                        new XAttribute("index", node.key));
+                        new XAttribute("id", node.TaskId),
+                        new XAttribute("index", node.Key));
                     var xParent = new XElement(xn + "Parent",
-                        new XAttribute("id", parent.key == 0 ? "-1" : parent.taskId.ToString()));
+                        new XAttribute("id", parent.Key == 0 ? "-1" : parent.TaskId.ToString()));
                     xRoot.Add(xParent);
                     xGraph.Add(xRoot);
                 }
@@ -389,40 +389,40 @@ namespace GraphCompatibility
         public void XmlIfGenerator(NodeDataArray node = null, NodeDataArray parent = null)
         {
             if (parent == null) parent = new NodeDataArray();
-            if (parent.isIf)
+            if (parent.IsIf)
             {
-                if (parent.doNodeId == node.key)
+                if (parent.DoNodeId == node.Key)
                 {
                     var xRoot = new XElement(xn + "If",
                         new XAttribute("id", ifId++),
                         // new XAttribute("parent", parent.key == 0 ? "-1" : parent.taskId.ToString()),
                         new XAttribute("parent", "-1"),
-                        new XAttribute("if", node.taskId),
-                        new XAttribute("index", node.key));
+                        new XAttribute("if", node.TaskId),
+                        new XAttribute("index", node.Key));
                     var xDo = new XElement(xn + "Do");
                     var xElse = new XElement(xn + "Else");
                     xRoot.Add(xDo);
                     xRoot.Add(xElse);
                     xGraph.Descendants()
-                         .Where(x => (string)x.Attribute("index") == parent.key.ToString())
+                         .Where(x => (string)x.Attribute("index") == parent.Key.ToString())
                          .FirstOrDefault()
                          .Element(xn + "Do")
                          .Add(xRoot);
                 }
-                else if (parent.elseNodeId == node.key)
+                else if (parent.ElseNodeId == node.Key)
                 {
                     var xRoot = new XElement(xn + "If",
                         new XAttribute("id", ifId++),
                         // new XAttribute("parent", parent.key == 0 ? "-1" : parent.taskId.ToString()),
                         new XAttribute("parent", "-1"),
-                        new XAttribute("if", node.taskId),
-                        new XAttribute("index", node.key));
+                        new XAttribute("if", node.TaskId),
+                        new XAttribute("index", node.Key));
                     var xDo = new XElement(xn + "Do");
                     var xElse = new XElement(xn + "Else");
                     xRoot.Add(xDo);
                     xRoot.Add(xElse);
                     xGraph.Descendants()
-                         .Where(x => (string)x.Attribute("index") == parent.key.ToString())
+                         .Where(x => (string)x.Attribute("index") == parent.Key.ToString())
                          .FirstOrDefault()
                          .Element(xn + "Else")
                          .Add(xRoot);
@@ -432,15 +432,15 @@ namespace GraphCompatibility
                     var xRoot = new XElement(xn + "If",
                         new XAttribute("id", ifId++),
                         new XAttribute("parent", ifId - 1),
-                        new XAttribute("if", node.taskId),
-                        new XAttribute("index", node.key));
+                        new XAttribute("if", node.TaskId),
+                        new XAttribute("index", node.Key));
                     var xDo = new XElement(xn + "Do");
                     var xElse = new XElement(xn + "Else");
                     xRoot.Add(xDo);
                     xRoot.Add(xElse);
 
                     xGraph.Descendants()
-                     .Where(x => (string)x.Attribute("index") == parent.key.ToString())
+                     .Where(x => (string)x.Attribute("index") == parent.Key.ToString())
                      .FirstOrDefault()
                      .AddAfterSelf(xRoot);
                 }
@@ -481,15 +481,15 @@ namespace GraphCompatibility
             //     .FirstOrDefault()
             //     .AddAfterSelf(xRoot);
             //}
-            else if (parent.isSwitch && node.isInSwitch)
+            else if (parent.IsSwitch && node.IsInSwitch)
             {
                 var xCase = new XElement(xn + "Case",
-                    new XAttribute("value", node.caseValue));
+                    new XAttribute("value", node.CaseValue));
                 var xRoot = new XElement(xn + "If",
                     new XAttribute("id", ifId++),
                     new XAttribute("parent", "-1"),
-                    new XAttribute("if", node.taskId),
-                    new XAttribute("index", node.key));
+                    new XAttribute("if", node.TaskId),
+                    new XAttribute("index", node.Key));
 
                 var xDo = new XElement(xn + "Do");
                 var xElse = new XElement(xn + "Else");
@@ -497,26 +497,26 @@ namespace GraphCompatibility
                 xRoot.Add(xElse);
                 xCase.Add(xRoot);
                 xGraph.Descendants()
-                 .Where(x => (string)x.Attribute("index") == parent.key.ToString())
+                 .Where(x => (string)x.Attribute("index") == parent.Key.ToString())
                  .FirstOrDefault()
                  .Add(xCase);
             }
             else
             {
-                if (parent.key != 0)
+                if (parent.Key != 0)
                 {
                     var xRoot = new XElement(xn + "If",
                         new XAttribute("id", ifId++),
-                        new XAttribute("parent", parent.key == 0 ? "-1" : parent.taskId.ToString()),
-                        new XAttribute("if", node.taskId),
-                        new XAttribute("index", node.key));
+                        new XAttribute("parent", parent.Key == 0 ? "-1" : parent.TaskId.ToString()),
+                        new XAttribute("if", node.TaskId),
+                        new XAttribute("index", node.Key));
 
                     var xDo = new XElement(xn + "Do");
                     var xElse = new XElement(xn + "Else");
                     xRoot.Add(xDo);
                     xRoot.Add(xElse);
                     xGraph.Descendants()
-                     .Where(x => (string)x.Attribute("index") == parent.key.ToString())
+                     .Where(x => (string)x.Attribute("index") == parent.Key.ToString())
                      .FirstOrDefault()
                      .AddAfterSelf(xRoot);
                 }
@@ -524,9 +524,9 @@ namespace GraphCompatibility
                 {
                     var xRoot = new XElement(xn + "If",
                         new XAttribute("id", ifId++),
-                        new XAttribute("parent", parent.key == 0 ? "-1" : parent.taskId.ToString()),
-                        new XAttribute("if", node.taskId),
-                        new XAttribute("index", node.key));
+                        new XAttribute("parent", parent.Key == 0 ? "-1" : parent.TaskId.ToString()),
+                        new XAttribute("if", node.TaskId),
+                        new XAttribute("index", node.Key));
 
                     var xDo = new XElement(xn + "Do");
                     var xElse = new XElement(xn + "Else");

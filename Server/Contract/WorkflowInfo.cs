@@ -18,16 +18,12 @@ namespace workflow.Core.Service.Contracts
     
     public class WorkflowInfo : IComparable
     {
-        
         public int Id { get; set; }
-
         
         public int? NewId { get; set; }
 
-        
         public long Version { get; set; }
 
-        
         public string Name { get; set; }
         
         public LaunchType LaunchType { get; set; }
@@ -55,7 +51,6 @@ namespace workflow.Core.Service.Contracts
         public string JsonGraph { get; set; }
         
         public bool NewVersion { get; set; }
-
         
         public string VersionDescription { get; set; }
         public int CompareTo(object obj)

@@ -14,20 +14,20 @@ namespace workflow.Core.Service.Contracts
         
         public long WorkflowVersion { get; set; }
         
-        public List<NodeDataArray> nodeDataArray { get; set; } = new List<NodeDataArray>();
+        public List<NodeDataArray> NodeDataArray { get; set; } = new List<NodeDataArray>();
         
-        public List<LinkDataArray> linkDataArray { get; set; } = new List<LinkDataArray>();
+        public List<LinkDataArray> LinkDataArray { get; set; } = new List<LinkDataArray>();
         
-        public List<WhileModel> whileGroups { get; set; }
+        public List<WhileModel> WhileGroups { get; set; }
     }
 
     
     public class WhileModel
     {
         
-        public List<int> taskIds { get; set; }
+        public List<int> TaskIds { get; set; }
         
-        public int whileKey { get; set; }
+        public int WhileKey { get; set; }
     }
     
     public class LogDataModel
@@ -54,47 +54,47 @@ namespace workflow.Core.Service.Contracts
         
         public List<LogDataModel> StopDataModels { get; set; }
         
-        public int key { get; set; }
+        public int Key { get; set; }
         
-        public bool isRoot { get; set; }
+        public bool IsRoot { get; set; }
         
-        public string text { get; set; }
+        public string Text { get; set; }
         
-        public string color { get; set; }
+        public string Color { get; set; }
         
-        public int taskId { get; set; }
+        public int TaskId { get; set; }
         
-        public string loc { get; set; }
+        public string Loc { get; set; }
         
-        public bool isIf { get; set; }
+        public bool IsIf { get; set; }
         
-        public bool isSwitch { get; set; }
+        public bool IsSwitch { get; set; }
         
-        public string caseValue { get; set; }
+        public string CaseValue { get; set; }
         
-        public int doNodeId { get; set; }
+        public int DoNodeId { get; set; }
         
-        public int elseNodeId { get; set; }
+        public int ElseNodeId { get; set; }
         
-        public bool isInWhile { get; set; }
+        public bool IsInWhile { get; set; }
         
-        public bool isInSwitch { get; set; }
+        public bool IsInSwitch { get; set; }
         
-        public bool isWhile { get; set; }
+        public bool IsWhile { get; set; }
         
         public bool? IsCommon { get; set; }
         
-        public bool? isDefault { get; set; }
+        public bool? IsDefault { get; set; }
         
-        public int pendingNumber { get; set; }
+        public int PendingNumber { get; set; }
         
-        public int doneNumber { get; set; }
+        public int DoneNumber { get; set; }
         
-        public int stopNumber { get; set; }
+        public int StopNumber { get; set; }
         
         public int DeadLine { get; set; }
         
-        public string description { get; set; }
+        public string Description { get; set; }
 
     }
 
@@ -102,13 +102,13 @@ namespace workflow.Core.Service.Contracts
     public class LinkDataArray
     {
         
-        public int from { get; set; }
+        public int From { get; set; }
         
-        public int to { get; set; }
+        public int To { get; set; }
         
-        public string text { get; set; }
+        public string Text { get; set; }
         
-        public List<float> points { get; set; }
+        public List<float> Points { get; set; }
 
     }
 }

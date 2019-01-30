@@ -1,7 +1,27 @@
 ﻿[
   {
     "name": "TestTask",
-    "persianName": "آیا بانک پایانه مورد نظر را تایید ابطال میکند ؟",
+    "persianName": "تسک تست",
     "type": "task"
+  },
+  {
+    "name": "Forward",
+    "persianName": "ارجا به کارتابل کاربر",
+    "type": "commonTask"
+  },
+  {
+    "name": "Insert",
+    "persianName": "افزودن به کارتابل کاربر",
+    "type": "commonTask"
+  },
+  {
+    "name": "Check",
+    "persianName": "بررسی تایید و عدم تایید",
+    "type": "if"
+  },
+  {
+    "name": "JumpTo",
+    "persianName": "شروع مجدد از تسک مشخص شده",
+    "type": "commonTask"
   }
 ]
