@@ -48,20 +48,20 @@ export class WorkflowDetailGraphComponent implements OnInit {
 
   convertFields() {
     this.workflowDetail.graph.nodeDataArray.forEach(element => {
-      if (element.StartDate) {
-        element.StartDateDescription = ' شروع در ' + this.persianNumberPipe.transform(element.StartDate);
+      if (element.startDate) {
+        element.startDateDescription = ' شروع در ' + this.persianNumberPipe.transform(element.startDate);
       }
-      if (element.EndDate) {
-        element.EndDateDescription = ' پایان در ' + this.persianNumberPipe.transform(element.EndDate);
+      if (element.endDate) {
+        element.endDateDescription = ' پایان در ' + this.persianNumberPipe.transform(element.endDate);
       }
-      if (element.DeadLine) {
-        element.DeadLineDescription = 'مهلت انجام کار' + this.persianNumberPipe.transform(element.DeadLine) + ' دقیقه است .';
+      if (element.deadLine) {
+        element.deadLineDescription = 'مهلت انجام کار' + this.persianNumberPipe.transform(element.deadLine) + ' دقیقه است .';
       }
 
     });
 
     this.workflowDetail.graph.nodeDataArray.forEach(element => {
-      switch (element.Status) {
+      switch (element.status) {
         case 'Success':
           element.color = '#24E83E';
           break;

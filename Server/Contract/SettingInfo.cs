@@ -11,13 +11,10 @@ namespace workflow.Core.Service.Contracts
         
         public string Value { get; set; }
         
-        public List<AttributeInfo> Attributes { get; set; }
-
         public SettingInfo(string name, string value, List<AttributeInfo> attributes)
         {
             Name = name;
             Value = value;
-            Attributes = attributes;
         }
 
         public SettingInfo()

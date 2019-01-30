@@ -1,4 +1,5 @@
 ﻿using Contract;
+using Contract.Common;
 using System;
 using workflow.Contract;
 using workflow.Core;
@@ -7,11 +8,11 @@ namespace InfraStructure
 {
     public class WorkflowAction
     {
-        private static string _config;
+        private static Configuration _configuration;
         private static int _taskLoopInterval;
-        public WorkflowAction(string workflowSettingsFile, int taskLoopInterval)
+        public WorkflowAction(Configuration configuration, int taskLoopInterval)
         {
-            _config = workflowSettingsFile;
+            _configuration = configuration;
             _taskLoopInterval = taskLoopInterval;
         }
         public ResultModel StartCustomWorkFlow(int flowID, string dataContract, int? taskIndex)
@@ -19,7 +20,7 @@ namespace InfraStructure
             var result = new ResultModel();
             try
             {
-                var workflowEngine = new WorkflowEngine(_config);
+                var workflowEngine = new WorkflowEngine(_configuration);
                 var runResult = workflowEngine.StartWorkflowModel(
                     new RequestModel
                     {

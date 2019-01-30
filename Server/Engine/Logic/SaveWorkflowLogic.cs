@@ -8,15 +8,16 @@ using System.Xml.XPath;
 using workflow.Core.Service.Contracts;
 using Workflow.Core.Service.Contracts;
 using System.Configuration;
+using Contract.Common;
 
 namespace workflow.Core.Logic
 {
     public class SaveWorkflowLogic
     {
-        public string _workflowSettingsFile { get; set; }
-        public SaveWorkflowLogic(string workflowSettingsFile)
+        public Configuration _configuration { get; set; }
+        public SaveWorkflowLogic(Configuration configuration)
         {
-            _workflowSettingsFile = workflowSettingsFile;
+            _configuration = configuration;
         }
         public static XNamespace xn = "urn:workflow-schema";
         public IdVersionModel AddNewWorkflow(WorkflowInfo model, WorkflowEngine workflowEngine, List<TaskNameModel> taskNames)
@@ -69,7 +70,6 @@ namespace workflow.Core.Logic
                                 xsetting.SetAttributeValue("value", settingValue);
                             }
 
-                            var attributes = setting.Attributes;
                             xtask.Add(xsetting);
                         }
                     }
@@ -113,8 +113,8 @@ namespace workflow.Core.Logic
                     , xtasks, xGraph
             );
             var xdoc = new XDocument();
-            xwf.Save("C:\\workflow\\Workflows\\History\\" + model.Name + "_" + "0" + ".xml");
-            xwf.Save(model.Path + "_" + "0" + ".xml");
+            xwf.Save(_configuration.WorkflowsHistoryFolder + model.Name + "_" + "0" + ".xml");
+            xwf.Save(_configuration.WorkflowsFolder + model.Name + "_" + "0" + ".xml");
 
             return new IdVersionModel
             {
@@ -218,7 +218,7 @@ namespace workflow.Core.Logic
                     }
                 }
 
-                var historyPath = "C:\\Workflow\\Workflows\\History\\" + model.Name + "_" + workflowEngine.SetWorkflowVersion(model.Id) + ".xml";
+                var historyPath = _configuration.WorkflowsHistoryFolder + model.Name + "_" + workflowEngine.SetWorkflowVersion(model.Id) + ".xml";
                 using (var historyOutStream = System.IO.File.CreateText(historyPath))
                 {
                     xdoc.Save(historyOutStream);
@@ -314,22 +314,28 @@ namespace workflow.Core.Logic
         }
         public string GetLastWorkflowId()
         {
-            return new WorkflowEngine(_workflowSettingsFile).GetLastId();
+            return new WorkflowEngine(_configuration).GetLastId();
         }
         public void SaveJsonGraph(GraphModel graph, string path, string fileName)
         {
-            if (System.IO.File.Exists(path + "\\" + fileName + ".json"))
+            if (System.IO.File.Exists(_configuration.WorkflowsFolder + "\\" + fileName + ".json"))
             {
-                System.IO.File.Delete(path + "\\" + fileName + ".json");
+                System.IO.File.Delete(_configuration.WorkflowsFolder + "\\" + fileName + ".json");
             }
 
-            if (System.IO.File.Exists("C:\\workflow\\Workflows\\History\\" + fileName + ".json"))
+            //if (System.IO.File.Exists("C:\\workflow\\Workflows\\History\\" + fileName + ".json"))
+            //{
+            //    System.IO.File.Delete("C:\\workflow\\Workflows\\History\\" + fileName + ".json");
+            //}
+
+            if(System.IO.File.Exists(_configuration.WorkflowsHistoryFolder + fileName + ".json"))
             {
-                System.IO.File.Delete("C:\\workflow\\Workflows\\History\\" + fileName + ".json");
+                System.IO.File.Delete(_configuration.WorkflowsHistoryFolder + fileName + ".json");
             }
 
             System.IO.File.WriteAllText(path + "\\" + fileName + ".json", JsonConvert.SerializeObject(graph));
-            System.IO.File.WriteAllText("C:\\workflow\\Workflows\\History\\" + fileName + ".json", JsonConvert.SerializeObject(graph));
+            //System.IO.File.WriteAllText("C:\\workflow\\Workflows\\History\\" + fileName + ".json", JsonConvert.SerializeObject(graph));
+            System.IO.File.WriteAllText(_configuration.WorkflowsHistoryFolder + fileName + ".json", JsonConvert.SerializeObject(graph));
         }
     }
 }

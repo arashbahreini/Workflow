@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Contract\Contract.csproj" />
-    <ProjectReference Include="..\Engine\Engine.csproj" />
+    <ProjectReference Include="..\..\Contract\Contract.csproj" />
+    <ProjectReference Include="..\..\Engine\Engine.csproj" />
   </ItemGroup>
 
 </Project>

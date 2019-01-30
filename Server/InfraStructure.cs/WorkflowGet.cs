@@ -1,4 +1,5 @@
 ﻿using Contract;
+using Contract.Common;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -13,10 +14,10 @@ namespace InfraStructure.cs
 {
     public class WorkflowGet
     {
-        private static string _workflowSettingsFile;
-        public WorkflowGet(string workflowSettingsFile)
+        private static Configuration _configuration;
+        public WorkflowGet(Configuration configuration)
         {
-            _workflowSettingsFile = workflowSettingsFile;
+            _configuration = configuration;
         }
 
         public ResultModel<List<WorkflowInfo>> GetLatestWorkflows()
@@ -24,8 +25,7 @@ namespace InfraStructure.cs
             var result = new ResultModel<List<WorkflowInfo>>();
             try
             {
-                string settingsFile = _workflowSettingsFile;
-                var workflowEngine = new WorkflowEngine(settingsFile);
+                var workflowEngine = new WorkflowEngine(_configuration);
                 var workflowList = workflowEngine.Workflows.Select(
                     wf => new WorkflowInfo
                     {
@@ -60,7 +60,7 @@ namespace InfraStructure.cs
             var result = new ResultModel<List<WorkflowInfo>>();
             try
             {
-                var workflowEngine = new WorkflowEngine(_workflowSettingsFile, true);
+                var workflowEngine = new WorkflowEngine(_configuration, true);
                 var workflowList = workflowEngine.Workflows.Where(x => x.Id == id).Select(
                     wf => new WorkflowInfo
                     {
@@ -100,7 +100,7 @@ namespace InfraStructure.cs
             var result = new ResultModel<WorkflowInfo>();
             try
             {
-                var workflowEngine = new WorkflowEngine(_workflowSettingsFile, true);
+                var workflowEngine = new WorkflowEngine(_configuration, true);
                 var wf = workflowEngine.GetWorkflow(id, version);
                 if (wf != null)
                 {
@@ -151,7 +151,7 @@ namespace InfraStructure.cs
             var result = new ResultModel<WorkflowInfo>();
             try
             {
-                var workflowEngine = new WorkflowEngine(_workflowSettingsFile, true);
+                var workflowEngine = new WorkflowEngine(_configuration, true);
                 var wf = workflowEngine.GetLastVersionWorkflow(id);
                 if (wf != null)
                 {
@@ -202,7 +202,7 @@ namespace InfraStructure.cs
             var result = new ResultModel<List<string>>();
             try
             {
-                var workflowEngine = new WorkflowEngine(_workflowSettingsFile);
+                var workflowEngine = new WorkflowEngine(_configuration);
                 JObject o = JObject.Parse(File.ReadAllText(workflowEngine.TasksSettingsFile));
                 var token = o.SelectToken(taskName);
                 var resultString = token != null ? token.ToObject<string[]>().OrderBy(x => x).ToArray() : new string[] { };
@@ -222,7 +222,7 @@ namespace InfraStructure.cs
             var result = new ResultModel<GraphModel>();
             try
             {
-                var workflowEngine = new WorkflowEngine(_workflowSettingsFile);
+                var workflowEngine = new WorkflowEngine(_configuration);
                 var wf = workflowEngine.GetWorkflow(id, version);
 
                 using (var r = new StreamReader(wf.WorkflowFilePath))
@@ -243,7 +243,7 @@ namespace InfraStructure.cs
             var result = new ResultModel<List<TaskNameModel>>();
             try
             {
-                var workflowEngine = new WorkflowEngine(_workflowSettingsFile, true);
+                var workflowEngine = new WorkflowEngine(_configuration, true);
                 result.Data = new List<TaskNameModel>();
                 result.Data.AddRange(JsonConvert.DeserializeObject<List<TaskNameModel>>(File.ReadAllText(workflowEngine.TasksNamesFile)));
             }
@@ -259,7 +259,7 @@ namespace InfraStructure.cs
             var result = new ResultModel();
             try
             {
-                var workflowEngine = new WorkflowEngine(_workflowSettingsFile);
+                var workflowEngine = new WorkflowEngine(_configuration);
                 var wf = workflowEngine.GetWorkflow(id, version);
                 if (wf != null)
                 {

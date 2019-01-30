@@ -45,14 +45,14 @@ export class WorkflowListDialogComponent implements OnInit {
     const donekeys: string[] = [];
     const pendingkeys: string[] = [];
     const stopkeys: string[] = [];
-    if (this.node.DoneDataModels) {
-      this.node.DoneDataModels.forEach(element => { donekeys.push(element.UniqKey); });
+    if (this.node.doneDataModels) {
+      this.node.doneDataModels.forEach(element => { donekeys.push(element.UniqKey); });
     }
-    if (this.node.PendingDataModels) {
-      this.node.PendingDataModels.forEach(element => { pendingkeys.push(element.UniqKey); });
+    if (this.node.pendingDataModels) {
+      this.node.pendingDataModels.forEach(element => { pendingkeys.push(element.UniqKey); });
     }
-    if (this.node.StopDataModels) {
-      this.node.StopDataModels.forEach(element => { stopkeys.push(element.UniqKey); });
+    if (this.node.stopDataModels) {
+      this.node.stopDataModels.forEach(element => { stopkeys.push(element.UniqKey); });
     }
 
     this.service.ListPendingAndDoneTasksByUniqKey(donekeys, pendingkeys, stopkeys).subscribe(
@@ -68,7 +68,7 @@ export class WorkflowListDialogComponent implements OnInit {
         this.isLoading = false;
       },
       (error) => {
-        this.errorMessages.push({ severity: 'error', summary: 'پیغام خطا', detail: 'خطا در گرفتن جزیات فرایند', })
+        this.errorMessages.push({ severity: 'error', summary: 'پیغام خطا', detail: 'خطا در گرفتن جزیات فرایند', });
         this.isLoading = false;
       }, () => {
         this.isLoading = false;

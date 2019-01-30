@@ -23,49 +23,49 @@ namespace Host.Controllers
         }
         public List<WorkflowInfo> GetWorkFlows()
         {
-            return new WorkflowGet(_config.Value.WorkflowSettingsFile).GetLatestWorkflows().Data;
+            return new WorkflowGet(_config.Value).GetLatestWorkflows().Data;
         }
         public List<WorkflowInfo> GetHistoryWorkflows(WorkflowRequestModel model)
         {
-            return new WorkflowGet(_config.Value.WorkflowSettingsFile).GetHistoryWorkflows(model.Id).Data;
+            return new WorkflowGet(_config.Value).GetHistoryWorkflows(model.Id).Data;
         }
         [HttpPost]
         public void StartCustomWorkFlow(StartRequestModel model)
         {
-            new WorkflowAction(_config.Value.WorkflowSettingsFile, _config.Value.TaskLoopInterval).StartCustomWorkFlow(model.Id, model.TaskModel, model.TaskIndex);
+            new WorkflowAction(_config.Value, _config.Value.TaskLoopInterval).StartCustomWorkFlow(model.Id, model.TaskModel, model.TaskIndex);
         }
         [HttpPost]
         public WorkflowInfo GetWorkflow(WorkflowRequestModel model)
         {
-            return new WorkflowGet(_config.Value.WorkflowSettingsFile).GetWorkflow(model.Id, model.Version).Data;
+            return new WorkflowGet(_config.Value).GetWorkflow(model.Id, model.Version).Data;
         }
         [HttpPost]
         public WorkflowInfo GetLastVersionWorkflow(WorkflowRequestModel model)
         {
-            return new WorkflowGet(_config.Value.WorkflowSettingsFile).GetLastVersionWorkflow(model.Id).Data;
+            return new WorkflowGet(_config.Value).GetLastVersionWorkflow(model.Id).Data;
         }
         [HttpPost]
         public List<string> GetSettings(string name)
         {
-            return new WorkflowGet(_config.Value.WorkflowSettingsFile).GetSettings(name).Data;
+            return new WorkflowGet(_config.Value).GetSettings(name).Data;
         }
         [HttpPost]
         public IdVersionModel SaveWorkFlow([FromBody]WorkflowInfo workFlow)
         {
-            return new WorkflowModify(_config.Value.WorkflowSettingsFile).SaveWorkflow(workFlow).Data;
+            return new WorkflowModify(_config.Value).SaveWorkflow(workFlow).Data;
         }
         [HttpPost]
         public GraphModel GetExecutionGraph(WorkflowRequestModel workFlow)
         {
-            return new WorkflowGet(_config.Value.WorkflowSettingsFile).GetExecutionGraph(workFlow.Id, workFlow.Version).Data;
+            return new WorkflowGet(_config.Value).GetExecutionGraph(workFlow.Id, workFlow.Version).Data;
         }
         public List<TaskNameModel> GetTaskNames()
         {
-            return new WorkflowGet(_config.Value.WorkflowSettingsFile).GetTaskNames().Data;
+            return new WorkflowGet(_config.Value).GetTaskNames().Data;
         }
         public void DeleteWorkflow(WorkflowRequestModel model)
         {
-            new WorkflowGet(_config.Value.WorkflowSettingsFile).DeleteWorkflow(model.Id, model.Version);
+            new WorkflowGet(_config.Value).DeleteWorkflow(model.Id, model.Version);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Contract.Common;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using workflow.Core;
 
@@ -13,7 +14,7 @@ namespace Host.Controllers
         }
         public IActionResult Index()
         {
-            new WorkflowEngine(_config.Value.WorkflowSettingsFile, true).Run();
+            new WorkflowEngine(_config.Value, true).Run();
             return View();
         }
     }

@@ -802,8 +802,6 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
     this.errorMessages = [];
     this.workFlow.isNew = true;
     this.properLinks();
-    this.workFlow = new WorkFlowModel();
-    this.workFlow.name = 'Arash';
     this.workflowService.saveWorkflow(this.workFlow).subscribe(
       (res: IdVersionModel) => {
         if (res) {
@@ -813,7 +811,6 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
         } else {
           this.errorMessages.push({ severity: 'error', summary: 'پیغام خطا', detail: 'اشکال سیستمی وجود دارد', });
         }
-
       }, (error: any) => {
       }
     );
@@ -944,12 +941,12 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
       key: this.task.key,
       text: this.task.persianName,
       color: this.determineNodeColor(),
-      Id: this.task.id,
+      id: this.task.id,
       isIf: this.task.isIf,
       isSwitch: this.task.isSwitch,
       isInSwitch: this.task.isInSwitch,
       isWhile: this.task.isWhile,
-      IsCommon: this.task.isCommon,
+      isCommon: this.task.isCommon,
       description: this.task.description,
       loc: this.task.parentTask ? this.task.parentTask.taskId ? this.setLocation() : '' : '',
       taskId: this.task.id,

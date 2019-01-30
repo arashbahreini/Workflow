@@ -1,4 +1,4 @@
-<!--<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <workflow>
   <Setting name="workflowsFolder" value="C:\work\Workflow\workflow\Workflows" />
   <Setting name="workflowsHistoryFolder" value="C:\work\Workflow\workflow\Workflows\History" />
@@ -7,4 +7,4 @@
   <Setting name="xsd" value="C:\work\Workflow\workflow\Workflow.xsd" />
   <Setting name="tasksNamesFile" value="C:\work\Workflow\workflow\TasksNames.json" />
   <Setting name="tasksSettingsFile" value="C:\work\Workflow\workflow\TasksSettings.json" />
-</workflow>-->
+</workflow>

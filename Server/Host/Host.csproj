@@ -15,6 +15,11 @@
   <ItemGroup>
     <ProjectReference Include="..\Engine\Engine.csproj" />
     <ProjectReference Include="..\InfraStructure.cs\InfraStructure.cs.csproj" />
+    <ProjectReference Include="..\Tasks\Workflow.Tasks.Check\Workflow.Tasks.Check.csproj" />
+    <ProjectReference Include="..\Tasks\Workflow.Tasks.Forward\Workflow.Tasks.Forward.csproj" />
+    <ProjectReference Include="..\Tasks\Workflow.Tasks.Insert\Workflow.Tasks.Insert.csproj" />
+    <ProjectReference Include="..\Tasks\Workflow.Tasks.JumpTo\Workflow.Tasks.JumpTo.csproj" />
+    <ProjectReference Include="..\Tasks\Workflow.Tasks.TestTask\Workflow.Tasks.TestTask.csproj" />
   </ItemGroup>
 
 

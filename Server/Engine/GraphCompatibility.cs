@@ -36,6 +36,7 @@ namespace GraphCompatibility
         }
         public XElement DesignExecutionGraph(GraphModel model)
         {
+            if (!model.NodeDataArray.Any()) throw new Exception("هیچ تسکی وارد نشده است");
             // TO MAKE A COPY OF MODEL
             _model = JsonConvert.DeserializeObject<GraphModel>(JsonConvert.SerializeObject(model));
 

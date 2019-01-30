@@ -26,8 +26,8 @@ export class NodeDataArrayModel {
     public doNodeId?: number;
     public elseNodeId?: number;
     public childNodeId?: number;
-    public IsCommon: boolean;
-    public Id?: number;
+    public isCommon: boolean;
+    public id?: number;
     public description: string;
     public taskId: number;
     public isInWhile: boolean;
@@ -37,19 +37,19 @@ export class NodeDataArrayModel {
     public pendingNumber?: number;
     public doneNumber?: number;
     public stopNumber?: number;
-    public StartDate?: string;
-    public EndDate?: string;
-    public StartDateDescription?: string;
-    public EndDateDescription?: string;
+    public startDate?: string;
+    public endDate?: string;
+    public startDateDescription?: string;
+    public endDateDescription?: string;
     public pendingDescription?: string;
     public doneDescription?: string;
     public stopDescription?: string;
-    public DoneDataModels?: DoneDataModel[];
-    public PendingDataModels?: DoneDataModel[];
-    public StopDataModels?: DoneDataModel[];
-    public Status?: string;
-    public DeadLine?: number;
-    public DeadLineDescription?: string;
+    public doneDataModels?: DoneDataModel[];
+    public pendingDataModels?: DoneDataModel[];
+    public stopDataModels?: DoneDataModel[];
+    public status?: string;
+    public deadLine?: number;
+    public deadLineDescription?: string;
 }
 
 export class DoneDataModel {

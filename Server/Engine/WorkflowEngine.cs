@@ -8,6 +8,7 @@ using System.Threading;
 using workflow.Contract;
 using workflow.Core.Service.Contracts;
 using Newtonsoft.Json;
+using Contract.Common;
 
 namespace workflow.Core
 {
@@ -19,7 +20,7 @@ namespace workflow.Core
         /// <summary>
         /// Settings file path.
         /// </summary>
-        public string SettingsFile { get; private set; }
+        public Configuration _configuration { get; private set; }
         /// <summary>
         /// Workflows folder path.
         /// </summary>
@@ -56,9 +57,9 @@ namespace workflow.Core
         /// Creates a new instance of workflow engine.
         /// </summary>
         /// <param name="settingsFile">Settings file path.</param>
-        public WorkflowEngine(string settingsFile, bool? doLoadHistory = null)
+        public WorkflowEngine(Configuration configuration, bool? doLoadHistory = null)
         {
-            SettingsFile = settingsFile;
+            _configuration = configuration;
             Workflows = new List<Workflow>();
             _workflowTimers = new Dictionary<int, List<workflowTimer>>();
 
@@ -71,34 +72,36 @@ namespace workflow.Core
 
         void LoadSettings()
         {
-            var xdoc = XDocument.Load(SettingsFile);
-            WorkflowsFolder = GetworkflowSetting(xdoc, "workflowsFolder");
-            WorkflowsHistoryFolder = GetworkflowSetting(xdoc, "workflowsHistoryFolder");
-            TrashFolder = GetworkflowSetting(xdoc, "trashFolder");
-            TempFolder = GetworkflowSetting(xdoc, "tempFolder");
+            //var xdoc = XDocument.Load(SettingsFile);
+            WorkflowsFolder = _configuration.WorkflowsFolder;
+            WorkflowsHistoryFolder = _configuration.WorkflowsHistoryFolder;
+            TrashFolder = _configuration.TrashFolder;
+            TempFolder = _configuration.TempFolder;
             if (!Directory.Exists(TempFolder)) Directory.CreateDirectory(TempFolder);
-            XsdPath = GetworkflowSetting(xdoc, "xsd");
-            TasksNamesFile = GetworkflowSetting(xdoc, "tasksNamesFile");
-            TasksSettingsFile = GetworkflowSetting(xdoc, "tasksSettingsFile");
+            XsdPath = _configuration.Xsd;
+            TasksNamesFile = _configuration.TasksNamesFile;
+            TasksSettingsFile = _configuration.TasksSettingsFile;
         }
 
-        string GetworkflowSetting(XDocument xdoc, string name)
-        {
-            try
-            {
-                var xValue = xdoc.XPathSelectElement(string.Format("/workflow/Setting[@name='{0}']", name)).Attribute("value");
-                if (xValue == null) throw new Exception("workflow Setting Value attribute not found.");
-                return xValue.Value;
-            }
-            catch (Exception e)
-            {
-                Logger.ErrorFormat("An error occured when reading workflow settings: Setting[@name='{0}']", e, name);
-                return string.Empty;
-            }
-        }
+        //string GetworkflowSetting(XDocument xdoc, string name)
+        //{
+        //    try
+        //    {
+        //        var xValue = xdoc.XPathSelectElement(string.Format("/workflow/Setting[@name='{0}']", name)).Attribute("value");
+        //        if (xValue == null) throw new Exception("workflow Setting Value attribute not found.");
+        //        return xValue.Value;
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Logger.ErrorFormat("An error occured when reading workflow settings: Setting[@name='{0}']", e, name);
+        //        return string.Empty;
+        //    }
+        //}
 
         void LoadWorkflows(bool? doLoadHistory)
         {
+            if (!Directory.Exists(WorkflowsHistoryFolder)) Directory.CreateDirectory(WorkflowsHistoryFolder);
+            if (!Directory.Exists(WorkflowsFolder)) Directory.CreateDirectory(WorkflowsFolder);
             var directories = Directory.GetFiles(doLoadHistory == true ? WorkflowsHistoryFolder : WorkflowsFolder, "*.xml");
             foreach (string file in directories)
             {
