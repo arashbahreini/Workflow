@@ -5,3 +5,7 @@ i {
 .mat-card {
     margin-top: 2vh;
 }
+
+table th {
+  text-align: center;
+}

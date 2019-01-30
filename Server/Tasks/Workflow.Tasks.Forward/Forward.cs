@@ -3,11 +3,11 @@ using System.Xml.Linq;
 using workflow.Contract;
 using workflow.Core;
 
-namespace Workflow.Tasks.TestTask
+namespace Workflow.Tasks.Forward
 {
-    public class TestTask : Task
+    public class Forward : Task
     {
-        public TestTask(XElement xe, workflow.Core.Workflow wf) : base(xe, wf)
+        public Forward(XElement xe, workflow.Core.Workflow wf) : base(xe, wf)
         {
         }
 

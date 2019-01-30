@@ -25,22 +25,22 @@ namespace Host.Controllers
         {
             return new WorkflowGet(_config.Value).GetLatestWorkflows().Data;
         }
-        public List<WorkflowInfo> GetHistoryWorkflows(WorkflowRequestModel model)
+        public List<WorkflowInfo> GetHistoryWorkflows([FromBody]WorkflowRequestModel model)
         {
             return new WorkflowGet(_config.Value).GetHistoryWorkflows(model.Id).Data;
         }
         [HttpPost]
-        public void StartCustomWorkFlow(StartRequestModel model)
+        public void StartCustomWorkFlow([FromBody]StartRequestModel model)
         {
             new WorkflowAction(_config.Value, _config.Value.TaskLoopInterval).StartCustomWorkFlow(model.Id, model.TaskModel, model.TaskIndex);
         }
         [HttpPost]
-        public WorkflowInfo GetWorkflow(WorkflowRequestModel model)
+        public WorkflowInfo GetWorkflow([FromBody]WorkflowRequestModel model)
         {
             return new WorkflowGet(_config.Value).GetWorkflow(model.Id, model.Version).Data;
         }
         [HttpPost]
-        public WorkflowInfo GetLastVersionWorkflow(WorkflowRequestModel model)
+        public WorkflowInfo GetLastVersionWorkflow([FromBody]WorkflowRequestModel model)
         {
             return new WorkflowGet(_config.Value).GetLastVersionWorkflow(model.Id).Data;
         }
@@ -55,7 +55,7 @@ namespace Host.Controllers
             return new WorkflowModify(_config.Value).SaveWorkflow(workFlow).Data;
         }
         [HttpPost]
-        public GraphModel GetExecutionGraph(WorkflowRequestModel workFlow)
+        public GraphModel GetExecutionGraph([FromBody]WorkflowRequestModel workFlow)
         {
             return new WorkflowGet(_config.Value).GetExecutionGraph(workFlow.Id, workFlow.Version).Data;
         }
@@ -63,7 +63,7 @@ namespace Host.Controllers
         {
             return new WorkflowGet(_config.Value).GetTaskNames().Data;
         }
-        public void DeleteWorkflow(WorkflowRequestModel model)
+        public void DeleteWorkflow([FromBody]WorkflowRequestModel model)
         {
             new WorkflowGet(_config.Value).DeleteWorkflow(model.Id, model.Version);
         }

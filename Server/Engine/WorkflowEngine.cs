@@ -4,6 +4,7 @@ using System.Linq;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using workflow.Contract;
 using workflow.Core.Service.Contracts;
@@ -193,8 +194,7 @@ namespace workflow.Core
             }
             catch (Exception e)
             {
-                Logger.ErrorFormat("An error occured while loading the workflow : {0} Please check the workflow configuration. Error: {1}", file, e.Message);
-                return null;
+                throw new Exception(e.Message);
             }
         }
 
@@ -348,7 +348,7 @@ namespace workflow.Core
             if (wf == null)
             {
                 Logger.ErrorFormat("Workflow {0} not found.", model.Id);
-                return false;
+                throw new Exception("Workflow not found.");
             }
             else
             {

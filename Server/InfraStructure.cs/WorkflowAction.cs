@@ -41,8 +41,7 @@ namespace InfraStructure
             }
             catch (Exception ex)
             {
-                result.Succeed = false;
-                result.ErrorMessage = ex.Message.ToString();
+                throw new Exception(ex.Message);
             }
             return result;
         }

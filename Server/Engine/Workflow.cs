@@ -225,8 +225,8 @@ namespace workflow.Core
                     if (xAttribute != null)
                     {
                         var name = xAttribute.Value;
-                        var assemblyName = "workflow.Tasks." + name;
-                        var typeName = "workflow.Tasks." + name + "." + name + ", " + assemblyName;
+                        var assemblyName = "Workflow.Tasks." + name;
+                        var typeName = "Workflow.Tasks." + name + "." + name + ", " + assemblyName;
                         var type = Type.GetType(typeName);
 
                         if (type != null)
@@ -842,7 +842,8 @@ namespace workflow.Core
                 log.TaskDataModel = model.TaskModel;
                 log.WorkflowName = model.WorkflowName;
                 log.TaskName = GetTask((int)taskId).Name;
-                log.RequestNumber = JsonConvert.DeserializeObject<InnerRequestModel>(model.TaskModel).RequestNumber;
+                if (model.TaskModel != null)
+                    log.RequestNumber = JsonConvert.DeserializeObject<InnerRequestModel>(model.TaskModel).RequestNumber;
                 // new WorkflowLogProxy().AddLog(log);
             }
             else

@@ -3,11 +3,11 @@ using System.Xml.Linq;
 using workflow.Contract;
 using workflow.Core;
 
-namespace Workflow.Tasks.TestTask
+namespace Workflow.Tasks.JumpTo
 {
-    public class TestTask : Task
+    public class JumpTo : Task
     {
-        public TestTask(XElement xe, workflow.Core.Workflow wf) : base(xe, wf)
+        public JumpTo(XElement xe, workflow.Core.Workflow wf) : base(xe, wf)
         {
         }
 
