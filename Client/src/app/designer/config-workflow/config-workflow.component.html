@@ -13,7 +13,8 @@
       </div>
       <div *ngIf="task.isInSwitch === true && !task.goToWhile">
 
-        <span class="iranSanseFont" *ngIf="task.parentTask.text === 'تسک چند شرطی کاربر ایجاد کننده'">این تسک در صورتی اجرا میشود که کاربر درخواست دهنده </span>
+        <span class="iranSanseFont" *ngIf="task.parentTask.text === 'تسک چند شرطی کاربر ایجاد کننده'">این تسک در صورتی
+          اجرا میشود که کاربر درخواست دهنده </span>
         <mat-form-field class="side-nav-field" style="width:79%" *ngIf="task.parentTask.text === 'تسک چند شرطی کاربر ایجاد کننده'">
           <mat-select [disabled]="task.isDefault" placeholder="انتخاب کاربر" [(ngModel)]="task.caseValue" panelClass="select__style">
             <mat-option *ngFor="let employ of employs" [value]="employ.value">
@@ -78,9 +79,23 @@
         </h4>
         <div *ngFor="let setting of task.settings | isNotType">
           <div *ngIf="setting.name !== 'قوانین'">
-            <span class="iranSanseFont" *ngIf="setting.name !== 'getUserFromModel' && showUserSelector(task.settings)">
+            <h4 class="iranSanseFont" *ngIf="setting.name !== 'پارامتر' && setting.name !== 'getUserFromModel' && showUserSelector(task.settings)">
               {{setting.name}} :
-            </span>
+            </h4>
+            <div *ngIf="setting.name === 'مشخصات سرویس'">
+              <mat-form-field class="side-nav-field">
+                <input matInput placeholder="Url" [(ngModel)]="newSetting.value.url">
+              </mat-form-field>
+              <mat-form-field class="side-nav-field">
+                <input matInput placeholder="Controller" [(ngModel)]="newSetting.value.controller">
+              </mat-form-field>
+              <mat-form-field class="side-nav-field">
+                <input matInput placeholder="Action" [(ngModel)]="newSetting.value.action">
+              </mat-form-field>
+              <br>
+              <button pButton type="button" label="تنظیمات پارامتر ها" iconPos="right" (click)="openParameterDialog()"
+              icon="pi pi-setting" class="ui-button-success management__button"></button>
+            </div>
             <div *ngIf="setting.name === 'getUserFromModel'">
               <mat-checkbox [(ngModel)]="setting.value">دریافت کاربر از درخواست</mat-checkbox>
             </div>
@@ -104,21 +119,21 @@
           </mat-form-field>
           <button *ngIf="setting.name === 'قوانین'" pButton type="button" iconPos="right" (click)="showRules(setting)"
             label="مدیریت قوانین" icon="pi pi-unlock"></button>
-          <div dir="ltr">
+          <!-- <div dir="ltr">
             <p-multiSelect [style]="{'width':'100%'}" [options]="roles" [(ngModel)]="setting.value" *ngIf="setting.name === 'گروه کاربری' && showUserSelector(task.settings)"></p-multiSelect>
             <p-multiSelect [style]="{'width':'100%'}" [options]="employs" [(ngModel)]="setting.value" *ngIf="setting.name === 'کاربر' && showUserSelector(task.settings)"></p-multiSelect>
-          </div>
+          </div> -->
         </div>
         <hr>
       </div>
       <div style="text-align: right; margin-right: 1%">
         <button *ngIf="showAddTaskButton()" pButton type="button" label="افزودن" iconPos="right" (click)="addTask()"
-          icon="pi pi-plus" class="ui-button-success"></button>
+          icon="pi pi-plus" class="ui-button-success management__button"></button>
         <button *ngIf="taskEditMode" pButton type="button" iconPos="right" label="ذخیره" (click)="saveTask()" icon="pi pi-save"
-          class="ui-button-success"></button>
+          class="ui-button-success management__button"></button>
         <button *ngIf="showLinkPanel" pButton type="button" iconPos="right" label="ذخیره" (click)="saveLink()" icon="pi pi-save"
-          class="ui-button-success"></button>
-        <button pButton type="button" iconPos="right" (click)="cancelAddTask()" label="انصراف" icon="pi pi-times" class="ui-button-danger"></button>
+          class="ui-button-success management__button"></button>
+        <button pButton type="button" iconPos="right" (click)="cancelAddTask()" label="انصراف" icon="pi pi-times" class="ui-button-danger management__button"></button>
       </div>
     </div>
   </mat-sidenav>

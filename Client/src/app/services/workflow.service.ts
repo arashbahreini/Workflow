@@ -170,15 +170,15 @@ export class WorkflowService {
       description: 'متداول'
     });
 
-    data.push({
-      name: 'task',
-      description: 'کار'
-    });
+    // data.push({
+    //   name: 'task',
+    //   description: 'کار'
+    // });
 
-    data.push({
-      name: 'while',
-      description: 'حلقه'
-    });
+    // data.push({
+    //   name: 'while',
+    //   description: 'حلقه'
+    // });
 
     data.push({
       name: 'switch',

@@ -24,6 +24,7 @@ import { SharedModule } from '../common-module/shared.module';
 import { CoreModule } from '../core/core.module';
 import { ShowConfigComponent } from './show-config/show-config.component';
 import { ShowRulesDialogComponent } from './show-rules.dialog/show-rules.dialog.component';
+import { ServiceParameterConfigComponent } from './service-parameter-config.dialog/service-parameter-config.dialog.component';
 const routes: Routes = [];
 
 @NgModule({
@@ -46,11 +47,13 @@ const routes: Routes = [];
     VersionConfirmDialogComponent,
     ShowConfigComponent,
     ShowRulesDialogComponent,
+    ServiceParameterConfigComponent
   ],
   entryComponents: [
     DeleteDialogComponent,
     VersionConfirmDialogComponent,
-    ShowRulesDialogComponent
+    ShowRulesDialogComponent,
+    ServiceParameterConfigComponent,
   ],
   providers: [
     MessageService,

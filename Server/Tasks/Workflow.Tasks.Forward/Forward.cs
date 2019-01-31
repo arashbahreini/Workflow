@@ -14,6 +14,7 @@ namespace Workflow.Tasks.Forward
 
         public override TaskStatus Run(DbConfig dbConfig, RequestModel model = null)
         {
+            var setting = this.GetSetting("مشخصات سرویس");
             return new TaskStatus(Status.Success, this, model, "", dbConfig);
         }
     }

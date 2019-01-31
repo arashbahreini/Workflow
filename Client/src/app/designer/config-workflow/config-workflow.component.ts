@@ -28,7 +28,7 @@ import { LoadingService } from '../../core/loading-dialog/loading-dialog.compone
 import { VersionConfirmModel } from '../../model/version-confirm.model';
 import { SettingModel } from '../../model/setting.model';
 import { ShowRulesDialogComponent } from '../show-rules.dialog/show-rules.dialog.component';
-import { debug } from 'util';
+import { ServiceParameterConfigComponent } from '../service-parameter-config.dialog/service-parameter-config.dialog.component';
 
 @Component({
   selector: 'app-config-workflow',
@@ -73,7 +73,7 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
   public workflows: WorkFlowModel[] = [];
   public expandWorkflowConfig = true;
   cars: SelectItem[];
-
+  public newSetting: any = {};
   constructor(
     private workflowService: WorkflowService,
     private route: ActivatedRoute,
@@ -88,6 +88,7 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
     private graphValidationService: GraphValidationService,
     private taskValidationService: TaskValidationService,
     private loading: LoadingService) {
+    this.newSetting.value = {};
     this.route.params.subscribe((params: Params) => {
       this.workFlowId = +params['id'];
       this.workFlowVersion = +params['version'];
@@ -491,6 +492,9 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
     this.task.persianName = this.task.text;
     this.task.name = this.workFlow.tasks.find(x => x.id === this.task.taskId).name;
     this.task.settings = JSON.parse(JSON.stringify(this.workFlow.tasks.find(x => x.id === this.task.taskId).settings));
+    if (this.task.settings.find(x => x.name === 'مشخصات سرویس')) {
+      this.newSetting = JSON.parse(this.task.settings.find(x => x.name === 'مشخصات سرویس').value);
+    }
     const linkToTask =
       this.workFlow.graph.linkDataArray.find(x => x.to === this.task.key) ?
         this.workFlow.graph.linkDataArray.find(x => x.to === this.task.key) :
@@ -514,30 +518,31 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
     }
     this.changeTaskTypeInList();
 
-    if (this.task.settings.find(x => x.name === 'کاربر')) {
-      if (this.workFlow.tasks.find(x => x.id === this.task.taskId).settings.find(x => x.name === 'کاربر').value === '') {
-        this.task.settings.find(x => x.name === 'کاربر').value = [];
-      }
-      if (typeof this.workFlow.tasks.find(x => x.id === this.task.taskId).settings.find(x => x.name === 'کاربر').value === 'string') {
-        if (this.workFlow.tasks.find(x => x.id === this.task.taskId).settings.find(x => x.name === 'کاربر').value === '') {
-          this.workFlow.tasks.find(x => x.id === this.task.taskId).settings.find(x => x.name === 'کاربر').value = '[]';
-        }
-        this.task.settings.find(x => x.name === 'کاربر').value
-          = JSON.parse(this.workFlow.tasks.find(x => x.id === this.task.taskId).settings.find(x => x.name === 'کاربر').value);
-      }
-    }
-    if (this.task.settings.find(x => x.name === 'گروه کاربری')) {
-      if (this.workFlow.tasks.find(x => x.id === this.task.taskId).settings.find(x => x.name === 'گروه کاربری').value === '') {
-        this.task.settings.find(x => x.name === 'گروه کاربری').value = [];
-      }
-      if (typeof this.workFlow.tasks.find(x => x.id === this.task.taskId).settings.find(x => x.name === 'گروه کاربری').value === 'string') {
-        if (this.workFlow.tasks.find(x => x.id === this.task.taskId).settings.find(x => x.name === 'گروه کاربری').value === '') {
-          this.workFlow.tasks.find(x => x.id === this.task.taskId).settings.find(x => x.name === 'گروه کاربری').value = '[]';
-        }
-        this.task.settings.find(x => x.name === 'گروه کاربری').value
-          = JSON.parse(this.workFlow.tasks.find(x => x.id === this.task.taskId).settings.find(x => x.name === 'گروه کاربری').value);
-      }
-    }
+    // if (this.task.settings.find(x => x.name === 'کاربر')) {
+    //   if (this.workFlow.tasks.find(x => x.id === this.task.taskId).settings.find(x => x.name === 'کاربر').value === '') {
+    //     this.task.settings.find(x => x.name === 'کاربر').value = [];
+    //   }
+    //   if (typeof this.workFlow.tasks.find(x => x.id === this.task.taskId).settings.find(x => x.name === 'کاربر').value === 'string') {
+    //     if (this.workFlow.tasks.find(x => x.id === this.task.taskId).settings.find(x => x.name === 'کاربر').value === '') {
+    //       this.workFlow.tasks.find(x => x.id === this.task.taskId).settings.find(x => x.name === 'کاربر').value = '[]';
+    //     }
+    //     this.task.settings.find(x => x.name === 'کاربر').value
+    //       = JSON.parse(this.workFlow.tasks.find(x => x.id === this.task.taskId).settings.find(x => x.name === 'کاربر').value);
+    //   }
+    // }
+    // if (this.task.settings.find(x => x.name === 'گروه کاربری')) {
+    //   if (this.workFlow.tasks.find(x => x.id === this.task.taskId).settings.find(x => x.name === 'گروه کاربری').value === '') {
+    //     this.task.settings.find(x => x.name === 'گروه کاربری').value = [];
+    //   }
+    //   if (typeof this.workFlow.tasks.find(x => x.id === this.task.taskId)
+    // .settings.find(x => x.name === 'گروه کاربری').value === 'string') {
+    //     if (this.workFlow.tasks.find(x => x.id === this.task.taskId).settings.find(x => x.name === 'گروه کاربری').value === '') {
+    //       this.workFlow.tasks.find(x => x.id === this.task.taskId).settings.find(x => x.name === 'گروه کاربری').value = '[]';
+    //     }
+    //     this.task.settings.find(x => x.name === 'گروه کاربری').value
+    //       = JSON.parse(this.workFlow.tasks.find(x => x.id === this.task.taskId).settings.find(x => x.name === 'گروه کاربری').value);
+    //   }
+    // }
 
     if (this.task.name === 'JumpTo') {
       const nodes = this.workFlow.graph.nodeDataArray.filter(x => x.key !== this.task.key);
@@ -703,6 +708,24 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
     });
   }
 
+  openParameterDialog() {
+    if (this.task.settings.find(x => x.name === 'پارامتر').value === '') {
+      this.task.settings.find(x => x.name === 'پارامتر').value = '[]';
+    }
+    const dialogRef = this.dialog.open(ServiceParameterConfigComponent, {
+      data: JSON.parse(this.task.settings.find(x => x.name === 'پارامتر').value),
+      maxHeight: '60vh',
+      height: '60vh',
+      disableClose: true,
+    });
+    dialogRef.afterClosed().subscribe((res: string) => {
+      if (res) {
+        this.task.settings.find(x => x.name === 'پارامتر').value = res;
+        console.log(this.task.settings);
+      }
+    });
+  }
+
   public checkSaveExistWorkflow() {
     this.workFlow = this.workflowSaveValidationService.checkForNeedNewVersion(
       this.workFlow,
@@ -809,6 +832,8 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
         if (res) {
           this.errorMessages.push({ severity: 'success', summary: 'پیغام موفق', detail: 'فرایند با موفقیت ذخیره شد', });
           this.router.navigate(['../../designer/config/' + res.id + '/' + 0]);
+          this.workFlowId = +res.id;
+          this.workFlowVersion = +res.version;
           this.getWorkflow();
         } else {
           this.errorMessages.push({ severity: 'error', summary: 'پیغام خطا', detail: 'اشکال سیستمی وجود دارد', });
@@ -862,21 +887,26 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
 
     this.task.id = this.generateTaskId();
     this.task.key = this.generateNodeKey();
-    if (this.task.settings.find(x => x.name === 'کاربر')) {
-      if (this.task.settings.find(x => x.name === 'کاربر').value === '') {
-        this.task.settings.find(x => x.name === 'کاربر').value = '[]';
-      } else {
-        this.task.settings.find(x => x.name === 'کاربر').value = JSON.stringify(this.task.settings.find(x => x.name === 'کاربر').value);
-      }
+    if (this.task.settings.find(x => x.name === 'مشخصات سرویس')) {
+      this.task.settings.find(x => x.name === 'مشخصات سرویس').value =
+        JSON.stringify(this.newSetting);
+        this.newSetting.value = {};
     }
-    if (this.task.settings.find(x => x.name === 'گروه کاربری')) {
-      if (this.task.settings.find(x => x.name === 'گروه کاربری').value === '') {
-        this.task.settings.find(x => x.name === 'گروه کاربری').value = '[]';
-      } else {
-        this.task.settings.find(x => x.name === 'گروه کاربری').value =
-          JSON.stringify(this.task.settings.find(x => x.name === 'گروه کاربری').value);
-      }
-    }
+    // if (this.task.settings.find(x => x.name === 'کاربر')) {
+    //   if (this.task.settings.find(x => x.name === 'کاربر').value === '') {
+    //     this.task.settings.find(x => x.name === 'کاربر').value = '[]';
+    //   } else {
+    //     this.task.settings.find(x => x.name === 'کاربر').value = JSON.stringify(this.task.settings.find(x => x.name === 'کاربر').value);
+    //   }
+    // }
+    // if (this.task.settings.find(x => x.name === 'گروه کاربری')) {
+    //   if (this.task.settings.find(x => x.name === 'گروه کاربری').value === '') {
+    //     this.task.settings.find(x => x.name === 'گروه کاربری').value = '[]';
+    //   } else {
+    //     this.task.settings.find(x => x.name === 'گروه کاربری').value =
+    //       JSON.stringify(this.task.settings.find(x => x.name === 'گروه کاربری').value);
+    //   }
+    // }
     this.workFlow.tasks.push(this.task);
 
     this.workFlow.graph.linkDataArray = JSON.parse(this.myDiagram.model.toJson()).linkDataArray;
@@ -1046,21 +1076,26 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
     const node = this.workFlow.graph.nodeDataArray.find(x => x.key === this.task.key);
     node.text = this.task.persianName;
 
-    if (this.task.settings.find(x => x.name === 'کاربر')) {
-      if (this.task.settings.find(x => x.name === 'کاربر').value === '') {
-        this.task.settings.find(x => x.name === 'کاربر').value = '[]';
-      } else {
-        this.task.settings.find(x => x.name === 'کاربر').value = JSON.stringify(this.task.settings.find(x => x.name === 'کاربر').value);
-      }
+    if (this.task.settings.find(x => x.name === 'مشخصات سرویس')) {
+      this.task.settings.find(x => x.name === 'مشخصات سرویس').value =
+        JSON.stringify(this.newSetting);
+        this.newSetting.value = {};
     }
-    if (this.task.settings.find(x => x.name === 'گروه کاربری')) {
-      if (this.task.settings.find(x => x.name === 'گروه کاربری').value === '') {
-        this.task.settings.find(x => x.name === 'گروه کاربری').value = '[]';
-      } else {
-        this.task.settings.find(x => x.name === 'گروه کاربری').value =
-          JSON.stringify(this.task.settings.find(x => x.name === 'گروه کاربری').value);
-      }
-    }
+    // if (this.task.settings.find(x => x.name === 'کاربر')) {
+    //   if (this.task.settings.find(x => x.name === 'کاربر').value === '') {
+    //     this.task.settings.find(x => x.name === 'کاربر').value = '[]';
+    //   } else {
+    //     this.task.settings.find(x => x.name === 'کاربر').value = JSON.stringify(this.task.settings.find(x => x.name === 'کاربر').value);
+    //   }
+    // }
+    // if (this.task.settings.find(x => x.name === 'گروه کاربری')) {
+    //   if (this.task.settings.find(x => x.name === 'گروه کاربری').value === '') {
+    //     this.task.settings.find(x => x.name === 'گروه کاربری').value = '[]';
+    //   } else {
+    //     this.task.settings.find(x => x.name === 'گروه کاربری').value =
+    //       JSON.stringify(this.task.settings.find(x => x.name === 'گروه کاربری').value);
+    //   }
+    // }
 
     if (this.task.caseValue) {
       node.caseValue = this.task.caseValue;

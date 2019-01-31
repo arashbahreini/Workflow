@@ -1,0 +1,27 @@
+<p-growl [(value)]="errorMessages" [life]="'3000'"></p-growl>
+<div dir="rtl" style="text-align: right; overflow-x: hidden;overflow-y: auto">
+  <div class="div__top">
+    <h5>
+      <button style="margin:5px;" pButton icon="pi pi-times" class="ui-button-danger" (click)="closeDialog(null)"></button>
+      مدیریت پارامتر های سرویس
+    </h5>
+  </div>
+  <div style="margin-right:5px;">
+    <h4>
+      لطفا پارامتر های سرویس را وارد کنید .
+    </h4>
+  </div>
+  <div style="margin-right:25px;" *ngFor="let data of datas">
+    <mat-form-field class="side-nav-field">
+      <input matInput placeholder="نام" [(ngModel)]="data.name">
+    </mat-form-field>
+    <mat-form-field class="side-nav-field">
+      <input matInput placeholder="مقدار" [(ngModel)]="data.value">
+    </mat-form-field>
+    <button style="margin:5px;" *ngIf="data.isNew" pButton icon="pi pi-plus" class="ui-button-success" (click)="addNewParameter(data)"></button>
+  </div>
+  <div style="text-align: center">
+    <button style="margin:5px;" pButton icon="pi pi-check" class="ui-button-success" (click)="closeDialog()" label="ذخیره"></button>
+    <button style="margin:5px;" pButton icon="pi pi-times" class="ui-button-danger" (click)="dialogRef.close()" label="انصراف"></button>
+  </div>
+</div>
