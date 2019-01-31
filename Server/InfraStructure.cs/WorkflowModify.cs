@@ -14,28 +14,30 @@ namespace InfraStructure.cs
     public class WorkflowModify
     {
         private static Configuration _configuration;
-        public WorkflowModify(Configuration configuration)
+        public DbConfig _dbConfig;
+        public WorkflowModify(Configuration configuration, DbConfig dbConfig)
         {
+            _dbConfig = dbConfig;
             _configuration = configuration;
         }
 
         public ResultModel<IdVersionModel> SaveWorkflow(WorkflowInfo model)
         {
             var result = new ResultModel<IdVersionModel>();
-            var workflowEngine = new WorkflowEngine(_configuration);
+            var workflowEngine = new WorkflowEngine(_configuration, _dbConfig);
             if (model.Id == 0)
             {
-                result.Data = new SaveWorkflowLogic(_configuration).AddNewWorkflow(model, workflowEngine, GetTaskNames().Data);
+                result.Data = new SaveWorkflowLogic(_configuration, _dbConfig).AddNewWorkflow(model, workflowEngine, GetTaskNames().Data);
             }
             else
             {
                 if (model.NewVersion)
                 {
-                    result.Data = new SaveWorkflowLogic(_configuration).AddNewVersionWorkflow(model, workflowEngine, GetTaskNames().Data);
+                    result.Data = new SaveWorkflowLogic(_configuration, _dbConfig).AddNewVersionWorkflow(model, workflowEngine, GetTaskNames().Data);
                 }
                 else
                 {
-                    result.Data = new SaveWorkflowLogic(_configuration).EditWorkflow(model, workflowEngine, GetTaskNames().Data);
+                    result.Data = new SaveWorkflowLogic(_configuration,_dbConfig).EditWorkflow(model, workflowEngine, GetTaskNames().Data);
                 }
             }
 
@@ -47,7 +49,7 @@ namespace InfraStructure.cs
             var result = new ResultModel<List<TaskNameModel>>();
             try
             {
-                var workflowEngine = new WorkflowEngine(_configuration, true);
+                var workflowEngine = new WorkflowEngine(_configuration, _dbConfig,true);
                 result.Data = new List<TaskNameModel>();
                 result.Data.AddRange(JsonConvert.DeserializeObject<List<TaskNameModel>>(File.ReadAllText(workflowEngine.TasksNamesFile)));
             }

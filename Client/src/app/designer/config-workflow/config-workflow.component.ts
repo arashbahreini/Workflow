@@ -663,7 +663,9 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
       this.showErrorMessage(workflowValidate.messages);
       return;
     }
-
+    this.workFlow.graph.linkDataArray.forEach(element => {
+      element.points = [];
+    });
     this.checkAndSetRoot();
     if (this.workFlow.isNew) {
       this.saveNewWorkflow();

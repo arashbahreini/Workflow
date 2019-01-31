@@ -9,14 +9,17 @@ using workflow.Core.Service.Contracts;
 using Workflow.Core.Service.Contracts;
 using System.Configuration;
 using Contract.Common;
+using Contract;
 
 namespace workflow.Core.Logic
 {
     public class SaveWorkflowLogic
     {
         public Configuration _configuration { get; set; }
-        public SaveWorkflowLogic(Configuration configuration)
+        public DbConfig _dbConfig;
+        public SaveWorkflowLogic(Configuration configuration, DbConfig dbConfig)
         {
+            _dbConfig = dbConfig;
             _configuration = configuration;
         }
         public static XNamespace xn = "urn:workflow-schema";
@@ -314,7 +317,7 @@ namespace workflow.Core.Logic
         }
         public string GetLastWorkflowId()
         {
-            return new WorkflowEngine(_configuration).GetLastId();
+            return new WorkflowEngine(_configuration, _dbConfig).GetLastId();
         }
         public void SaveJsonGraph(GraphModel graph, string path, string fileName)
         {

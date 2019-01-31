@@ -23,6 +23,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workflow.Tasks.JumpTo", "Ta
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workflow.Tasks.TestTask", "Tasks\Workflow.Tasks.TestTask\Workflow.Tasks.TestTask.csproj", "{1C6D2551-3D00-4864-B3EC-42D1AD31BDFA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Log", "Log\Log.csproj", "{ED4D081E-15CE-4CE9-A9B7-9BF0162865D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{C70CA5B1-8C16-433C-B7D6-3F3C7AB0335F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,6 +69,14 @@ Global
 		{1C6D2551-3D00-4864-B3EC-42D1AD31BDFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C6D2551-3D00-4864-B3EC-42D1AD31BDFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C6D2551-3D00-4864-B3EC-42D1AD31BDFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED4D081E-15CE-4CE9-A9B7-9BF0162865D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED4D081E-15CE-4CE9-A9B7-9BF0162865D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED4D081E-15CE-4CE9-A9B7-9BF0162865D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED4D081E-15CE-4CE9-A9B7-9BF0162865D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C70CA5B1-8C16-433C-B7D6-3F3C7AB0335F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C70CA5B1-8C16-433C-B7D6-3F3C7AB0335F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C70CA5B1-8C16-433C-B7D6-3F3C7AB0335F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C70CA5B1-8C16-433C-B7D6-3F3C7AB0335F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

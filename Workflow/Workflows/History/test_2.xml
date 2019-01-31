@@ -4,8 +4,9 @@
     <Setting name="launchType" value="trigger" />
     <Setting name="enabled" value="true" />
     <Setting name="period" value="00.00:00:00" />
-    <Setting name="version" value="0" />
+    <Setting name="version" value="2" />
     <Setting name="deadLine" value="10" />
+    <Setting name="versionDescription" value="اضافه شدن تسک جدید" />
   </Settings>
   <Tasks>
     <Task id="1" name="Forward" description="" enabled="true" isCommon="true">
@@ -15,7 +16,7 @@
     </Task>
     <Task id="2" name="Insert" description="" enabled="true" isCommon="true">
       <Setting name="type" value="commonTask" />
-      <Setting name="کاربر" value="[1]" />
+      <Setting name="کاربر" value="[2]" />
       <Setting name="گروه کاربری" value="[]" />
     </Task>
   </Tasks>

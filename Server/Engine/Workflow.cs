@@ -1,4 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using Contract;
+using Data.Entities;
+using Log;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -135,13 +139,14 @@ namespace workflow.Core
         private System.Threading.Tasks.Task _task;
         //private CancellationTokenSource Canceller { get; set; }
 
+        public static DbConfig _dbConfig;
         /// <summary>
         /// Creates a new workflow.
         /// </summary>
         /// <param name="path">Workflow file path.</param>
         /// <param name="workflowTempFolder">workflow temp folder.</param>
         /// <param name="xsdPath">XSD path.</param>
-        public Workflow(string path, string workflowTempFolder, string xsdPath)
+        public Workflow(string path, string workflowTempFolder, string xsdPath, DbConfig dbConfig)
         {
             JobId = 1;
             _task = null;
@@ -152,6 +157,7 @@ namespace workflow.Core
             Hashtable = new Hashtable();
             Check();
             Load();
+            _dbConfig = dbConfig;
         }
 
         /// <summary>
@@ -602,20 +608,16 @@ namespace workflow.Core
                         Logger.InfoFormat("{0} Workflow started.", LogTag);
                         if (model.IsRunningFromPending == false)
                         {
-                            //new WorkflowLogProxy().AddLog(new Service.Contracts.WorkflowLogModel
-                            //{
-                            //    WorkflowId = workflow.Id,
-                            //    Action = WorkflowStatus.Start,
-                            //    RequestId = model.TaskModel != null ? JsonConvert.DeserializeObject<InnerRequestModel>(model.TaskModel).RequestID : 0,
-                            //    UniqKey = model.UniqKey,
-                            //    UserId = model.UserId,
-                            //    WorkflowVersion = model.Version,
-                            //    TaskDataModel = model.TaskModel,
-                            //    WorkflowName = model.WorkflowName,
-                            //    RequestNumber = JsonConvert.DeserializeObject<InnerRequestModel>(model.TaskModel).RequestNumber
-                            //});
+                            new WorkflowLogger(_dbConfig).AddLog(new WorkflowLog
+                            {
+                                Action = (int)WorkflowStatus.Start,
+                                CreationDate = DateTime.Now,
+                                Name = model.WorkflowName,
+                                WorkflowId = model.Id,
+                                UniqKey = model.UniqKey,
+                                WorkflowVersion = model.Version,
+                            }).Wait();
                         }
-
                         CreateTempFolder();
 
                         // Run the tasks
@@ -667,18 +669,14 @@ namespace workflow.Core
                     finally
                     {
                         Logger.InfoFormat("{0} Workflow finished.", LogTag);
-                        //new WorkflowLogProxy().AddLog(new Service.Contracts.WorkflowLogModel
-                        //{
-                        //    Action = model.IsStoped ? WorkflowStatus.Stop : WorkflowStatus.Finish,
-                        //    RequestId = model.TaskModel != null ? JsonConvert.DeserializeObject<InnerRequestModel>(model.TaskModel).RequestID : 0,
-                        //    UniqKey = model.UniqKey,
-                        //    WorkflowId = model.Id,
-                        //    UserId = model.UserId,
-                        //    WorkflowVersion = model.Version,
-                        //    TaskDataModel = model.TaskModel,
-                        //    WorkflowName = model.WorkflowName,
-                        //    RequestNumber = JsonConvert.DeserializeObject<InnerRequestModel>(model.TaskModel).RequestNumber
-                        //});
+                        new WorkflowLogger(_dbConfig).AddLog(new WorkflowLog
+                        {
+                            Action = model.IsStoped ? (int)WorkflowStatus.Stop : (int)WorkflowStatus.Finish,
+                            UniqKey = model.UniqKey,
+                            WorkflowId = model.Id,
+                            WorkflowVersion = model.Version,
+                            Name = model.WorkflowName,
+                        }).Wait();
                         foreach (List<FileInf> files in FilesPerTask.Values) files.Clear();
                         foreach (List<Entity> entities in EntitiesPerTask.Values) entities.Clear();
                         //_task.Start();
@@ -818,7 +816,7 @@ namespace workflow.Core
             foreach (var task in tasks)
             {
                 if (!task.IsEnabled && success) continue;
-                var status = task.Run(model);
+                var status = task.Run(_dbConfig,model);
                 success &= status.Status == Status.Success;
                 warning |= status.Status == Status.Warning;
                 if (!atLeastOneSucceed && status.Status == Status.Success) atLeastOneSucceed = true;
@@ -827,24 +825,20 @@ namespace workflow.Core
 
         void RunTaskLog(long taskId, long taskIndex, TaskType taskType, RequestModel model = null)
         {
-            var log = new Service.Contracts.WorkflowLogModel();
+            var log = new WorkflowLog();
 
             if (model.IsRunningFromPending == false)
             {
-                log.TaskType = taskType;
+                log.TaskType = (int)taskType;
                 log.WorkflowId = model.Id;
-                log.Action = WorkflowStatus.Start;
-                log.TaskId = taskId;
+                log.Action = (int)WorkflowStatus.Start;
+                log.TaskId = (int)taskId;
                 log.TaskIndex = taskIndex;
-                log.RequestId = model.TaskModel != null ? JsonConvert.DeserializeObject<InnerRequestModel>(model.TaskModel).RequestID : 0;
                 log.UniqKey = model.UniqKey;
                 log.WorkflowVersion = model.Version;
-                log.TaskDataModel = model.TaskModel;
-                log.WorkflowName = model.WorkflowName;
+                log.Name = model.WorkflowName;
                 log.TaskName = GetTask((int)taskId).Name;
-                if (model.TaskModel != null)
-                    log.RequestNumber = JsonConvert.DeserializeObject<InnerRequestModel>(model.TaskModel).RequestNumber;
-                // new WorkflowLogProxy().AddLog(log);
+                new WorkflowLogger(_dbConfig).AddLog(log).Wait();
             }
             else
             {
@@ -901,7 +895,7 @@ namespace workflow.Core
                         {
                             task.TaskIndex = (long)node.Index;
                             RunTaskLog(node.IfId != null ? (int)node.IfId : node.Id, (long)node.Index, TaskType.Task, model);
-                            var status = task.Run(model);
+                            var status = task.Run(_dbConfig,model);
 
                             success &= status.Status == Status.Success;
                             warning |= status.Status == Status.Warning;
@@ -935,7 +929,7 @@ namespace workflow.Core
                                         if (childTask.IsEnabled && success)
                                         {
                                             RunTaskLog(childTask.Id, (long)childTask.TaskIndex, TaskType.Task, model);
-                                            var childStatus = childTask.Run(model);
+                                            var childStatus = childTask.Run(_dbConfig,model);
 
                                             success &= childStatus.Status == Status.Success;
                                             warning |= childStatus.Status == Status.Warning;
@@ -992,7 +986,7 @@ namespace workflow.Core
                 if (ifTask.IsEnabled && success)
                 {
                     RunTaskLog(@if.IfId, (long)@if.Index, TaskType.If, model);
-                    var status = ifTask.Run(model);
+                    var status = ifTask.Run(_dbConfig,model);
 
                     success &= status.Status == Status.Success;
                     warning |= status.Status == Status.Warning;
@@ -1056,7 +1050,7 @@ namespace workflow.Core
                     RunTaskLog(@while.WhileId, (long)@while.Index, TaskType.If, model);
                     while (true)
                     {
-                        var status = whileTask.Run(model);
+                        var status = whileTask.Run(_dbConfig,model);
 
                         success &= status.Status == Status.Success;
                         warning |= status.Status == Status.Warning;
@@ -1105,7 +1099,7 @@ namespace workflow.Core
                 if (switchTask.IsEnabled && success)
                 {
                     RunTaskLog(@switch.SwitchId, (long)@switch.Index, TaskType.If, model);
-                    var status = switchTask.Run(model);
+                    var status = switchTask.Run(_dbConfig,model);
 
                     success &= status.Status == Status.Success;
                     warning |= status.Status == Status.Warning;

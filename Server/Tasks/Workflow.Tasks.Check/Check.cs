@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Xml.Linq;
+using Contract;
 using workflow.Contract;
 using workflow.Core;
 
@@ -11,9 +12,9 @@ namespace Workflow.Tasks.Check
         {
         }
 
-        public override TaskStatus Run(RequestModel model = null)
+        public override TaskStatus Run(DbConfig dbConfig, RequestModel model = null)
         {
-            return new TaskStatus(Status.Success, this, new RequestModel(), "");
+            return new TaskStatus(Status.Success, this, model, "", dbConfig);
         }
     }
 }

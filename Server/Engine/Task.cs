@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using System.Xml.XPath;
+using Contract;
 
 namespace workflow.Core
 {
@@ -106,7 +107,7 @@ namespace workflow.Core
         /// Starts the task.
         /// </summary>
         /// <returns>Task status.</returns>
-        public abstract TaskStatus Run(RequestModel model = null);
+        public abstract TaskStatus Run(DbConfig dbConfig, RequestModel model = null);
 
         /// <summary>
         /// Returns a setting value from its name.

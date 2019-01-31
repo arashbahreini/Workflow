@@ -18,13 +18,13 @@
             <tbody>
                 <tr *ngFor="let workflow of workflows; let i = index">
                     <td>{{i + 1 | persianNumber }}</td>
-                    <td>{{workflow.Name}}</td>
-                    <td>{{workflow.Version | persianNumber}}</td>
-                    <td>{{workflow.DeadLine | persianNumber}}</td>
-                    <td>{{workflow.VersionDescription}}</td>
+                    <td>{{workflow.name}}</td>
+                    <td>{{workflow.version | persianNumber}}</td>
+                    <td>{{workflow.deadLine | persianNumber}}</td>
+                    <td>{{workflow.versionDescription}}</td>
                     <td>
-                        <button pButton icon="pi pi-trash" class="ui-button-danger" (click)="openDeleteDialog(workflow.Id,workflow.Version)"></button>
-                        <button pButton icon="pi pi-pencil" [routerLink]="'config/' + workflow.Id + '/' + workflow.Version"></button>
+                        <button pButton icon="pi pi-trash" class="ui-button-danger" (click)="openDeleteDialog(workflow.id,workflow.version)"></button>
+                        <button pButton icon="pi pi-pencil" [routerLink]="'config/' + workflow.id + '/' + workflow.version"></button>
                     </td>
                 </tr>
             </tbody>

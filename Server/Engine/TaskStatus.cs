@@ -1,4 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using Contract;
+using Data.Entities;
+using Log;
+using Newtonsoft.Json;
 using System;
 using workflow.Contract;
 using workflow.Core.Service.Contracts.Enum;
@@ -10,6 +13,7 @@ namespace workflow.Core
     /// </summary>
     public class TaskStatus
     {
+        public DbConfig _dbConfig;
         /// <summary>
         /// Status.
         /// </summary>
@@ -28,31 +32,29 @@ namespace workflow.Core
         /// </summary>
         /// <param name="status">Status.</param>
 
-        //void AddEndTaskLog(Task task, RequestModel model, Status status, TaskType taskType, string serviceResponse, bool? taskResult = null)
-        //{
-        //    new WorkflowLogProxy().AddLog(new Service.Contracts.WorkflowLogModel
-        //    {
-        //        TaskId = task.Id,
-        //        TaskIndex = task.TaskIndex,
-        //        TaskStatus = (Service.Contracts.Enum.TaskStatus)Enum.Parse(typeof(Service.Contracts.Enum.TaskStatus), status.ToString()),
-        //        RequestId = model.TaskModel != null ? JsonConvert.DeserializeObject<InnerRequestModel>(model.TaskModel).RequestID : 0,
-        //        WorkflowId = model.Id,
-        //        UniqKey = model.UniqKey,
-        //        Action = status == Status.Error ? WorkflowStatus.Stop : WorkflowStatus.Finish,
-        //        TaskType = taskType,
-        //        WorkflowVersion = model.Version,
-        //        TaskResult = taskResult,
-        //        TaskDataModel = model.TaskModel,
-        //        WorkflowName = model.WorkflowName,
-        //        TaskName = task.Name,
-        //        RequestNumber = JsonConvert.DeserializeObject<InnerRequestModel>(model.TaskModel).RequestNumber,
-        //        ServiceResponseBody = serviceResponse
-        //    });
-        //    model.IsStoped = status == Status.Error ? true : false;
-        //}
-        public TaskStatus(Status status, Task task, RequestModel model, string serviceResponse)
+        void AddEndTaskLog(Task task, RequestModel model, Status status, TaskType taskType, string serviceResponse, bool? taskResult = null)
         {
-            // AddEndTaskLog(task, model, status, TaskType.Task, serviceResponse);
+            new WorkflowLogger(_dbConfig).AddLog(new WorkflowLog
+            {
+                TaskId = task.Id,
+                TaskIndex = task.TaskIndex,
+                TaskStatus = (int)Enum.Parse(typeof(Service.Contracts.Enum.TaskStatus), status.ToString()),
+                WorkflowId = model.Id,
+                UniqKey = model.UniqKey,
+                Action = status == Status.Error ? (int)WorkflowStatus.Stop : (int)WorkflowStatus.Finish,
+                TaskType = (int)taskType,
+                WorkflowVersion = model.Version,
+                TaskResult = taskResult,
+                Name = model.WorkflowName,
+                TaskName = task.Name,
+                ServiceResponse = serviceResponse,
+            }).Wait();
+            model.IsStoped = status == Status.Error ? true : false;
+        }
+        public TaskStatus(Status status, Task task, RequestModel model, string serviceResponse, DbConfig dbConfig)
+        {
+            _dbConfig = dbConfig;
+            AddEndTaskLog(task, model, status, TaskType.Task, serviceResponse);
             Status = status;
         }
 
@@ -61,9 +63,10 @@ namespace workflow.Core
         /// </summary>
         /// <param name="status">Status.</param>
         /// <param name="condition">Condition value.</param>
-        public TaskStatus(Status status, bool condition, Task task, RequestModel model, string serviceResponse) //: this(status, task, model)
+        public TaskStatus(Status status, bool condition, Task task, RequestModel model, string serviceResponse, DbConfig dbConfig) //: this(status, task, model)
         {
-            // AddEndTaskLog(task, model, Status, TaskType.If, serviceResponse, condition);
+            _dbConfig = dbConfig;
+            AddEndTaskLog(task, model, Status, TaskType.If, serviceResponse, condition);
             Condition = condition;
         }
 
@@ -72,9 +75,10 @@ namespace workflow.Core
         /// </summary>
         /// <param name="status">Status.</param>
         /// <param name="switchValue">Switch value.</param>
-        public TaskStatus(Status status, string switchValue, Task task, RequestModel model, string serviceResponse) //: this(status, task, model)
+        public TaskStatus(Status status, string switchValue, Task task, RequestModel model, string serviceResponse, DbConfig dbConfig) //: this(status, task, model)
         {
-            // AddEndTaskLog(task, model, Status, TaskType.SwitchCase, serviceResponse);
+            _dbConfig = dbConfig;
+            AddEndTaskLog(task, model, Status, TaskType.SwitchCase, serviceResponse);
             SwitchValue = switchValue;
         }
 
@@ -84,9 +88,10 @@ namespace workflow.Core
         /// <param name="status">Status.</param>
         /// <param name="condition">Condition value.</param>
         /// <param name="switchValue">Switch value.</param>
-        public TaskStatus(Status status, bool condition, string switchValue, Task task, RequestModel model, string serviceResponse)
+        public TaskStatus(Status status, bool condition, string switchValue, Task task, RequestModel model, string serviceResponse, DbConfig dbConfig)
         {
-            // AddEndTaskLog(task, model, Status, TaskType.While, serviceResponse);
+            _dbConfig = dbConfig;
+            AddEndTaskLog(task, model, Status, TaskType.While, serviceResponse);
             Condition = condition;
             SwitchValue = switchValue;
         }
