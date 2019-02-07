@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using workflow.Contract;
 
 namespace Log
 {
@@ -17,10 +18,32 @@ namespace Log
         {
             _dbDonfig = dbConfig;
         }
-        public async Task<ResultModel> AddLog(WorkflowLog model)
+        public async Task<ResultModel> StartWorkflowLogger(WorkflowLog model)
         {
+            if (model.Actions == null)
+            {
+                model.Actions = new List<WorkflowAction>();
+                model.Actions.Add(new WorkflowAction
+                {
+                    Action = 1,
+                    CreationDate = DateTime.Now,
+                });
+            }
             await new MongoDbContext(_dbDonfig.ServerAdderss, _dbDonfig.DatabaseName)
                 .AddOne<WorkflowLog>(model);
+            return new ResultModel();
+        }
+
+        public async Task<ResultModel> AddTaskLogger(RequestModel requestModel, WorkflowAction workflowAction)
+        {
+            var item = await new MongoDbContext(_dbDonfig.ServerAdderss, _dbDonfig.DatabaseName)
+                .GetOneByUniqKey<WorkflowLog>(requestModel.UniqKey);
+
+            if (item.Actions == null) item.Actions = new List<WorkflowAction>();
+            item.Actions.Add(workflowAction);
+
+            await new MongoDbContext(_dbDonfig.ServerAdderss, _dbDonfig.DatabaseName)
+                .UpdateOne<WorkflowLog, List<WorkflowAction>>(requestModel.UniqKey, "Actions" ,item.Actions);
             return new ResultModel();
         }
     }

@@ -608,9 +608,8 @@ namespace workflow.Core
                         Logger.InfoFormat("{0} Workflow started.", LogTag);
                         if (model.IsRunningFromPending == false)
                         {
-                            new WorkflowLogger(_dbConfig).AddLog(new WorkflowLog
+                            new WorkflowLogger(_dbConfig).StartWorkflowLogger(new WorkflowLog
                             {
-                                Action = (int)WorkflowStatus.Start,
                                 CreationDate = DateTime.Now,
                                 Name = model.WorkflowName,
                                 WorkflowId = model.Id,
@@ -669,13 +668,9 @@ namespace workflow.Core
                     finally
                     {
                         Logger.InfoFormat("{0} Workflow finished.", LogTag);
-                        new WorkflowLogger(_dbConfig).AddLog(new WorkflowLog
+                        new WorkflowLogger(_dbConfig).AddTaskLogger(model ,new WorkflowAction
                         {
                             Action = model.IsStoped ? (int)WorkflowStatus.Stop : (int)WorkflowStatus.Finish,
-                            UniqKey = model.UniqKey,
-                            WorkflowId = model.Id,
-                            WorkflowVersion = model.Version,
-                            Name = model.WorkflowName,
                         }).Wait();
                         foreach (List<FileInf> files in FilesPerTask.Values) files.Clear();
                         foreach (List<Entity> entities in EntitiesPerTask.Values) entities.Clear();
@@ -825,20 +820,15 @@ namespace workflow.Core
 
         void RunTaskLog(long taskId, long taskIndex, TaskType taskType, RequestModel model = null)
         {
-            var log = new WorkflowLog();
+            var log = new WorkflowAction();
 
             if (model.IsRunningFromPending == false)
             {
-                log.TaskType = (int)taskType;
-                log.WorkflowId = model.Id;
                 log.Action = (int)WorkflowStatus.Start;
                 log.TaskId = (int)taskId;
                 log.TaskIndex = taskIndex;
-                log.UniqKey = model.UniqKey;
-                log.WorkflowVersion = model.Version;
-                log.Name = model.WorkflowName;
                 log.TaskName = GetTask((int)taskId).Name;
-                new WorkflowLogger(_dbConfig).AddLog(log).Wait();
+                new WorkflowLogger(_dbConfig).AddTaskLogger(model,log).Wait();
             }
             else
             {

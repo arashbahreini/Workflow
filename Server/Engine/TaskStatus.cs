@@ -34,18 +34,14 @@ namespace workflow.Core
 
         void AddEndTaskLog(Task task, RequestModel model, Status status, TaskType taskType, string serviceResponse, bool? taskResult = null)
         {
-            new WorkflowLogger(_dbConfig).AddLog(new WorkflowLog
+            new WorkflowLogger(_dbConfig).AddTaskLogger(model, new WorkflowAction
             {
                 TaskId = task.Id,
                 TaskIndex = task.TaskIndex,
                 TaskStatus = (int)Enum.Parse(typeof(Service.Contracts.Enum.TaskStatus), status.ToString()),
-                WorkflowId = model.Id,
-                UniqKey = model.UniqKey,
                 Action = status == Status.Error ? (int)WorkflowStatus.Stop : (int)WorkflowStatus.Finish,
                 TaskType = (int)taskType,
-                WorkflowVersion = model.Version,
                 TaskResult = taskResult,
-                Name = model.WorkflowName,
                 TaskName = task.Name,
                 ServiceResponse = serviceResponse,
             }).Wait();
