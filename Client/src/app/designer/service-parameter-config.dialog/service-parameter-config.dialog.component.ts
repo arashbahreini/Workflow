@@ -27,21 +27,23 @@ export class ServiceParameterConfigComponent implements OnInit {
   }
 
   addNewParameter(data: ServiceParameterModel) {
-    if (!data.name || !data.value) {
-      this.errorMessages.push({ severity: 'error', summary: 'پیغام خطا', detail: 'یک یا چند فیلد خالیست', });
-      return;
-    }
+    let isValid = true;
     this.datas.forEach(element => {
-      element.isNew = false;
+      if (!element.name || !element.value) {
+        isValid = false;
+      }
     });
-    this.datas.push(new ServiceParameterModel());
+    if (isValid) {
+      this.datas.push(new ServiceParameterModel());
+    }
+  }
+
+  removeParameter(data: ServiceParameterModel) {
+    const index = this.datas.indexOf(data);
+    this.datas.splice(index, 1);
   }
 
   closeDialog() {
-    if (this.datas.find(x => !x.name || !x.value)) {
-      const index = this.datas.indexOf(this.datas.find(x => x.isNew === true));
-      this.datas.splice(index, 1);
-    }
     this.dialogRef.close(JSON.stringify(this.datas));
   }
 }

@@ -18,7 +18,7 @@ namespace Workflow.Tasks.Insert
         {
             var url = JsonConvert.DeserializeObject<RestService>(this.GetSetting("مشخصات سرویس"));
             var parameters = this.GetSetting("پارامتر");
-            var serviceResult = new CallServiceLogic().Call(url, parameters);
+            var serviceResult = new CallServiceLogic().CallAsync(url, parameters);
             return new TaskStatus(Status.Success, this, model, "", dbConfig);
         }
     }

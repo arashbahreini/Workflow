@@ -34,7 +34,8 @@ namespace Host.Controllers
         }
         [HttpPost]
         public WorkflowInfo GetWorkflow([FromBody]WorkflowRequestModel model)
-        {
+        { 
+            if (model == null) return  new WorkflowInfo();
             return new WorkflowGet(_config.Value, _dbConfig.Value).GetWorkflow(model.Id, model.Version).Data;
         }
         [HttpPost]
