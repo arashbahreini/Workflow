@@ -55,14 +55,14 @@ namespace workflow.Core
 
         private readonly Dictionary<int, List<workflowTimer>> _workflowTimers;
 
-        public DbConfig _dbConfig;
+        public WorkflowConfig _workflowConfig;
         /// <summary>
         /// Creates a new instance of workflow engine.
         /// </summary>
         /// <param name="settingsFile">Settings file path.</param>
-        public WorkflowEngine(Configuration configuration, DbConfig dbConfig, bool? doLoadHistory = null)
+        public WorkflowEngine(Configuration configuration, WorkflowConfig workflowConfig, bool? doLoadHistory = null)
         {
-            _dbConfig = dbConfig;
+            _workflowConfig = workflowConfig;
             _configuration = configuration;
             Workflows = new List<Workflow>();
             _workflowTimers = new Dictionary<int, List<workflowTimer>>();
@@ -191,7 +191,7 @@ namespace workflow.Core
         {
             try
             {
-                var wf = new Workflow(file, TempFolder, XsdPath, _dbConfig);
+                var wf = new Workflow(file, TempFolder, XsdPath, _workflowConfig);
                 Logger.InfoFormat("Workflow loaded: {0} ({1})", wf, file);
                 return wf;
             }

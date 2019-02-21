@@ -139,14 +139,14 @@ namespace workflow.Core
         private System.Threading.Tasks.Task _task;
         //private CancellationTokenSource Canceller { get; set; }
 
-        public static DbConfig _dbConfig;
+        public static WorkflowConfig _workflowConfig;
         /// <summary>
         /// Creates a new workflow.
         /// </summary>
         /// <param name="path">Workflow file path.</param>
         /// <param name="workflowTempFolder">workflow temp folder.</param>
         /// <param name="xsdPath">XSD path.</param>
-        public Workflow(string path, string workflowTempFolder, string xsdPath, DbConfig dbConfig)
+        public Workflow(string path, string workflowTempFolder, string xsdPath, WorkflowConfig workflowConfig)
         {
             JobId = 1;
             _task = null;
@@ -157,7 +157,7 @@ namespace workflow.Core
             Hashtable = new Hashtable();
             Check();
             Load();
-            _dbConfig = dbConfig;
+            _workflowConfig = workflowConfig;
         }
 
         /// <summary>
@@ -608,7 +608,7 @@ namespace workflow.Core
                         Logger.InfoFormat("{0} Workflow started.", LogTag);
                         if (model.IsRunningFromPending == false)
                         {
-                            new WorkflowLogger(_dbConfig).StartWorkflowLogger(new WorkflowLog
+                            new WorkflowLogger(_workflowConfig).StartWorkflowLogger(new WorkflowLog
                             {
                                 CreationDate = DateTime.Now,
                                 Name = model.WorkflowName,
@@ -668,7 +668,7 @@ namespace workflow.Core
                     finally
                     {
                         Logger.InfoFormat("{0} Workflow finished.", LogTag);
-                        new WorkflowLogger(_dbConfig).AddTaskLogger(model ,new WorkflowAction
+                        new WorkflowLogger(_workflowConfig).AddTaskLogger(model ,new WorkflowAction
                         {
                             Action = model.IsStoped ? (int)WorkflowStatus.Stop : (int)WorkflowStatus.Finish,
                         }).Wait();
@@ -811,7 +811,7 @@ namespace workflow.Core
             foreach (var task in tasks)
             {
                 if (!task.IsEnabled && success) continue;
-                var status = task.Run(_dbConfig,model);
+                var status = task.Run(_workflowConfig,model);
                 success &= status.Status == Status.Success;
                 warning |= status.Status == Status.Warning;
                 if (!atLeastOneSucceed && status.Status == Status.Success) atLeastOneSucceed = true;
@@ -828,7 +828,7 @@ namespace workflow.Core
                 log.TaskId = (int)taskId;
                 log.TaskIndex = taskIndex;
                 log.TaskName = GetTask((int)taskId).Name;
-                new WorkflowLogger(_dbConfig).AddTaskLogger(model,log).Wait();
+                new WorkflowLogger(_workflowConfig).AddTaskLogger(model,log).Wait();
             }
             else
             {
@@ -885,7 +885,7 @@ namespace workflow.Core
                         {
                             task.TaskIndex = (long)node.Index;
                             RunTaskLog(node.IfId != null ? (int)node.IfId : node.Id, (long)node.Index, TaskType.Task, model);
-                            var status = task.Run(_dbConfig,model);
+                            var status = task.Run(_workflowConfig,model);
 
                             success &= status.Status == Status.Success;
                             warning |= status.Status == Status.Warning;
@@ -919,7 +919,7 @@ namespace workflow.Core
                                         if (childTask.IsEnabled && success)
                                         {
                                             RunTaskLog(childTask.Id, (long)childTask.TaskIndex, TaskType.Task, model);
-                                            var childStatus = childTask.Run(_dbConfig,model);
+                                            var childStatus = childTask.Run(_workflowConfig,model);
 
                                             success &= childStatus.Status == Status.Success;
                                             warning |= childStatus.Status == Status.Warning;
@@ -976,7 +976,7 @@ namespace workflow.Core
                 if (ifTask.IsEnabled && success)
                 {
                     RunTaskLog(@if.IfId, (long)@if.Index, TaskType.If, model);
-                    var status = ifTask.Run(_dbConfig,model);
+                    var status = ifTask.Run(_workflowConfig,model);
 
                     success &= status.Status == Status.Success;
                     warning |= status.Status == Status.Warning;
@@ -1040,7 +1040,7 @@ namespace workflow.Core
                     RunTaskLog(@while.WhileId, (long)@while.Index, TaskType.If, model);
                     while (true)
                     {
-                        var status = whileTask.Run(_dbConfig,model);
+                        var status = whileTask.Run(_workflowConfig,model);
 
                         success &= status.Status == Status.Success;
                         warning |= status.Status == Status.Warning;
@@ -1089,7 +1089,7 @@ namespace workflow.Core
                 if (switchTask.IsEnabled && success)
                 {
                     RunTaskLog(@switch.SwitchId, (long)@switch.Index, TaskType.If, model);
-                    var status = switchTask.Run(_dbConfig,model);
+                    var status = switchTask.Run(_workflowConfig,model);
 
                     success &= status.Status == Status.Success;
                     warning |= status.Status == Status.Warning;

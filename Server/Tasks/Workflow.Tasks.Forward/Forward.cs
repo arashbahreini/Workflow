@@ -1,6 +1,7 @@
 ﻿using Contract;
 using System;
 using System.Xml.Linq;
+using TaskRunnerLogic;
 using workflow.Contract;
 using workflow.Core;
 
@@ -12,10 +13,14 @@ namespace Workflow.Tasks.Forward
         {
         }
 
-        public override TaskStatus Run(DbConfig dbConfig, RequestModel model = null)
+        public override TaskStatus Run(WorkflowConfig workflowConfig, RequestModel model = null)
         {
-            var setting = this.GetSetting("مشخصات سرویس");
-            return new TaskStatus(Status.Success, this, model, "", dbConfig);
+            return new RunTask().Run(
+                GetSetting("پارامتر"),
+                GetSetting("مشخصات سرویس"),
+                this,
+                workflowConfig,
+                model);
         }
     }
 }

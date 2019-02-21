@@ -10,10 +10,10 @@ namespace InfraStructure
     {
         private static Configuration _configuration;
         private static int _taskLoopInterval;
-        public DbConfig _dbConfig;
-        public WorkflowAction(Configuration configuration, int taskLoopInterval, DbConfig dbConfig)
+        public WorkflowConfig _workflowConfig;
+        public WorkflowAction(Configuration configuration, int taskLoopInterval, WorkflowConfig workflowConfig)
         {
-            _dbConfig = dbConfig;
+            _workflowConfig = workflowConfig;
             _configuration = configuration;
             _taskLoopInterval = taskLoopInterval;
         }
@@ -22,7 +22,7 @@ namespace InfraStructure
             var result = new ResultModel();
             try
             {
-                var workflowEngine = new WorkflowEngine(_configuration, _dbConfig);
+                var workflowEngine = new WorkflowEngine(_configuration, _workflowConfig);
                 var runResult = workflowEngine.StartWorkflowModel(
                     new RequestModel
                     {

@@ -36,7 +36,7 @@ namespace Host
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.Configure<Configuration>(Configuration.GetSection("WorkflowConfiguration"));
-            services.Configure<DbConfig>(Configuration.GetSection("DbConfig"));
+            services.Configure<WorkflowConfig>(Configuration.GetSection("WorkflowConfig"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Reflection.Metadata;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Dynamic;
@@ -11,23 +10,14 @@ namespace ServiceLogic.cs
 {
     public class CallServiceLogic
     {
-        // static HttpClient client = new HttpClient();
-        public async Task<string> CallAsync(RestService url, string stringParameters)
+        public async Task<bool> CallAsync(RestService url, string stringParameters)
         {
             HttpClient client = new HttpClient();
-            var parameters = JsonConvert.DeserializeObject<List<ParameterModel>>(stringParameters);
-            string serviceInput = "{";
-            foreach (var param in parameters)
-            {
-                serviceInput += "''" + param.Name + "'':''" + param.Value + "'',";
-            }
-
-            serviceInput += "}";
-
-            client.BaseAddress = new Uri(url.value.url);
-            var response = await client.PostAsJsonAsync("api/Common/Insert", serviceInput);
-            // TOKNOW. CORS PROBLEM.
-            return "";
+            var uri = url.value.url + "/" + url.value.controller + "/" + url.value.action;
+            var parameterObject = new ServiceParameterCreator().Create(stringParameters);
+            var response = await client.PostAsJsonAsync(uri, parameterObject);
+            var content = response.Content.ReadAsAsync<Boolean>().Result;
+            return content;
         }
     }
 }

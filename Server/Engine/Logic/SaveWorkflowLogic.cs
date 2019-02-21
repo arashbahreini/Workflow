@@ -16,10 +16,10 @@ namespace workflow.Core.Logic
     public class SaveWorkflowLogic
     {
         public Configuration _configuration { get; set; }
-        public DbConfig _dbConfig;
-        public SaveWorkflowLogic(Configuration configuration, DbConfig dbConfig)
+        public WorkflowConfig _workflowConfig;
+        public SaveWorkflowLogic(Configuration configuration, WorkflowConfig workflowConfig)
         {
-            _dbConfig = dbConfig;
+            _workflowConfig = workflowConfig;
             _configuration = configuration;
         }
         public static XNamespace xn = "urn:workflow-schema";
@@ -317,7 +317,7 @@ namespace workflow.Core.Logic
         }
         public string GetLastWorkflowId()
         {
-            return new WorkflowEngine(_configuration, _dbConfig).GetLastId();
+            return new WorkflowEngine(_configuration, _workflowConfig).GetLastId();
         }
         public void SaveJsonGraph(GraphModel graph, string path, string fileName)
         {

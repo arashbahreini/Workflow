@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Workflow.Service.Test.model;
 
 namespace Workflow.Service.Test.Controllers
@@ -13,7 +9,7 @@ namespace Workflow.Service.Test.Controllers
     {
         // GET api/values
         [HttpPost]
-        public bool Insert(CommonModel model)
+        public bool Insert([FromBody]CommonModel model)
         {
             if (model.IsInsert)
             {

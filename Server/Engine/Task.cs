@@ -107,7 +107,7 @@ namespace workflow.Core
         /// Starts the task.
         /// </summary>
         /// <returns>Task status.</returns>
-        public abstract TaskStatus Run(DbConfig dbConfig, RequestModel model = null);
+        public abstract TaskStatus Run(WorkflowConfig workflowConfig, RequestModel model = null);
 
         /// <summary>
         /// Returns a setting value from its name.

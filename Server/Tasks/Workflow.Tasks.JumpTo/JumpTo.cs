@@ -12,9 +12,9 @@ namespace Workflow.Tasks.JumpTo
         {
         }
 
-        public override TaskStatus Run(DbConfig dbConfig, RequestModel model = null)
+        public override TaskStatus Run(WorkflowConfig workflowConfig, RequestModel model = null)
         {
-            return new TaskStatus(Status.Success, this, model, "", dbConfig);
+            return new TaskStatus(Status.Success, this, model, "", workflowConfig);
         }
     }
 }

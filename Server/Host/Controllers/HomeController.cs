@@ -9,15 +9,15 @@ namespace Host.Controllers
     public class HomeController : Controller
     {
         private static IOptions<Configuration> _config;
-        private static IOptions<DbConfig> _dbConfig;
-        public HomeController(IOptions<Configuration> config, IOptions<DbConfig> dbConfig)
+        private static IOptions<WorkflowConfig> _workflowConfig;
+        public HomeController(IOptions<Configuration> config, IOptions<WorkflowConfig> workflowConfig)
         {
             _config = config;
-            _dbConfig = dbConfig;
+            _workflowConfig = workflowConfig;
         }
         public IActionResult Index()
         {
-            new WorkflowEngine(_config.Value, _dbConfig.Value, true).Run();
+            new WorkflowEngine(_config.Value, _workflowConfig.Value, true).Run();
             return View();
         }
     }

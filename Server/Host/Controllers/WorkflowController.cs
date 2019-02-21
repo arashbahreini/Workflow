@@ -13,8 +13,8 @@ namespace Host.Controllers
     public class WorkflowController : Controller
     {
         private static IOptions<Configuration> _config;
-        private static IOptions<DbConfig> _dbConfig;
-        public WorkflowController(IOptions<Configuration> config, IOptions<DbConfig> dbConfig)
+        private static IOptions<WorkflowConfig> _dbConfig;
+        public WorkflowController(IOptions<Configuration> config, IOptions<WorkflowConfig> dbConfig)
         {
             _config = config;
             _dbConfig = dbConfig;

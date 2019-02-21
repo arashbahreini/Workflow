@@ -12,11 +12,11 @@ namespace Log
 {
     public class WorkflowLogger
     {
-        private static DbConfig _dbDonfig;
+        private static WorkflowConfig _workflowConfig;
 
-        public WorkflowLogger(DbConfig dbConfig)
+        public WorkflowLogger(WorkflowConfig workflowConfig)
         {
-            _dbDonfig = dbConfig;
+            _workflowConfig = workflowConfig;
         }
         public async Task<ResultModel> StartWorkflowLogger(WorkflowLog model)
         {
@@ -29,20 +29,20 @@ namespace Log
                     CreationDate = DateTime.Now,
                 });
             }
-            await new MongoDbContext(_dbDonfig.ServerAdderss, _dbDonfig.DatabaseName)
+            await new MongoDbContext(_workflowConfig.DbConfig.ServerAdderss, _workflowConfig.DbConfig.DatabaseName)
                 .AddOne<WorkflowLog>(model);
             return new ResultModel();
         }
 
         public async Task<ResultModel> AddTaskLogger(RequestModel requestModel, WorkflowAction workflowAction)
         {
-            var item = await new MongoDbContext(_dbDonfig.ServerAdderss, _dbDonfig.DatabaseName)
+            var item = await new MongoDbContext(_workflowConfig.DbConfig.ServerAdderss, _workflowConfig.DbConfig.DatabaseName)
                 .GetOneByUniqKey<WorkflowLog>(requestModel.UniqKey);
 
             if (item.Actions == null) item.Actions = new List<WorkflowAction>();
             item.Actions.Add(workflowAction);
 
-            await new MongoDbContext(_dbDonfig.ServerAdderss, _dbDonfig.DatabaseName)
+            await new MongoDbContext(_workflowConfig.DbConfig.ServerAdderss, _workflowConfig.DbConfig.DatabaseName)
                 .UpdateOne<WorkflowLog, List<WorkflowAction>>(requestModel.UniqKey, "Actions" ,item.Actions);
             return new ResultModel();
         }

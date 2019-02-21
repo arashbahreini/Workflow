@@ -7,7 +7,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Contract\Contract.csproj" />
     <ProjectReference Include="..\..\Engine\Engine.csproj" />
-    <ProjectReference Include="..\..\ServiceLogic.cs\ServiceLogic.cs.csproj" />
+    <ProjectReference Include="..\..\TaskRunnerLogic\TaskRunnerLogic.csproj" />
   </ItemGroup>
 
 </Project>

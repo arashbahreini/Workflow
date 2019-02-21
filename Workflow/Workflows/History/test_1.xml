@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Workflow id="1" name="test" description="" xmlns="urn:workflow-schema">
+  <Settings>
+    <Setting name="launchType" value="trigger" />
+    <Setting name="enabled" value="true" />
+    <Setting name="period" value="00.00:00:00" />
+    <Setting name="version" value="1" />
+    <Setting name="deadLine" value="123" />
+    <Setting name="versionDescription" value="added forward task" />
+  </Settings>
+  <Tasks>
+    <Task id="1" name="Insert" description="" enabled="true" isCommon="true">
+      <Setting name="type" value="commonTask" />
+      <Setting name="پارامتر" value="[{&quot;name&quot;:&quot;IsInsert&quot;,&quot;value&quot;:&quot;true&quot;}]" />
+      <Setting name="زمان لازم" value="1" />
+      <Setting name="مشخصات سرویس" value="{&quot;value&quot;:{&quot;url&quot;:&quot;https://localhost:44309/api&quot;,&quot;controller&quot;:&quot;common&quot;,&quot;action&quot;:&quot;insert&quot;}}" />
+    </Task>
+    <Task id="2" name="Forward" description="" enabled="true" isCommon="true">
+      <Setting name="type" value="commonTask" />
+      <Setting name="پارامتر" value="[{&quot;name&quot;:&quot;IsInsert&quot;,&quot;value&quot;:&quot;true&quot;}]" />
+      <Setting name="زمان لازم" value="6" />
+      <Setting name="مشخصات سرویس" value="{&quot;value&quot;:{&quot;url&quot;:&quot;https://localhost:44309/api&quot;,&quot;controller&quot;:&quot;Common&quot;,&quot;action&quot;:&quot;Forward&quot;}}" />
+    </Task>
+  </Tasks>
+  <ExecutionGraph>
+    <Task id="1" index="1">
+      <Parent id="-1" />
+    </Task>
+    <Task id="2" index="2">
+      <Parent id="1" />
+    </Task>
+  </ExecutionGraph>
+</Workflow>
