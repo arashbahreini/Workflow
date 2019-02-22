@@ -32,7 +32,7 @@ export class LogService {
   }
 
   getWorkflowList() {
-    return this.http.get<any>(this.url + 'GetWorkflowList').pipe(
+    return this.http.get<any>(this.url + 'GetWorkflowNames').pipe(
       catchError(this.handleError),
     );
   }

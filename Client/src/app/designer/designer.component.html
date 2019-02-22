@@ -1,75 +1,79 @@
 <p-growl [(value)]="errorMessages" [life]="'3000'"></p-growl>
 <mat-tab-group>
-    <mat-tab label="لیست آخرین نسخه ی فرایند ها">
-        <table class="responstable">
-            <thead>
-                <tr>
-                    <th>ردیف</th>
-                    <th>عنوان</th>
-                    <th>نگارش</th>
-                    <th>زمان ( دقیقه )</th>
-                    <th>توضیحات نگارش</th>
-                    <th>
-                        <button pButton icon="pi pi-refresh" (click)="getWorkFlows()"></button>
-                        <button pButton icon="pi pi-plus" class="ui-button-success" routerLink="config"></button>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let workflow of workflows; let i = index">
-                    <td>{{i + 1 | persianNumber }}</td>
-                    <td>{{workflow.name}}</td>
-                    <td>{{workflow.version | persianNumber}}</td>
-                    <td>{{workflow.deadLine | persianNumber}}</td>
-                    <td>{{workflow.versionDescription}}</td>
-                    <td>
-                        <button pButton icon="pi pi-trash" class="ui-button-danger" (click)="openDeleteDialog(workflow.id,workflow.version)"></button>
-                        <button pButton icon="pi pi-pencil" [routerLink]="'config/' + workflow.id + '/' + workflow.version"></button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </mat-tab>
-    <mat-tab label="لیست فرایند ها به همراه سابقه ی نگارش">
-        <mat-card>
-            <form>
-                <mat-form-field>
-                    <mat-select [(ngModel)]="workflowRequest.typeId" placeholder="انتخاب نوع فرایند" (selectionChange)="getHistoryWorkFlows()" name="workflowTypeId">
-                        <mat-option *ngFor="let workflowType of workflowTypes" [value]="workflowType.id">
-                            {{ workflowType.name }}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </form>
-        </mat-card>
-        <table class="responstable" *ngIf="historyWorkflows.length">
-            <thead>
-                <tr>
-                    <th>ردیف</th>
-                    <th>نگارش</th>
-                    <th>زمان ( دقیقه )</th>
-                    <th>توضیحات نگارش</th>
-                    <th>
-                        <button pButton icon="pi pi-refresh" (click)="getWorkFlows()"></button>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let workflow of historyWorkflows; let i = index">
-                    <td>{{i + 1 | persianNumber }}</td>
-                    <td>{{workflow.Version | persianNumber}}</td>
-                    <td>{{workflow.DeadLine | persianNumber}}</td>
-                    <td>{{workflow.VersionDescription}}</td>
-                    <td>
-                        <button pButton icon="pi pi-search" [routerLink]="'show-config/' + workflow.Id + '/' + workflow.Version"></button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <div class="no__result__div" *ngIf="!hasResult">
-            <h1 class="iranSanseFont">
-                برای این فرایند هیچ سابقه ای وجود ندارد
-            </h1>
-        </div>
-    </mat-tab>
+  <mat-tab label="لیست آخرین نسخه ی فرایند ها">
+    <table class="responstable">
+      <thead>
+        <tr>
+          <th>ردیف</th>
+          <th>عنوان</th>
+          <th>نگارش</th>
+          <th>زمان ( دقیقه )</th>
+          <th>توضیحات نگارش</th>
+          <th>
+            <button pButton icon="pi pi-refresh" (click)="getWorkFlows()"></button>
+            <button pButton icon="pi pi-plus" class="ui-button-success" routerLink="config"></button>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let workflow of workflows; let i = index">
+          <td>{{i + 1 | persianNumber }}</td>
+          <td>{{workflow.name}}</td>
+          <td>{{workflow.version | persianNumber}}</td>
+          <td>{{workflow.deadLine | persianNumber}}</td>
+          <td>{{workflow.versionDescription}}</td>
+          <td>
+            <button pButton icon="pi pi-trash" class="ui-button-danger"
+              (click)="openDeleteDialog(workflow.id,workflow.version)" style="margin-right:5px"></button>
+            <button pButton icon="pi pi-pencil"
+              [routerLink]="'config/' + workflow.id + '/' + workflow.version"></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </mat-tab>
+  <mat-tab label="لیست فرایند ها به همراه سابقه ی نگارش">
+    <mat-card>
+      <form>
+        <mat-form-field>
+          <mat-select [(ngModel)]="workflowRequest.typeId" placeholder="انتخاب نوع فرایند"
+            (selectionChange)="getHistoryWorkFlows()" name="workflowTypeId">
+            <mat-option *ngFor="let workflowType of workflowTypes" [value]="workflowType.id">
+              {{ workflowType.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </form>
+    </mat-card>
+    <table class="responstable" *ngIf="historyWorkflows.length">
+      <thead>
+        <tr>
+          <th>ردیف</th>
+          <th>نگارش</th>
+          <th>زمان ( دقیقه )</th>
+          <th>توضیحات نگارش</th>
+          <th>
+            <button pButton icon="pi pi-refresh" (click)="getWorkFlows()"></button>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let workflow of historyWorkflows; let i = index">
+          <td>{{i + 1 | persianNumber }}</td>
+          <td>{{workflow.Version | persianNumber}}</td>
+          <td>{{workflow.DeadLine | persianNumber}}</td>
+          <td>{{workflow.VersionDescription}}</td>
+          <td>
+            <button pButton icon="pi pi-search"
+              [routerLink]="'show-config/' + workflow.Id + '/' + workflow.Version"></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="no__result__div" *ngIf="!hasResult">
+      <h1 class="iranSanseFont">
+        برای این فرایند هیچ سابقه ای وجود ندارد
+      </h1>
+    </div>
+  </mat-tab>
 </mat-tab-group>

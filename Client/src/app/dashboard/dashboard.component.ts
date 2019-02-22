@@ -116,10 +116,11 @@ export class DashboardComponent implements OnInit {
 
   getWorkflowsSummary(workflow: NameIdModel) {
     const item: WorkflowSummaryModel = new WorkflowSummaryModel();
-    item.workflowName = workflow.Name;
+    item.workflowName = workflow.name;
     item.isLoading = true;
     this.workflowSummaries.push(item);
-    this.logService.getWorkflowsSummary(workflow.Id).subscribe(
+    debugger;
+    this.logService.getWorkflowsSummary(workflow.id).subscribe(
       (res: any) => {
         const index = this.workflowSummaries.indexOf(item);
         this.workflowSummaries[index] = res.length ? res[0] : new WorkflowSummaryModel();

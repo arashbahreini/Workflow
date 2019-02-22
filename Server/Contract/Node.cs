@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-
-namespace workflow.Core.Service.Contracts
+﻿namespace workflow.Core.Service.Contracts
 {
-    
+
     public class Node
     {
         

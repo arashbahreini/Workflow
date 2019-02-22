@@ -2,6 +2,7 @@
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Data
@@ -26,6 +27,15 @@ namespace Data
             var filter = Builders<T>.Filter.Eq("UniqKey", uniqKey);
             var collection = _db.GetCollection<T>(typeof(T).Name);
             var result = await collection.Find(filter).FirstOrDefaultAsync();
+            return result;
+        }
+
+        public async Task<List<T>> GetManyByIdAndVersion<T>(int id, long version)
+        {
+            var filter = Builders<T>.Filter.Eq("WorkflowId", id);
+            filter = filter & Builders<T>.Filter.Eq("WorkflowVersion", version);
+            var collection = _db.GetCollection<T>(typeof(T).Name);
+            var result = await collection.Find(filter).ToListAsync();
             return result;
         }
 

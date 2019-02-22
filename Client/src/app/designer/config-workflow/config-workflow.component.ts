@@ -749,8 +749,6 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
   }
 
   saveExistWorkFlow() {
-    // this.workFlow.graph.nodeDataArray = JSON.parse(this.myDiagram.model.toJson()).nodeDataArray;
-    // this.workFlow.graph.linkDataArray = JSON.parse(this.myDiagram.model.toJson()).linkDataArray;
     this.errorMessages = [];
     this.properLinks();
     const req = JSON.stringify(this.workFlow);
@@ -761,8 +759,8 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
           return;
         }
         this.errorMessages.push({ severity: 'success', summary: 'پیغام موفق', detail: 'فرایند با موفقیت ذخیره شد', });
-        this.router.navigate(['../../designer/config/' + res.id + '/' + res.Version]);
-        this.workFlowVersion = res.Version;
+        this.router.navigate(['../../designer/config/' + res.id + '/' + res.version]);
+        this.workFlowVersion = res.version;
         this.getWorkflow();
       }, (error: any) => {
 

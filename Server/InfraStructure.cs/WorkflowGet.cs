@@ -97,6 +97,13 @@ namespace InfraStructure.cs
             return result;
         }
 
+        public List<NameIdModel> GetAllLastVersionWorkflows()
+        {
+            var result = new ResultModel<List<NameIdModel>>();
+            var workflowEngine = new WorkflowEngine(_configuration, _workflowConfig, true);
+            return workflowEngine.GetAllLastVersionWorkflows();
+        }
+
         public ResultModel<WorkflowInfo> GetWorkflow(int id, long version)
         {
             var result = new ResultModel<WorkflowInfo>();

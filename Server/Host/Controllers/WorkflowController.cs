@@ -34,10 +34,17 @@ namespace Host.Controllers
         }
         [HttpPost]
         public WorkflowInfo GetWorkflow([FromBody]WorkflowRequestModel model)
-        { 
-            if (model == null) return  new WorkflowInfo();
+        {
+            if (model == null) return new WorkflowInfo();
             return new WorkflowGet(_config.Value, _dbConfig.Value).GetWorkflow(model.Id, model.Version).Data;
         }
+
+        [HttpGet]
+        public List<NameIdModel> GetWorkflowNames()
+        {
+            return new WorkflowGet(_config.Value, _dbConfig.Value).GetAllLastVersionWorkflows();
+        }
+
         [HttpPost]
         public WorkflowInfo GetLastVersionWorkflow([FromBody]WorkflowRequestModel model)
         {
