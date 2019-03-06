@@ -18,7 +18,7 @@ export class DashboardComponent implements OnInit {
 
 
   public workflowSummaries: WorkflowSummaryModel[] = [];
-  public workflowList: NameIdModel[] = [];
+  public workflows: WorkFlowModel[] = [];
   public workflowSummary: WorkflowSummaryModel = new WorkflowSummaryModel();
   public errorMessages: Message[] = [];
   public pieOptions: any;
@@ -94,12 +94,12 @@ export class DashboardComponent implements OnInit {
 
   getWorkflowList() {
     this.loading.start();
-    this.workflowList = [];
+    this.workflows = [];
     this.logService.getWorkflowList().subscribe(
-      (res: any) => {
-        this.workflowList = res;
+      (res: WorkFlowModel[]) => {
+        this.workflows = res;
         this.workflowSummaries = [];
-        this.workflowList.forEach(element => {
+        this.workflows.forEach(element => {
           this.getWorkflowsSummary(element);
         });
         this.loading.stop();
@@ -114,16 +114,15 @@ export class DashboardComponent implements OnInit {
     );
   }
 
-  getWorkflowsSummary(workflow: NameIdModel) {
+  getWorkflowsSummary(workflow: WorkFlowModel) {
     const item: WorkflowSummaryModel = new WorkflowSummaryModel();
     item.workflowName = workflow.name;
     item.isLoading = true;
     this.workflowSummaries.push(item);
-    debugger;
-    this.logService.getWorkflowsSummary(workflow.id).subscribe(
+    this.logService.getWorkflowsSummary(workflow).subscribe(
       (res: any) => {
         const index = this.workflowSummaries.indexOf(item);
-        this.workflowSummaries[index] = res.length ? res[0] : new WorkflowSummaryModel();
+        this.workflowSummaries[index] = res ? res : new WorkflowSummaryModel();
         this.workflowSummaries[index].isLoading = false;
       },
       () => {

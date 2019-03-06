@@ -30,10 +30,10 @@ namespace Data
             return result;
         }
 
-        public async Task<List<T>> GetManyByIdAndVersion<T>(int id, long version)
+        public async Task<List<T>> GetManyById<T>(int id)
         {
             var filter = Builders<T>.Filter.Eq("WorkflowId", id);
-            filter = filter & Builders<T>.Filter.Eq("WorkflowVersion", version);
+            //filter = filter & Builders<T>.Filter.Eq("WorkflowVersion", version);
             var collection = _db.GetCollection<T>(typeof(T).Name);
             var result = await collection.Find(filter).ToListAsync();
             return result;

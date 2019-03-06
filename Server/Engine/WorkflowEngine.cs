@@ -302,14 +302,16 @@ namespace workflow.Core
             return Workflows.FirstOrDefault(wf => wf.Id == workflowId && wf.Version == version);
         }
 
-        public List<NameIdModel> GetAllLastVersionWorkflows()
+        public List<WorkflowInfo> GetAllLastVersionWorkflows()
         {
-            var result = new List<NameIdModel>();
+            var result = new List<WorkflowInfo>();
             foreach(var item in Workflows.GroupBy(x => x.Id).ToList())
             {
-                result.Add(new NameIdModel {
+                var wf = Workflows.Where(x => x.Id == item.Key).OrderByDescending(x => x.Version).FirstOrDefault();
+                result.Add(new WorkflowInfo() {
                     Id = item.Key,
-                    Name = Workflows.Where(x => x.Id == item.Key).OrderByDescending(x => x.Version).FirstOrDefault().Name
+                    Name = wf.Name,
+                    Version = wf.Version,
                 });
             }
             return result;

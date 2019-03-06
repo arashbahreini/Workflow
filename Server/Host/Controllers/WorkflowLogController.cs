@@ -24,15 +24,23 @@ namespace Host.Controllers
         }
 
         [HttpGet]
-        public List<NameIdModel> GetWorkflowNames()
+        public List<WorkflowInfo> GetWorkflowNames()
         {
             return new WorkflowGet(_config.Value, _dbConfig.Value).GetAllLastVersionWorkflows();
         }
 
         [HttpPost]
-        public async Task<WorkflowSummaryModel> GetWorkflowSummaryModels(WorkflowInfo model)
+        public async Task<WorkflowSummaryModel> GetWorkflowsSummary([FromBody]WorkflowInfo model)
         {
             var result = await new LogSummaryProvider(_dbConfig.Value).GetWorkflowSummary(model);
+            return result;
+        }
+
+        [HttpPost]
+        public async Task<WorkflowInfo> GetPendingTasksByWorkflowId([FromBody]WorkflowInfo model)
+        {
+            var workflow = new WorkflowGet(_config.Value, _dbConfig.Value).GetLastVersionWorkflow(model.Id).Data;
+            var result = await new LogSummaryProvider(_dbConfig.Value).GetPendingTasksByWorkflowId(model.Id, workflow);
             return result;
         }
     }

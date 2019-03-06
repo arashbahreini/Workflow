@@ -4,7 +4,7 @@
     <Setting name="launchType" value="trigger" />
     <Setting name="enabled" value="true" />
     <Setting name="period" value="00.00:00:00" />
-    <Setting name="version" value="3" />
+    <Setting name="version" value="4" />
     <Setting name="deadLine" value="123" />
     <Setting name="versionDescription" value="" />
   </Settings>
@@ -15,9 +15,11 @@
       <Setting name="زمان لازم" value="1" />
       <Setting name="مشخصات سرویس" value="{&quot;value&quot;:{&quot;url&quot;:&quot;https://localhost:44309/api&quot;,&quot;controller&quot;:&quot;common&quot;,&quot;action&quot;:&quot;insert&quot;}}" />
     </Task>
-    <Task id="2" name="JumpTo" description="" enabled="true" isCommon="true">
+    <Task id="2" name="Forward" description="" enabled="true" isCommon="true">
       <Setting name="type" value="commonTask" />
-      <Setting name="شروع از" value="1" />
+      <Setting name="پارامتر" value="[{&quot;name&quot;:&quot;Value&quot;,&quot;value&quot;:&quot;Arash&quot;}]" />
+      <Setting name="زمان لازم" value="5" />
+      <Setting name="مشخصات سرویس" value="{&quot;value&quot;:{&quot;url&quot;:&quot;https://localhost:44309/api&quot;,&quot;controller&quot;:&quot;common&quot;,&quot;action&quot;:&quot;Forward&quot;}}" />
     </Task>
   </Tasks>
   <ExecutionGraph>

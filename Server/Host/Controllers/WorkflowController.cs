@@ -40,7 +40,7 @@ namespace Host.Controllers
         }
 
         [HttpGet]
-        public List<NameIdModel> GetWorkflowNames()
+        public List<WorkflowInfo> GetWorkflowNames()
         {
             return new WorkflowGet(_config.Value, _dbConfig.Value).GetAllLastVersionWorkflows();
         }

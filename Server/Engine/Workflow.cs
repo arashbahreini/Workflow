@@ -913,12 +913,13 @@ namespace workflow.Core
                                 }
                                 else
                                 {
+                                    tasks.Where(x => x.Id == childNode.Id).First().TaskIndex = (long)childNode.Index;
                                     var childTask = GetTask(tasks, childNode.Id);
                                     if (childTask != null)
                                     {
                                         if (childTask.IsEnabled && success)
                                         {
-                                            RunTaskLog(childTask.Id, (long)childTask.TaskIndex, TaskType.Task, model);
+                                            RunTaskLog(childTask.Id, (long)childNode.Index, TaskType.Task, model);
                                             var childStatus = childTask.Run(_workflowConfig,model);
 
                                             success &= childStatus.Status == Status.Success;

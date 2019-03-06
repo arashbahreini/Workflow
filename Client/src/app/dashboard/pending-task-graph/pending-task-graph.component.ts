@@ -46,7 +46,7 @@ export class PendingTaskGraphComponent implements OnInit {
   getPendingTasksByWorkflowId() {
     this.workFlow = new WorkFlowModel();
     this.loading.start();
-    this.logService.getPendingTasksByWorkflowId(this.data.WorkflowId).subscribe(
+    this.logService.getPendingTasksByWorkflowId(this.data.workflowId).subscribe(
       (res: any) => {
         this.workFlow = res;
         this.properTaskDescription();
@@ -70,9 +70,9 @@ export class PendingTaskGraphComponent implements OnInit {
       element.doneDescription = 'انجام شده : ' + element.doneNumber;
     });
 
-    this.workFlow.graph.nodeDataArray.forEach(element => {
-      element.stopDescription = 'متوقف شده : ' + element.stopNumber;
-    });
+    // this.workFlow.graph.nodeDataArray.forEach(element => {
+    //   element.stopDescription = 'متوقف شده : ' + element.stopNumber;
+    // });
   }
 
   //#region graphInitializer
@@ -157,16 +157,16 @@ export class PendingTaskGraphComponent implements OnInit {
             }),
             { row: 2, alignment: go.Spot.Right },
             { font: 'bold 12pt IranianSansRegular' }, new go.Binding('text', 'doneDescription')),
-          $(go.TextBlock,
-            new go.Binding('visible', 'stopNumber', function (s) {
-              if (s === 0) {
-                return false;
-              } else {
-                return true;
-              }
-            }),
-            { row: 3, alignment: go.Spot.Right },
-            { font: 'bold 12pt IranianSansRegular' }, new go.Binding('text', 'stopDescription')),
+          // $(go.TextBlock,
+          //   new go.Binding('visible', 'stopNumber', function (s) {
+          //     if (s === 0) {
+          //       return false;
+          //     } else {
+          //       return true;
+          //     }
+          //   }),
+          //   { row: 3, alignment: go.Spot.Right },
+          //   { font: 'bold 12pt IranianSansRegular' }, new go.Binding('text', 'stopDescription')),
         )
       );
 
@@ -234,7 +234,7 @@ export class PendingTaskGraphComponent implements OnInit {
     }
 
     const dialogRef = this.dialog.open(WorkflowListDialogComponent, {
-      data: { node: this.selectedNode, workflowId: this.data.WorkflowId },
+      data: { node: this.selectedNode, workflowId: this.data.workflowId },
       width: '80%',
       maxHeight: '70vh',
       disableClose: true,

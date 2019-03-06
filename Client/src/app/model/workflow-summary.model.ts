@@ -2,7 +2,7 @@ export class WorkflowSummaryModel {
     public labels: string[];
     public workflowName: string;
     public datasets: DataSet[];
-    public WorkflowId: number;
+    public workflowId: number;
     public isLoading: boolean;
 }
 

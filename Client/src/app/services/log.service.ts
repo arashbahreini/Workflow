@@ -25,8 +25,8 @@ export class LogService {
     );
   }
 
-  getWorkflowsSummary(workflowId: number) {
-    return this.http.post<LogModel[]>(this.url + 'GetWorkflowsSummary', { TypeId: workflowId }).pipe(
+  getWorkflowsSummary(model: WorkFlowModel) {
+    return this.http.post<LogModel[]>(this.url + 'GetWorkflowsSummary', model).pipe(
       catchError(this.handleError),
     );
   }
