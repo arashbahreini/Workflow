@@ -25,8 +25,6 @@ export class AppComponent implements OnInit {
       { name: 'داشبورد', url: 'dashboard' },
       { name: 'مدیریت اجرای فرایند', url: 'manager' },
       { name: 'تنظیم کردن فرایند', url: 'designer' },
-      { name: 'گزارش', url: 'log' },
-      { name: 'موتور قوانین', url: 'rule-engine' },
     ];
     this.hideHeader = location.path().includes('single-workflow-log');
     this.isSinglePageLog = location.path().includes('single-workflow-log');
