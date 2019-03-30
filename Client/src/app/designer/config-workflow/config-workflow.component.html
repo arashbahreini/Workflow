@@ -83,17 +83,7 @@
               {{setting.name}} :
             </h4>
             <div *ngIf="setting.name === 'مشخصات سرویس'">
-              <mat-form-field class="side-nav-field">
-                <input matInput placeholder="Url" [(ngModel)]="newSetting.value.url">
-              </mat-form-field>
-              <mat-form-field class="side-nav-field">
-                <input matInput placeholder="Controller" [(ngModel)]="newSetting.value.controller">
-              </mat-form-field>
-              <mat-form-field class="side-nav-field">
-                <input matInput placeholder="Action" [(ngModel)]="newSetting.value.action">
-              </mat-form-field>
-              <br>
-              <button pButton type="button" label="تنظیمات پارامتر ها" iconPos="right" (click)="openParameterDialog()"
+              <button pButton type="button" label="تنظیمات سرویس" iconPos="right" (click)="openParameterDialog()"
               icon="pi pi-setting" class="ui-button-success management__button"></button>
             </div>
             <div *ngIf="setting.name === 'getUserFromModel'">

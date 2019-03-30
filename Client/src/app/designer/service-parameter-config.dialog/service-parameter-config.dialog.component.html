@@ -1,27 +1,58 @@
 <p-growl [(value)]="errorMessages" [life]="'3000'"></p-growl>
-<div dir="rtl" style="text-align: right; overflow-x: hidden;overflow-y: auto">
-  <div class="div__top">
+<div dir="rtl">
+  <div class="div__top" mat-dialog-title>
     <h5>
-      <button style="margin:5px;" pButton icon="pi pi-times" class="ui-button-danger" (click)="closeDialog(null)"></button>
-      مدیریت پارامتر های سرویس
+      <button style="margin:5px;" pButton icon="pi pi-times" class="ui-button-danger"
+        (click)="closeDialog(null)"></button>
+      مدیریت سرویس
     </h5>
   </div>
-  <div style="margin-right:5px;">
-    <h4>
-      لطفا پارامتر های سرویس را وارد کنید .
-    </h4>
+
+  <div mat-dialog-content>
+    <div class="div__url__container">
+      <button style="margin-left:5px;" pButton icon="pi pi-download" class="ui-button-success" (click)="getParameters()"
+        label="دریافت پارامتر ها" [disabled]="disableGetParams()"></button>
+      <mat-form-field class="side-nav-field field-action">
+        <input matInput placeholder="اکشن" [(ngModel)]="urlValue.action">
+      </mat-form-field>
+      <mat-form-field class="side-nav-field field-controller">
+        <input matInput placeholder="کنترلر" [(ngModel)]="urlValue.controller">
+      </mat-form-field>
+      <mat-form-field class="side-nav-field field-url">
+        <input matInput placeholder="آدرس" [(ngModel)]="urlValue.url">
+      </mat-form-field>
+      <mat-form-field class="side-nav-field field-http">
+        <mat-label>Http header</mat-label>
+        <mat-select [(ngModel)]="urlValue.http">
+          <mat-option *ngFor="let http of https" [value]="http">
+            {{http}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="div__params__container">
+      <h4>
+        پارامتر های سرویس
+      </h4>
+      <div style="margin-right:25px;" *ngFor="let param of params">
+        <mat-form-field class="side-nav-field">
+          <input matInput placeholder="نام" [(ngModel)]="param.name">
+        </mat-form-field>
+        <mat-form-field class="side-nav-field">
+          <input matInput placeholder="مقدار" [(ngModel)]="param.value">
+        </mat-form-field>
+        <button style="margin:5px;" pButton icon="pi pi-minus" class="ui-button-danger"
+          (click)="removeParameter(param)"></button>
+      </div>
+    </div>
   </div>
-  <div style="margin-right:25px;" *ngFor="let data of datas">
-    <mat-form-field class="side-nav-field">
-      <input matInput placeholder="نام" [(ngModel)]="data.name">
-    </mat-form-field>
-    <mat-form-field class="side-nav-field">
-      <input matInput placeholder="مقدار" [(ngModel)]="data.value">
-    </mat-form-field>
-    <button style="margin:5px;" pButton icon="pi pi-minus" class="ui-button-danger" (click)="removeParameter(data)"></button>
+
+  <div class="div__button__container" mat-dialog-actions>
+    <button style="margin:5px;" pButton icon="pi pi-check" class="ui-button-success" (click)="closeDialog()"
+      label="ذخیره"></button>
+    <button style="margin:5px;" pButton icon="pi pi-plus" class="ui-button-success" (click)="addNewParameter()"
+      label="افزودن ایتم جدید"></button>
   </div>
-  <div style="text-align: center">
-    <button style="margin:5px;" pButton icon="pi pi-check" class="ui-button-success" (click)="closeDialog()" label="ذخیره"></button>
-    <button style="margin:5px;" pButton icon="pi pi-plus" class="ui-button-success" (click)="addNewParameter()" label="افزودن ایتم جدید"></button>
-  </div>
+
+
 </div>

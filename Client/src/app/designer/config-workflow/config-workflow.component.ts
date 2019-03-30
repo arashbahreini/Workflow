@@ -712,10 +712,12 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
     if (this.task.settings.find(x => x.name === 'پارامتر').value === '') {
       this.task.settings.find(x => x.name === 'پارامتر').value = '[]';
     }
+
     const dialogRef = this.dialog.open(ServiceParameterConfigComponent, {
-      data: JSON.parse(this.task.settings.find(x => x.name === 'پارامتر').value),
-      maxHeight: '60vh',
-      height: '60vh',
+      data: this.task.settings,
+      maxHeight: '75vh',
+      // height: '75vh',
+      width: '95%',
       disableClose: true,
     });
     dialogRef.afterClosed().subscribe((res: string) => {
@@ -888,7 +890,7 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
     if (this.task.settings.find(x => x.name === 'مشخصات سرویس')) {
       this.task.settings.find(x => x.name === 'مشخصات سرویس').value =
         JSON.stringify(this.newSetting);
-        this.newSetting.value = {};
+      this.newSetting.value = {};
     }
     // if (this.task.settings.find(x => x.name === 'کاربر')) {
     //   if (this.task.settings.find(x => x.name === 'کاربر').value === '') {
@@ -1077,7 +1079,7 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
     if (this.task.settings.find(x => x.name === 'مشخصات سرویس')) {
       this.task.settings.find(x => x.name === 'مشخصات سرویس').value =
         JSON.stringify(this.newSetting);
-        this.newSetting.value = {};
+      this.newSetting.value = {};
     }
     // if (this.task.settings.find(x => x.name === 'کاربر')) {
     //   if (this.task.settings.find(x => x.name === 'کاربر').value === '') {

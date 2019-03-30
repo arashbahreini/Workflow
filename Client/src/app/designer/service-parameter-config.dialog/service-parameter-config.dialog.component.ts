@@ -3,6 +3,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { VersionConfirmModel } from '../../model/version-confirm.model';
 import { ServiceParameterModel } from '../../model/service-parameter.model';
 import { Message } from 'primeng/api';
+import { SettingModel } from '../../model/setting.model';
+import { ServiceUrlModel } from '../../model/service-url.model';
 
 @Component({
   selector: 'app-service-parameter-config.dialog',
@@ -13,37 +15,64 @@ export class ServiceParameterConfigComponent implements OnInit {
 
   public errorMessages: Message[] = [];
   public result: VersionConfirmModel = new VersionConfirmModel();
-
+  public params: ServiceParameterModel[] = [];
+  public urlValue: ServiceUrlModel = new ServiceUrlModel();
+  public https: string[] = [];
   constructor(
     private dialogRef: MatDialogRef<ServiceParameterConfigComponent>,
-    @Inject(MAT_DIALOG_DATA) public datas: ServiceParameterModel[] = [],
+    @Inject(MAT_DIALOG_DATA) public data: SettingModel[] = [],
   ) {
-    if (this.datas.length === 0) {
-      this.datas.push(new ServiceParameterModel());
+    if (this.data.find(x => x.name === 'پارامتر')) {
+      this.params = JSON.parse(this.data.find(x => x.name === 'پارامتر').value);
+    } else {
+      this.params = [];
+    }
+    if (this.data.find(x => x.name === 'مشخصات سرویس')) {
+      if (this.data.find(x => x.name === 'مشخصات سرویس').value) {
+        this.urlValue = JSON.parse(this.data.find(x => x.name === 'مشخصات سرویس').value);
+      }
+    } else {
+      this.urlValue = new ServiceUrlModel();
     }
   }
 
   ngOnInit() {
+    this.getHttps();
+  }
+
+  getHttps() {
+    this.https = [];
+    this.https.push('Post', 'Put', 'Delete', 'Get');
   }
 
   addNewParameter(data: ServiceParameterModel) {
     let isValid = true;
-    this.datas.forEach(element => {
+    this.params.forEach(element => {
       if (!element.name || !element.value) {
         isValid = false;
       }
     });
     if (isValid) {
-      this.datas.push(new ServiceParameterModel());
+      this.params.push(new ServiceParameterModel());
     }
   }
 
+  disableGetParams() {
+    if (!this.urlValue.controller ||
+      !this.urlValue.action ||
+      !this.urlValue.url ||
+      !this.urlValue.http) {
+      return true;
+    }
+    return false;
+  }
+
   removeParameter(data: ServiceParameterModel) {
-    const index = this.datas.indexOf(data);
-    this.datas.splice(index, 1);
+    const index = this.params.indexOf(data);
+    this.params.splice(index, 1);
   }
 
   closeDialog() {
-    this.dialogRef.close(JSON.stringify(this.datas));
+    this.dialogRef.close(JSON.stringify(this.params));
   }
 }
