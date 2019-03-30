@@ -13,13 +13,19 @@
       <button style="margin-left:5px;" pButton icon="pi pi-download" class="ui-button-success" (click)="getParameters()"
         label="دریافت پارامتر ها" [disabled]="disableGetParams()"></button>
       <mat-form-field class="side-nav-field field-action">
-        <input matInput placeholder="اکشن" [(ngModel)]="urlValue.action">
+        <input matInput placeholder="Action" [(ngModel)]="urlValue.action">
       </mat-form-field>
       <mat-form-field class="side-nav-field field-controller">
-        <input matInput placeholder="کنترلر" [(ngModel)]="urlValue.controller">
+        <input matInput placeholder="Controller" [(ngModel)]="urlValue.controller">
+      </mat-form-field>
+      <mat-form-field class="side-nav-field field-controller">
+        <input matInput placeholder="Prefix (API)" [(ngModel)]="urlValue.prefix">
       </mat-form-field>
       <mat-form-field class="side-nav-field field-url">
         <input matInput placeholder="آدرس" [(ngModel)]="urlValue.url">
+      </mat-form-field>
+      <mat-form-field class="side-nav-field field-url">
+        <input matInput placeholder="Swagger url" [(ngModel)]="urlValue.swaggerUrl">
       </mat-form-field>
       <mat-form-field class="side-nav-field field-http">
         <mat-label>Http header</mat-label>

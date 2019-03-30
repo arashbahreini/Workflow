@@ -8,6 +8,7 @@ import { BussinessCategoryModel } from '../model/Bussiness-category.model';
 import { BrandModel } from '../model/brand.model';
 import { ServiceModel } from '../model/service.model';
 import { IdTitleModel } from '../model/id-title.model';
+import { ServiceUrlModel } from '../model/service-url.model';
 
 @Injectable()
 export class BasicInformationService {
@@ -90,6 +91,10 @@ export class BasicInformationService {
     return this.http.post<boolean>('/Workflow/' + 'CheckAuthentication', null).pipe(
       catchError(this.handleError),
     );
+  }
+
+  getServiceParameters(model: ServiceUrlModel) {
+    return this.http.get<any>(model.swaggerUrl);
   }
 
   private handleError(error: HttpErrorResponse) {

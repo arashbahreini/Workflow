@@ -5,6 +5,7 @@ import { ServiceParameterModel } from '../../model/service-parameter.model';
 import { Message } from 'primeng/api';
 import { SettingModel } from '../../model/setting.model';
 import { ServiceUrlModel } from '../../model/service-url.model';
+import { BasicInformationService } from '../../services/basic-information.service';
 
 @Component({
   selector: 'app-service-parameter-config.dialog',
@@ -20,6 +21,7 @@ export class ServiceParameterConfigComponent implements OnInit {
   public https: string[] = [];
   constructor(
     private dialogRef: MatDialogRef<ServiceParameterConfigComponent>,
+    private basicInformationService: BasicInformationService,
     @Inject(MAT_DIALOG_DATA) public data: SettingModel[] = [],
   ) {
     if (this.data.find(x => x.name === 'پارامتر')) {
@@ -42,7 +44,7 @@ export class ServiceParameterConfigComponent implements OnInit {
 
   getHttps() {
     this.https = [];
-    this.https.push('Post', 'Put', 'Delete', 'Get');
+    this.https.push('post', 'put', 'delete', 'get');
   }
 
   addNewParameter(data: ServiceParameterModel) {
@@ -58,10 +60,7 @@ export class ServiceParameterConfigComponent implements OnInit {
   }
 
   disableGetParams() {
-    if (!this.urlValue.controller ||
-      !this.urlValue.action ||
-      !this.urlValue.url ||
-      !this.urlValue.http) {
+    if (!this.urlValue.url || !this.urlValue.controller || !this.urlValue.action) {
       return true;
     }
     return false;
@@ -74,5 +73,29 @@ export class ServiceParameterConfigComponent implements OnInit {
 
   closeDialog() {
     this.dialogRef.close(JSON.stringify(this.params));
+  }
+
+  getParameters() {
+    this.basicInformationService.getServiceParameters(this.urlValue).subscribe(
+      (res: any) => {
+        const model = this.generateModelFromSwagger(res);
+        this.params = [];
+        Object.keys(model.properties).forEach(element => {
+          this.params.push({
+            name: element,
+            value: '',
+          });
+        });
+      }
+    );
+  }
+
+  generateModelFromSwagger(data: any): any {
+    const api = data.paths[this.urlValue.getControllerAddress()];
+    let modelAddress = api[this.urlValue.http].requestBody.content['application/*+json'].schema.$ref;
+    modelAddress = modelAddress.replace('#/', '');
+    const modelAddressArray = modelAddress.split('/');
+    const model = data[modelAddressArray[0]][modelAddressArray[1]][modelAddressArray[2]];
+    return model;
   }
 }
