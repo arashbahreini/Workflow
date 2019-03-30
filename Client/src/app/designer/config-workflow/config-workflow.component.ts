@@ -720,9 +720,9 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
       width: '95%',
       disableClose: true,
     });
-    dialogRef.afterClosed().subscribe((res: string) => {
+    dialogRef.afterClosed().subscribe((res: any[]) => {
       if (res) {
-        this.task.settings.find(x => x.name === 'پارامتر').value = res;
+        this.task.settings = res;
         console.log(this.task.settings);
       }
     });
@@ -1076,11 +1076,11 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
     const node = this.workFlow.graph.nodeDataArray.find(x => x.key === this.task.key);
     node.text = this.task.persianName;
 
-    if (this.task.settings.find(x => x.name === 'مشخصات سرویس')) {
-      this.task.settings.find(x => x.name === 'مشخصات سرویس').value =
-        JSON.stringify(this.newSetting);
-      this.newSetting.value = {};
-    }
+    // if (this.task.settings.find(x => x.name === 'مشخصات سرویس')) {
+    //   this.task.settings.find(x => x.name === 'مشخصات سرویس').value =
+    //     JSON.stringify(this.newSetting);
+    //   this.newSetting.value = {};
+    // }
     // if (this.task.settings.find(x => x.name === 'کاربر')) {
     //   if (this.task.settings.find(x => x.name === 'کاربر').value === '') {
     //     this.task.settings.find(x => x.name === 'کاربر').value = '[]';

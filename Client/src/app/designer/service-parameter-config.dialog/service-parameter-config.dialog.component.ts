@@ -60,7 +60,11 @@ export class ServiceParameterConfigComponent implements OnInit {
   }
 
   disableGetParams() {
-    if (!this.urlValue.url || !this.urlValue.controller || !this.urlValue.action) {
+    if (!this.urlValue.url ||
+      !this.urlValue.controller ||
+      !this.urlValue.action ||
+      !this.urlValue.swaggerUrl ||
+      !this.urlValue.http) {
       return true;
     }
     return false;
@@ -71,8 +75,13 @@ export class ServiceParameterConfigComponent implements OnInit {
     this.params.splice(index, 1);
   }
 
-  closeDialog() {
-    this.dialogRef.close(JSON.stringify(this.params));
+  closeDialog(isSave: boolean = false) {
+    if (isSave) {
+      this.data.find(x => x.name === 'پارامتر').value = JSON.stringify(this.params);
+      this.data.find(x => x.name === 'مشخصات سرویس').value = JSON.stringify(this.urlValue);
+      this.dialogRef.close(this.data);
+    }
+    this.dialogRef.close();
   }
 
   getParameters() {
