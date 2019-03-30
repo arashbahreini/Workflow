@@ -15,8 +15,10 @@
 
         <span class="iranSanseFont" *ngIf="task.parentTask.text === 'تسک چند شرطی کاربر ایجاد کننده'">این تسک در صورتی
           اجرا میشود که کاربر درخواست دهنده </span>
-        <mat-form-field class="side-nav-field" style="width:79%" *ngIf="task.parentTask.text === 'تسک چند شرطی کاربر ایجاد کننده'">
-          <mat-select [disabled]="task.isDefault" placeholder="انتخاب کاربر" [(ngModel)]="task.caseValue" panelClass="select__style">
+        <mat-form-field class="side-nav-field" style="width:79%"
+          *ngIf="task.parentTask.text === 'تسک چند شرطی کاربر ایجاد کننده'">
+          <mat-select [disabled]="task.isDefault" placeholder="انتخاب کاربر" [(ngModel)]="task.caseValue"
+            panelClass="select__style">
             <mat-option *ngFor="let employ of employs" [value]="employ.value">
               {{employ.label}}
             </mat-option>
@@ -28,17 +30,19 @@
           <p-checkbox name="groupname" [(ngModel)]="task.isDefault" binary="true"></p-checkbox>
           <span class="iranSanseFont" style="margin-right: 5px">پاسخ پیش فرض است</span>
         </div>
-        <mat-form-field class="side-nav-field" style="width:79%" *ngIf="task.parentTask.text === 'تسک چند شرطی داینامیک' && !task.isDefault">
+        <mat-form-field class="side-nav-field" style="width:79%"
+          *ngIf="task.parentTask.text === 'تسک چند شرطی داینامیک' && !task.isDefault">
           <input type="number" matInput placeholder="شناسه" [(ngModel)]="task.caseValue">
         </mat-form-field>
-        <mat-form-field class="side-nav-field" style="width:79%" *ngIf="task.parentTask.text === 'تسک چند شرطی داینامیک'">
+        <mat-form-field class="side-nav-field" style="width:79%"
+          *ngIf="task.parentTask.text === 'تسک چند شرطی داینامیک'">
           <input matInput placeholder="توضیح لینک" [(ngModel)]="task.caseLinkValue">
         </mat-form-field>
       </div>
       <div>
         <mat-form-field class="side-nav-field" *ngIf="!showLinkPanel">
-          <mat-select [disabled]="taskEditMode" placeholder="نوع تسک را انتخاب کنید" [(ngModel)]="taskType" panelClass="select__style"
-            (selectionChange)="changeTaskTypeInList()">
+          <mat-select [disabled]="taskEditMode" placeholder="نوع تسک را انتخاب کنید" [(ngModel)]="taskType"
+            panelClass="select__style" (selectionChange)="changeTaskTypeInList()">
             <mat-option *ngFor="let taskType of taskTypes" [value]="taskType">
               {{ taskType.description }}
             </mat-option>
@@ -58,10 +62,12 @@
       <div *ngIf="task.parentTask?.isIf" class="side-nav-field">
         <p>
           <span>پاسخ به کار پدر</span>
-          <button pButton [disabled]="task.parentTask.doNodeId" type="button" (click)="task.ifResult = true" icon="pi pi-check"
-            iconPos="right" label="بله" style="margin-left:5px" [ngClass]="{'ui-button-success' : task.ifResult === true}"></button>
-          <button pButton [disabled]="task.parentTask.elseNodeId" type="button" (click)="task.ifResult = false" icon="pi pi-times"
-            iconPos="right" label="خیر" [ngClass]="{'ui-button-success' : task.ifResult === false}"></button>
+          <button pButton [disabled]="task.parentTask.doNodeId" type="button" (click)="task.ifResult = true"
+            icon="pi pi-check" iconPos="right" label="بله" style="margin-left:5px"
+            [ngClass]="{'ui-button-success' : task.ifResult === true}"></button>
+          <button pButton [disabled]="task.parentTask.elseNodeId" type="button" (click)="task.ifResult = false"
+            icon="pi pi-times" iconPos="right" label="خیر"
+            [ngClass]="{'ui-button-success' : task.ifResult === false}"></button>
           <span style="margin-right: 5px;">است . </span>
         </p>
       </div>
@@ -79,18 +85,20 @@
         </h4>
         <div *ngFor="let setting of task.settings | isNotType">
           <div *ngIf="setting.name !== 'قوانین'">
-            <h4 class="iranSanseFont" *ngIf="setting.name !== 'پارامتر' && setting.name !== 'getUserFromModel' && showUserSelector(task.settings)">
+            <h4 class="iranSanseFont"
+              *ngIf="setting.name !== 'پارامتر' && setting.name !== 'getUserFromModel' && showUserSelector(task.settings)">
               {{setting.name}} :
             </h4>
             <div *ngIf="setting.name === 'مشخصات سرویس'">
               <button pButton type="button" label="تنظیمات سرویس" iconPos="right" (click)="openParameterDialog()"
-              icon="pi pi-setting" class="ui-button-success management__button"></button>
+                icon="pi pi-setting" class="ui-button-success management__button"></button>
             </div>
             <div *ngIf="setting.name === 'getUserFromModel'">
               <mat-checkbox [(ngModel)]="setting.value">دریافت کاربر از درخواست</mat-checkbox>
             </div>
           </div>
-          <mat-form-field class="side-nav-field" *ngIf="setting.name === 'فرایند'" style="width: 500px;margin-right: 10px">
+          <mat-form-field class="side-nav-field" *ngIf="setting.name === 'فرایند'"
+            style="width: 500px;margin-right: 10px">
             <mat-select placeholder="فرایند را انتخاب کنید" [(ngModel)]="+setting.value" panelClass="select__style">
               <mat-option *ngFor="let workflow of workflows" [value]="workflow.id">
                 {{ (workflow.id | persianNumber) + '. ' + workflow.name }}
@@ -119,11 +127,12 @@
       <div style="text-align: right; margin-right: 1%">
         <button *ngIf="showAddTaskButton()" pButton type="button" label="افزودن" iconPos="right" (click)="addTask()"
           icon="pi pi-plus" class="ui-button-success management__button"></button>
-        <button *ngIf="taskEditMode" pButton type="button" iconPos="right" label="ذخیره" (click)="saveTask()" icon="pi pi-save"
-          class="ui-button-success management__button"></button>
-        <button *ngIf="showLinkPanel" pButton type="button" iconPos="right" label="ذخیره" (click)="saveLink()" icon="pi pi-save"
-          class="ui-button-success management__button"></button>
-        <button pButton type="button" iconPos="right" (click)="cancelAddTask()" label="انصراف" icon="pi pi-times" class="ui-button-danger management__button"></button>
+        <button *ngIf="taskEditMode" pButton type="button" iconPos="right" label="ذخیره" (click)="saveTask()"
+          icon="pi pi-save" class="ui-button-success management__button"></button>
+        <button *ngIf="showLinkPanel" pButton type="button" iconPos="right" label="ذخیره" (click)="saveLink()"
+          icon="pi pi-save" class="ui-button-success management__button"></button>
+        <button pButton type="button" iconPos="right" (click)="cancelAddTask()" label="انصراف" icon="pi pi-times"
+          class="ui-button-danger management__button"></button>
       </div>
     </div>
   </mat-sidenav>
@@ -183,10 +192,12 @@
           </mat-form-field>
         </div>
         <div class="workflow__action__div">
-          <button iconPos="right" pButton icon="pi pi-arrow-right" class="management__button ui-button-danger" (click)="back()" label="بازگشت"></button>
-          <button iconPos="right" pButton icon="pi pi-check" class="management__button ui-button-success" (click)="saveWorkflow()"
-            label="ذخیره"></button>
-          <button iconPos="right" pButton icon="pi pi-plus" class="management__button" (click)="newTask()" label="تسک جدید"></button>
+          <button iconPos="right" pButton icon="pi pi-arrow-right" class="management__button ui-button-danger"
+            (click)="back()" label="بازگشت"></button>
+          <button iconPos="right" pButton icon="pi pi-check" class="management__button ui-button-success"
+            (click)="saveWorkflow()" label="ذخیره"></button>
+          <button iconPos="right" pButton icon="pi pi-plus" class="management__button" (click)="newTask()"
+            label="تسک جدید"></button>
         </div>
       </mat-expansion-panel>
     </mat-accordion>

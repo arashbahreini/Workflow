@@ -1,64 +1,79 @@
 <p-growl [(value)]="errorMessages" [life]="'3000'"></p-growl>
-<div dir="rtl">
-  <div class="div__top" mat-dialog-title>
-    <h5>
-      <button style="margin:5px;" pButton icon="pi pi-times" class="ui-button-danger"
-        (click)="closeDialog(null)"></button>
-      مدیریت سرویس
-    </h5>
-  </div>
 
-  <div mat-dialog-content>
-    <div class="div__url__container">
-      <button style="margin-left:5px;" pButton icon="pi pi-download" class="ui-button-success" (click)="getParameters()"
-        label="دریافت پارامتر ها" [disabled]="disableGetParams()"></button>
-      <mat-form-field class="side-nav-field field-action">
-        <input matInput placeholder="Action" [(ngModel)]="urlValue.action">
-      </mat-form-field>
-      <mat-form-field class="side-nav-field field-controller">
-        <input matInput placeholder="Controller" [(ngModel)]="urlValue.controller">
-      </mat-form-field>
-      <mat-form-field class="side-nav-field field-controller">
-        <input matInput placeholder="Prefix (API)" [(ngModel)]="urlValue.prefix">
-      </mat-form-field>
-      <mat-form-field class="side-nav-field field-url">
-        <input matInput placeholder="آدرس" [(ngModel)]="urlValue.url">
-      </mat-form-field>
-      <mat-form-field class="side-nav-field field-url">
-        <input matInput placeholder="Swagger url" [(ngModel)]="urlValue.swaggerUrl">
-      </mat-form-field>
-      <mat-form-field class="side-nav-field field-http">
-        <mat-label>Http header</mat-label>
-        <mat-select [(ngModel)]="urlValue.http">
-          <mat-option *ngFor="let http of https" [value]="http">
-            {{http}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-    <div class="div__params__container">
-      <h4>
-        پارامتر های سرویس
-      </h4>
-      <div style="margin-right:25px;" *ngFor="let param of params">
-        <mat-form-field class="side-nav-field">
-          <input matInput placeholder="نام" [(ngModel)]="param.name">
+<div mat-dialog-title class="text-right box_header_dialog mt-1">
+  <h4>
+    <span class="title_text_span">
+      Service config
+    </span>
+    <a pButton icon="fa fa-times" class="ui-button-danger" (click)="dialogRef.close()"></a>
+  </h4>
+</div>
+<div mat-dialog-content style="overflow: scroll">
+  <mat-accordion>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Service address config
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <div class="col-sm-12">
+        <mat-form-field class="side-nav-field col-sm-10">
+          <input matInput placeholder="Swagger url" [(ngModel)]="urlValue.swaggerUrl">
         </mat-form-field>
-        <mat-form-field class="side-nav-field">
-          <input matInput placeholder="مقدار" [(ngModel)]="param.value">
+
+        <button mat-icon-button aria-label="Example icon-button with a heart icon" (click)="getParameters()" color="accent"
+          [disabled]="disableGetParams()">
+          <mat-icon aria-hidden="false" aria-label="Example home icon">cloud_download</mat-icon>
+        </button>
+
+        <mat-form-field class="side-nav-field col-sm-6">
+          <input matInput placeholder="Url" [(ngModel)]="urlValue.url">
         </mat-form-field>
-        <button style="margin:5px;" pButton icon="pi pi-minus" class="ui-button-danger"
-          (click)="removeParameter(param)"></button>
+
+        <mat-form-field class="side-nav-field col-sm-4">
+          <mat-label>Http header</mat-label>
+          <mat-select [(ngModel)]="urlValue.http">
+            <mat-option *ngFor="let http of https" [value]="http">
+              {{http}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="side-nav-field col-sm-2">
+          <input matInput placeholder="Prefix (API)" [(ngModel)]="urlValue.prefix">
+        </mat-form-field>
+
+        <mat-form-field class="side-nav-field col-sm-3">
+          <input matInput placeholder="Controller" [(ngModel)]="urlValue.controller">
+        </mat-form-field>
+
+        <mat-form-field class="side-nav-field col-sm-3">
+          <input matInput placeholder="Action" [(ngModel)]="urlValue.action">
+        </mat-form-field>
       </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+
+  <div class="div__params__container">
+    <h4>
+      پارامتر های سرویس
+    </h4>
+    <div style="margin-right:25px;" *ngFor="let param of params">
+      <mat-form-field class="side-nav-field">
+        <input matInput placeholder="نام" [(ngModel)]="param.name">
+      </mat-form-field>
+      <mat-form-field class="side-nav-field">
+        <input matInput placeholder="مقدار" [(ngModel)]="param.value">
+      </mat-form-field>
+      <button style="margin:5px;" pButton icon="pi pi-minus" class="ui-button-danger"
+        (click)="removeParameter(param)"></button>
     </div>
   </div>
+</div>
 
-  <div class="div__button__container" mat-dialog-actions>
-    <button style="margin:5px;" pButton icon="pi pi-check" class="ui-button-success" (click)="closeDialog(true)"
-      label="ذخیره"></button>
-    <button style="margin:5px;" pButton icon="pi pi-plus" class="ui-button-success" (click)="addNewParameter()"
-      label="افزودن ایتم جدید"></button>
-  </div>
-
-
+<div class="div__button__container" mat-dialog-actions>
+  <button style="margin:5px;" pButton icon="pi pi-check" class="ui-button-success" (click)="closeDialog(true)"></button>
+  <button style="margin:5px;" pButton icon="pi pi-plus" class="ui-button-success" (click)="addNewParameter()"></button>
 </div>

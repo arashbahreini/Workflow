@@ -100,11 +100,26 @@ export class ServiceParameterConfigComponent implements OnInit {
   }
 
   generateModelFromSwagger(data: any): any {
-    const api = data.paths[this.urlValue.getControllerAddress()];
+    const api = data.paths[this.getControllerAddress(this.urlValue)];
     let modelAddress = api[this.urlValue.http].requestBody.content['application/*+json'].schema.$ref;
     modelAddress = modelAddress.replace('#/', '');
     const modelAddressArray = modelAddress.split('/');
     const model = data[modelAddressArray[0]][modelAddressArray[1]][modelAddressArray[2]];
     return model;
+  }
+
+  getControllerAddress(model: ServiceUrlModel) {
+    let result = '';
+    if (model.prefix) {
+      result += '/' + model.prefix;
+    }
+    if (model.controller) {
+      result += '/' + model.controller;
+    }
+
+    if (model.action) {
+      result += '/' + model.action;
+    }
+    return result;
   }
 }

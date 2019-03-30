@@ -3,7 +3,8 @@
 @import '~bootstrap/scss/_tables';
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import '~angular-tree-component/dist/angular-tree-component.css';
-
+@import "~bootstrap/dist/css/bootstrap.css";
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
 
 @font-face {
     font-family: 'IranianSansBold';
@@ -92,10 +93,6 @@ h5 {
   border-radius: 7px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
-}
-
-.mat-dialog-container {
-    padding-top:0px !important;
 }
 
 .ui-growl-title {

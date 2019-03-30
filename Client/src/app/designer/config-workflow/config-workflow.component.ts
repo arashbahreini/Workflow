@@ -715,7 +715,7 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
 
     const dialogRef = this.dialog.open(ServiceParameterConfigComponent, {
       data: this.task.settings,
-      maxHeight: '75vh',
+      // maxHeight: '75vh',
       // height: '75vh',
       width: '95%',
       disableClose: true,
