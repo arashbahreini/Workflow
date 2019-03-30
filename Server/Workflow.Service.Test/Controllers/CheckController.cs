@@ -7,12 +7,12 @@ using Workflow.Service.Test.model;
 
 namespace Workflow.Service.Test.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class CheckController : ControllerBase
     {
         [HttpPost]
-        public bool Delete(Conditionalmodel model)
+        public bool Check(Conditionalmodel model)
         {
             if (model.Value > 10)
             {

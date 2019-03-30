@@ -16,7 +16,7 @@ namespace TaskRunnerLogic
 
         public TaskStatus Run(string serviceParameters, string serviceUrl, Task task, WorkflowConfig workflowConfig, RequestModel model = null)
         {
-            while(true)
+            while (true)
             {
 
                 switch (task.Name)
@@ -37,6 +37,19 @@ namespace TaskRunnerLogic
                         if (serviceResult.Result)
                         {
                             return new TaskStatus(Status.Success, task, model, "", workflowConfig);
+                        }
+                        break;
+                    case "Check":
+                        url = JsonConvert.DeserializeObject<RestService>(serviceUrl);
+                        parameters = serviceParameters;
+                        serviceResult = new CallServiceLogic().CallAsync(url, parameters);
+                        if (serviceResult.Result == true)
+                        {
+                            return new TaskStatus(Status.Success, true, task, model, "", workflowConfig);
+                        }
+                        else if (serviceResult.Result == false)
+                        {
+                            return new TaskStatus(Status.Success, false, task, model, "", workflowConfig);
                         }
                         break;
                     default:

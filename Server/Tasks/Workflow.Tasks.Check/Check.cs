@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Xml.Linq;
 using Contract;
+using TaskRunnerLogic;
 using workflow.Contract;
 using workflow.Core;
 
@@ -14,7 +15,14 @@ namespace Workflow.Tasks.Check
 
         public override TaskStatus Run(WorkflowConfig workflowConfig, RequestModel model = null)
         {
-            return new TaskStatus(Status.Success, this, model, "", workflowConfig);
+
+            return new RunTask().Run(
+                GetSetting("پارامتر"),
+                GetSetting("مشخصات سرویس"),
+                this,
+                workflowConfig,
+                model);
+            // return new TaskStatus(Status.Success, this, model, "", workflowConfig);
         }
     }
 }
