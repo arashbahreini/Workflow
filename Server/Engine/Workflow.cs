@@ -1,7 +1,6 @@
 ﻿using Contract;
 using Data.Entities;
 using Log;
-using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
