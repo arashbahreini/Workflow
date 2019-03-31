@@ -7,7 +7,7 @@ using Workflow.Service.Test.model;
 
 namespace Workflow.Service.Test.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("v1/[controller]/[action]")]
     [ApiController]
     public class CheckController : ControllerBase
     {
