@@ -6,6 +6,7 @@ import { Message } from 'primeng/api';
 import { SettingModel } from '../../model/setting.model';
 import { ServiceUrlModel } from '../../model/service-url.model';
 import { BasicInformationService } from '../../services/basic-information.service';
+import { SwaggerModel } from '../../model/swagger.model';
 
 @Component({
   selector: 'app-service-parameter-config.dialog',
@@ -19,6 +20,8 @@ export class ServiceParameterConfigComponent implements OnInit {
   public params: ServiceParameterModel[] = [];
   public urlValue: ServiceUrlModel = new ServiceUrlModel();
   public https: string[] = [];
+  public swaggerModel: SwaggerModel = new SwaggerModel();
+
   constructor(
     private dialogRef: MatDialogRef<ServiceParameterConfigComponent>,
     private basicInformationService: BasicInformationService,
@@ -84,19 +87,40 @@ export class ServiceParameterConfigComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  getParameters() {
+  getApiInfo() {
+    this.swaggerModel = new SwaggerModel();
     this.basicInformationService.getServiceParameters(this.urlValue).subscribe(
       (res: any) => {
-        const model = this.generateModelFromSwagger(res);
-        this.params = [];
-        Object.keys(model.properties).forEach(element => {
-          this.params.push({
-            name: element,
-            value: '',
-          });
-        });
+        this.swaggerModel.isUsed = true;
+        this.swaggerModel.data = res;
+        this.swaggerModel.getPrefixes();
+
       }
     );
+  }
+
+  prefixChange(event: any) {
+    this.swaggerModel.getControllers(event.value);
+  }
+
+  controllerChange(event: any) {
+    this.swaggerModel.getActions(event.value);
+  }
+
+  actionChange($event) {
+    this.swaggerModel.getHttps(this.urlValue.getFullPath());
+    this.https = this.swaggerModel.https;
+  }
+
+  getParameters() {
+    const model = this.generateModelFromSwagger(this.swaggerModel.data);
+    this.params = [];
+    Object.keys(model.properties).forEach(element => {
+      this.params.push({
+        name: element,
+        value: '',
+      });
+    });
   }
 
   generateModelFromSwagger(data: any): any {

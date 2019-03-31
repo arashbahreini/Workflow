@@ -5,4 +5,8 @@ export class ServiceUrlModel {
   public action: string;
   public http: string;
   public swaggerUrl: string;
+
+  getFullPath() {
+    return '/' + this.prefix + '/' + this.controller + '/' + this.action;
+  }
 }
