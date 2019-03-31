@@ -17,22 +17,14 @@
 
 .div__params__container {
   text-align: center;
-  border: 1px solid lightgray;
-  width: 95%;
-  margin: 5px 2.5% 5px 0px;
-  padding-top: 5px;
   height: 36vh;
   overflow: scroll;
-}
-
-.div__button__container {
-  text-align: center;
 }
 
 .box_header_dialog {
   border-bottom: 1px solid lightgray;
 }
 
-.title_text_span {
-  float:left !important;
+h4, .mat-form-field-label, h5 {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
 }

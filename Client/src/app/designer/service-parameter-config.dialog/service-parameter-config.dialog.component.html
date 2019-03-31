@@ -1,11 +1,9 @@
 <p-growl [(value)]="errorMessages" [life]="'3000'"></p-growl>
-
-<div mat-dialog-title class="text-right box_header_dialog mt-1">
+<div mat-dialog-title class="text-center box_header_dialog mt-1">
   <h4>
-    <span class="title_text_span">
+    <span>
       Service config
     </span>
-    <a pButton icon="fa fa-times" class="ui-button-danger" (click)="dialogRef.close()"></a>
   </h4>
 </div>
 <div mat-dialog-content style="overflow: scroll">
@@ -13,7 +11,9 @@
     <mat-expansion-panel>
       <mat-expansion-panel-header>
         <mat-panel-title>
-          Service address config
+          <h5>
+            Service address config
+          </h5>
         </mat-panel-title>
       </mat-expansion-panel-header>
 
@@ -22,9 +22,8 @@
           <input matInput placeholder="Swagger url" [(ngModel)]="urlValue.swaggerUrl">
         </mat-form-field>
 
-        <button mat-icon-button aria-label="Example icon-button with a heart icon" (click)="getParameters()" color="accent"
-          [disabled]="disableGetParams()">
-          <mat-icon aria-hidden="false" aria-label="Example home icon">cloud_download</mat-icon>
+        <button mat-icon-button (click)="getParameters()" color="accent" [disabled]="disableGetParams()">
+          <mat-icon>cloud_download</mat-icon>
         </button>
 
         <mat-form-field class="side-nav-field col-sm-6">
@@ -56,24 +55,34 @@
   </mat-accordion>
 
 
-  <div class="div__params__container">
+  <div class="div__params__container col-sm-12 mt-2 pt-2 border">
     <h4>
-      پارامتر های سرویس
+      Service parameters
+      <!-- <button style="margin:5px;" pButton icon="pi pi-plus" class="ui-button-success" ></button> -->
+      <button mat-icon-button (click)="addNewParameter()" color="accent">
+        <mat-icon>add</mat-icon>
+      </button>
     </h4>
     <div style="margin-right:25px;" *ngFor="let param of params">
       <mat-form-field class="side-nav-field">
-        <input matInput placeholder="نام" [(ngModel)]="param.name">
+        <input matInput placeholder="Name" [(ngModel)]="param.name">
       </mat-form-field>
       <mat-form-field class="side-nav-field">
-        <input matInput placeholder="مقدار" [(ngModel)]="param.value">
+        <input matInput placeholder="Value" [(ngModel)]="param.value">
       </mat-form-field>
-      <button style="margin:5px;" pButton icon="pi pi-minus" class="ui-button-danger"
-        (click)="removeParameter(param)"></button>
+      <button mat-icon-button (click)="removeParameter(param)" color="warn">
+        <mat-icon>delete</mat-icon>
+      </button>
     </div>
   </div>
 </div>
 
 <div class="div__button__container" mat-dialog-actions>
-  <button style="margin:5px;" pButton icon="pi pi-check" class="ui-button-success" (click)="closeDialog(true)"></button>
-  <button style="margin:5px;" pButton icon="pi pi-plus" class="ui-button-success" (click)="addNewParameter()"></button>
+  <!-- <button style="margin:5px;" pButton icon="pi pi-check" class="ui-button-success" ></button> -->
+  <button mat-mini-fab (click)="closeDialog(true)" color="primary">
+      <mat-icon>check</mat-icon>
+    </button>
+  <button mat-mini-fab (click)="dialogRef.close()" color="warn">
+      <mat-icon>close</mat-icon>
+    </button>
 </div>

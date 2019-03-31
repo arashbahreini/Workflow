@@ -13,7 +13,7 @@ namespace ServiceLogic.cs
         public async Task<bool> CallAsync(RestService url, string stringParameters)
         {
             HttpClient client = new HttpClient();
-            var uri = url.value.url + "/" + url.value.controller + "/" + url.value.action;
+            var uri = url.url + "/" + (string.IsNullOrEmpty(url.prefix) ? "" : url.prefix) + "/" + url.controller + "/" + url.action;
             var parameterObject = new ServiceParameterCreator().Create(stringParameters);
             var response = await client.PostAsJsonAsync(uri, parameterObject);
             var content = response.Content.ReadAsAsync<Boolean>().Result;

@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Workflow id="3" name="shangol" description="" xmlns="urn:workflow-schema">
+  <Settings>
+    <Setting name="launchType" value="trigger" />
+    <Setting name="enabled" value="true" />
+    <Setting name="period" value="00.00:00:00" />
+    <Setting name="version" value="0" />
+    <Setting name="deadLine" value="50" />
+  </Settings>
+  <Tasks>
+    <Task id="1" name="Insert" description="" enabled="true" isCommon="true">
+      <Setting name="type" value="commonTask" />
+      <Setting name="پارامتر" value="[{&quot;name&quot;:&quot;IsInsert&quot;,&quot;value&quot;:&quot;true&quot;},{&quot;name&quot;:&quot;Value&quot;,&quot;value&quot;:&quot;Arash&quot;}]" />
+      <Setting name="زمان لازم" value="5" />
+      <Setting name="مشخصات سرویس" value="{&quot;value&quot;:{}}" />
+    </Task>
+    <Task id="2" name="Forward" description="" enabled="true" isCommon="true">
+      <Setting name="type" value="commonTask" />
+      <Setting name="پارامتر" value="[{&quot;name&quot;:&quot;isInsert&quot;,&quot;value&quot;:&quot;false&quot;},{&quot;name&quot;:&quot;value&quot;,&quot;value&quot;:&quot;Mohsen&quot;}]" />
+      <Setting name="زمان لازم" value="5" />
+      <Setting name="مشخصات سرویس" value="{&quot;value&quot;:{}}" />
+    </Task>
+  </Tasks>
+  <ExecutionGraph>
+    <Task id="1" index="1">
+      <Parent id="-1" />
+    </Task>
+    <Task id="2" index="2">
+      <Parent id="1" />
+    </Task>
+  </ExecutionGraph>
+</Workflow>

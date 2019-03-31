@@ -717,7 +717,7 @@ export class ConfigWorkflowComponent implements OnInit, AfterViewInit {
       data: this.task.settings,
       // maxHeight: '75vh',
       // height: '75vh',
-      width: '95%',
+      width: '50%',
       disableClose: true,
     });
     dialogRef.afterClosed().subscribe((res: any[]) => {

@@ -24,7 +24,7 @@ namespace TaskRunnerLogic
                     case "Insert":
                         url = JsonConvert.DeserializeObject<RestService>(serviceUrl);
                         parameters = serviceParameters;
-                        serviceResult = new CallServiceLogic().CallAsync(this.url, this.parameters);
+                        serviceResult = new CallServiceLogic().CallAsync(url, parameters);
                         if (this.serviceResult.Result)
                         {
                             return new TaskStatus(Status.Success, task, model, "", workflowConfig);

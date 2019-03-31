@@ -5,14 +5,14 @@
     <Setting name="enabled" value="true" />
     <Setting name="period" value="00.00:00:00" />
     <Setting name="version" value="0" />
-    <Setting name="deadLine" value="123" />
+    <Setting name="deadLine" value="55" />
   </Settings>
   <Tasks>
     <Task id="1" name="Insert" description="" enabled="true" isCommon="true">
       <Setting name="type" value="commonTask" />
-      <Setting name="پارامتر" value="[{&quot;name&quot;:&quot;IsInsert&quot;,&quot;value&quot;:&quot;true&quot;}]" />
-      <Setting name="زمان لازم" value="1" />
-      <Setting name="مشخصات سرویس" value="{&quot;value&quot;:{&quot;url&quot;:&quot;https://localhost:44309/api&quot;,&quot;controller&quot;:&quot;common&quot;,&quot;action&quot;:&quot;insert&quot;}}" />
+      <Setting name="پارامتر" value="[{&quot;name&quot;:&quot;isInsert&quot;,&quot;value&quot;:&quot;true&quot;},{&quot;name&quot;:&quot;value&quot;,&quot;value&quot;:&quot;arash&quot;}]" />
+      <Setting name="زمان لازم" value="5" />
+      <Setting name="مشخصات سرویس" value="{&quot;value&quot;:{},&quot;swaggerUrl&quot;:&quot;https://localhost:44309/swagger/v1/swagger.json&quot;,&quot;url&quot;:&quot;https://localhost:44309&quot;,&quot;http&quot;:&quot;post&quot;,&quot;prefix&quot;:&quot;api&quot;,&quot;controller&quot;:&quot;Common&quot;,&quot;action&quot;:&quot;Insert&quot;}" />
     </Task>
   </Tasks>
   <ExecutionGraph>

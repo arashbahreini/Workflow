@@ -1,7 +1,6 @@
 ﻿using Contract;
 using Data;
 using Data.Entities;
-using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Text;
