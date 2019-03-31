@@ -91,6 +91,11 @@ export class ServiceParameterConfigComponent implements OnInit {
     this.swaggerModel = new SwaggerModel();
     this.basicInformationService.getServiceParameters(this.urlValue).subscribe(
       (res: any) => {
+        this.urlValue.url = '';
+        this.urlValue.prefix = '';
+        this.urlValue.controller = '';
+        this.urlValue.action = '';
+        this.urlValue.http = '';
         this.swaggerModel.isUsed = true;
         this.swaggerModel.data = res;
         this.swaggerModel.getPrefixes();
@@ -100,16 +105,26 @@ export class ServiceParameterConfigComponent implements OnInit {
   }
 
   prefixChange(event: any) {
+    this.urlValue.controller = '';
+    this.urlValue.action = '';
+    this.urlValue.http = '';
     this.swaggerModel.getControllers(event.value);
   }
 
   controllerChange(event: any) {
+    this.urlValue.action = '';
+    this.urlValue.http = '';
     this.swaggerModel.getActions(event.value);
   }
 
-  actionChange($event) {
-    this.swaggerModel.getHttps(this.urlValue.getFullPath());
+  actionChange() {
+    this.urlValue.http = '';
+    this.swaggerModel.getHttps(this.getApiFullPath());
     this.https = this.swaggerModel.https;
+  }
+
+  public getApiFullPath() {
+    return '/' + this.urlValue.prefix + '/' + this.urlValue.controller + '/' + this.urlValue.action;
   }
 
   getParameters() {

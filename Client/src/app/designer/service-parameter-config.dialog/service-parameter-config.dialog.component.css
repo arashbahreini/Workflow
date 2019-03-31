@@ -17,8 +17,6 @@
 
 .div__params__container {
   text-align: center;
-  height: 36vh;
-  overflow: scroll;
 }
 
 .box_header_dialog {
@@ -27,4 +25,12 @@
 
 h4, .mat-form-field-label, h5 {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+}
+
+.div__button__container {
+  float: right;
+}
+
+.div__button__container>button {
+  margin:5px;
 }
